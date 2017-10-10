@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="tv_size">39sp</dimen>
+    <dimen name="tv_title_size">26sp</dimen>
+</resources>

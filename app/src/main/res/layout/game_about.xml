@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:onClick="mClick"
+    android:layout_height="match_parent"
+    android:background="@drawable/game_background">
+
+    <TextView
+        android:id="@+id/tv_author"
+        style="@style/tv_about"
+        android:layout_centerInParent="true"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/about_author"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/tv_about_statement"
+        style="@style/tv_about"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/about_statement"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/tv_about_version"
+        style="@style/tv_about"
+        android:layout_above="@id/tv_about_statement"
+        android:layout_marginBottom="10dp"
+        android:text="@string/about_version"
+        android:textSize="17sp" />
+
+</RelativeLayout>
