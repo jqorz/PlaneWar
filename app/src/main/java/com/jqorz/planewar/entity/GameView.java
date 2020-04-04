@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Message;
@@ -14,16 +15,18 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.jqorz.planewar.frame.GamePlaying;
 import com.jqorz.planewar.R;
+import com.jqorz.planewar.frame.GamePlaying;
 import com.jqorz.planewar.thread.ExplodeThread;
 import com.jqorz.planewar.thread.MoveThread;
 import com.jqorz.planewar.thread.RunThread;
 import com.jqorz.planewar.thread.TutorialThread;
 import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.utils.Logg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 主游戏界面控制类
@@ -50,7 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public ChangeBullet changeBullet;//子弹补给
     public Bomb bomb;//炸弹补给
     public int bg1y, bg2y;//背景图的两个y坐标
-    public Plane plane;
+    public HeroPlane heroPlane;
     public MoveThread moveThread;//移动物体的线程
     public RunThread runThread;//飞机飞行动画的线程
     public ExplodeThread explodeThread;//爆炸换帧的线程
@@ -62,7 +65,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public Long mDifficultyTime = 0L; //计算难度用的时间
     public Long mBombTime = 0L; //计算炸弹补给出现的时间
     public Long mChangeBulletTime = 0L; //计算子弹补给出现的时间
-    public ArrayList<Bullet> mBullets = null;//子弹数组
+    public CopyOnWriteArrayList<Bullet> mBullets = null;//子弹数组 使用此数组可避免ArrayList在迭代时remove导致的异常
     public EnemyPlane mEnemy[] = null;//敌军飞机数组
     GamePlaying activity;
     Bitmap background;//背景的大图元
@@ -90,8 +93,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.setKeepScreenOn(true);//保持屏幕常亮
         this.setFocusableInTouchMode(false);//设置不允许按键
         Display display = activity.getWindowManager().getDefaultDisplay();//获取屏幕宽高
-        screenHeight = display.getHeight();
-        screenWidth = display.getWidth();
+        Point size = new Point();
+        display.getSize(size);
+        screenHeight = size.y;
+        screenWidth = size.x;
         initBitmap();
         initSounds();
         initGameView();
@@ -108,9 +113,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.moveThread = new MoveThread(this);//初始化物品及敌机飞行线程
         this.explodeThread = new ExplodeThread(this);//初始化爆炸线程
 
-        plane = new Plane((screenWidth - bmps_heroPlane[0].getWidth()) / 2, screenHeight / 3 * 2 - bmps_heroPlane[0].getHeight() / 2);//初始化我方飞机
+        heroPlane = new HeroPlane((screenWidth - bmps_heroPlane[0].getWidth()) / 2, screenHeight / 3 * 2 - bmps_heroPlane[0].getHeight() / 2);//初始化我方飞机
 //        mBullet = new Bullet[ConstantUtil.BULLET_POOL_COUNT];
-        mBullets = new ArrayList<>();
+        mBullets = new CopyOnWriteArrayList<>();
 //        for (int i = 0; i < ConstantUtil.BULLET_POOL_COUNT; i++) {
 //            mBullet[i] = new Bullet(0, 0);
 //        }
@@ -150,8 +155,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paint = new Paint();
         Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.game_background);//大背景图片
         background = Bitmap.createScaledBitmap(bmp, screenWidth, screenHeight, true);
-        bg1y = Math.abs(background.getHeight() - screenHeight);
-        bg2y = bg1y - background.getHeight();
+        bg1y = Math.abs(background.getHeight() - screenHeight);//背景图的顶端y坐标
+        bg2y = bg1y - background.getHeight();//
 
         bmps_heroPlane[0] = BitmapFactory.decodeResource(getResources(), R.drawable.playing_hero_run1);//英雄飞机的图片1
         bmps_heroPlane[1] = BitmapFactory.decodeResource(getResources(), R.drawable.playing_hero_run2);//英雄飞机的图片2
@@ -218,8 +223,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawBitmap(background, 0, bg2y, paint);
 
             //绘制玩家飞机
-            if (plane.getStatus()) {
-                plane.draw(canvas);
+            if (heroPlane.getStatus()) {
+                heroPlane.draw(canvas);
             }
 
             //计算当前时间
@@ -228,7 +233,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             //绘制子弹及敌机
             if (now - mTime >= ConstantUtil.FIRST_ENEMY_TIME) {
                 drawEnemy(canvas, now);
-                if (plane.getStatus()) {
+                if (heroPlane.getStatus()) {
                     drawBullets(canvas, now);
                 }
             }
@@ -348,13 +353,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         //根据时间初始化未发射的子弹
         if (now - mSendTime >= ConstantUtil.BULLET_TIME) {
-            int x = plane.getX() + (int) ((bmps_heroPlane[0].getWidth() - bmp_bullet1.getWidth()) / 2.0);
-            int y = plane.getY() - ConstantUtil.BULLET_SPAN / 2;
-            if (plane.getBulletType() == ConstantUtil.BULLET_RED) {
+            int x = heroPlane.getX() + (int) ((bmps_heroPlane[0].getWidth() - bmp_bullet1.getWidth()) / 2.0);
+            int y = heroPlane.getY() - ConstantUtil.BULLET_SPAN / 2;
+            if (heroPlane.getBulletType() == ConstantUtil.BULLET_RED) {
                 Bullet b1 = new Bullet(x, y);
                 b1.setType(ConstantUtil.BULLET_RED);
                 mBullets.add(b1);
-            } else if (plane.getBulletType() == ConstantUtil.BULLET_BLUE) {
+            } else if (heroPlane.getBulletType() == ConstantUtil.BULLET_BLUE) {
                 Bullet b1 = new Bullet(x, y - ConstantUtil.BULLET_SPAN);
                 b1.setType(ConstantUtil.BULLET_BLUE);
                 mBullets.add(b1);
@@ -374,6 +379,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 b.move();
             }
         } catch (Exception e) {
+            Logg.e(e);
         }
         //绘制正常的子弹
         try {
@@ -382,6 +388,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 b.draw(canvas);
             }
         } catch (Exception e) {
+            Logg.e(e);
         }
 
     }
@@ -417,8 +424,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-//        int x=plane.getX();
-//        int y=plane.getY();
+//        int x=heroPlane.getX();
+//        int y=heroPlane.getY();
         if (event.getAction() == MotionEvent.ACTION_DOWN) { //处理屏幕屏点下事件 手指点击屏幕时触发
 //            xx = (int)event.getX();
 //            yy = (int)event.getY();
@@ -428,8 +435,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int Px = (int) event.getX();
             int Py = (int) event.getY();
 
-            plane.setX(Px - plane.getBitmap().getWidth() / 2);
-            plane.setY(Py - plane.getBitmap().getHeight());
+            heroPlane.setX(Px - heroPlane.getBitmap().getWidth() / 2);
+            heroPlane.setY(Py - heroPlane.getBitmap().getHeight());
         }
 
         return true;

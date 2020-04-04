@@ -5,20 +5,20 @@ import com.jqorz.planewar.utils.ConstantUtil;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Map {
+ class Map {
 
-    public static int getBomb() {//添加炸弹补给
+     static int getBomb() {//添加炸弹补给
         Random r = new Random();
         return r.nextInt(GameView.screenWidth - GameView.bmp_Bomb.getWidth());
     }
 
-    public static int getBullet() {//添加子弹补给
+     static int getBullet() {//添加子弹补给
         Random r = new Random();
         return r.nextInt(GameView.screenWidth - GameView.bmp_changeBullet.getWidth());
     }
 
 
-    public static HashMap<String, Integer> getEnemyPlan() {//添加敌机
+     static HashMap<String, Integer> getEnemyPlan() {//添加敌机
         HashMap<String, Integer> map = new HashMap<>();
         Random ra1 = new Random();
 

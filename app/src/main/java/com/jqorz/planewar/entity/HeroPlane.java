@@ -10,7 +10,7 @@ import com.jqorz.planewar.utils.ConstantUtil;
 /**
  * 英雄飞机实体类
  */
-public class Plane {
+public class HeroPlane {
 
     private int x, y;//飞机位置(x,y)
     private Bitmap[] bitmaps = new Bitmap[2];
@@ -20,7 +20,7 @@ public class Plane {
     private boolean status = true;//标志自己是否可见
     private int bulletType = ConstantUtil.BULLET_RED;
 
-    public Plane(int x, int y) {
+    public HeroPlane(int x, int y) {
         this.x = x;
         this.y = y;
         this.bitmaps = GameView.bmps_heroPlane;
@@ -93,7 +93,7 @@ public class Plane {
     }
 */
 
-    public void nextFrame() {//换帧，成功返回true。否则返回false
+    public void nextFrame() {//换帧
 
         if (k < bitmaps.length) {
             bitmap = bitmaps[k];

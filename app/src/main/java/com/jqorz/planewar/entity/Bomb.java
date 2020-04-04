@@ -15,7 +15,7 @@ public class Bomb {
     private boolean status = false;//炸弹补给的状态
     private Bitmap bitmap;
 
-    public Bomb(int x) {
+    Bomb(int x) {
         this.bitmap = GameView.bmp_Bomb;
         setX(x);
         y = -bitmap.getHeight();
@@ -27,11 +27,11 @@ public class Bomb {
         this.y = -bitmap.getHeight();
     }
 
-    public int getX() {
+    int getX() {
         return x;
     }
 
-    public void setX(int x) {
+    private void setX(int x) {
         this.x = x;
     }
 
@@ -48,7 +48,7 @@ public class Bomb {
         this.status = status;
     }
 
-    public Bitmap getBitmap() {
+    Bitmap getBitmap() {
         return bitmap;
     }
 

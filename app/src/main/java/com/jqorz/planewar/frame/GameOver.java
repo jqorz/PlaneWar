@@ -2,7 +2,6 @@ package com.jqorz.planewar.frame;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +10,12 @@ import android.widget.TextView;
 
 import com.jqorz.planewar.R;
 import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.utils.UserDataUtil;
 
 public class GameOver extends Activity implements View.OnClickListener {
 
-    SharedPreferences sp;
+    private final String MAX_SCORE = "MAX_SCORE";
+    private final String HAS_CHEATED = "HAS_CHEATED";
     private TextView tv_MaxScore, tv_thisScore;
     private ImageButton imgBtn_restartGame, imgBtn_backHome, imgBtn_exitGame;
 
@@ -24,7 +25,6 @@ public class GameOver extends Activity implements View.OnClickListener {
         setContentView(R.layout.game_over);
         initView();
         initEvent();
-        sp = getSharedPreferences("Data", MODE_PRIVATE);
         setTypeface();
         getBundle();
         ConstantUtil.CHEAT_CURRENT_STATE = 0;//还原作弊状态
@@ -35,17 +35,15 @@ public class GameOver extends Activity implements View.OnClickListener {
         int thisScore = intent.getIntExtra("Score", 0);
         boolean isCheated = ConstantUtil.CHEAT_CURRENT_STATE != 0;
 
-        int maxScore = sp.getInt("MaxScore", 0);
+        int maxScore = UserDataUtil.loadUserIntegerData(this, MAX_SCORE);
 
         if (thisScore > maxScore) {
             maxScore = thisScore;
-            SharedPreferences.Editor edit = sp.edit();
-            edit.putInt("MaxScore", maxScore);
-            edit.putBoolean("MaxScoreCheated", isCheated);//如果作弊得到最高分，保存作弊记录至本地
-            edit.apply();
+            UserDataUtil.updateUserData(this, MAX_SCORE, maxScore);
+            UserDataUtil.updateUserData(this, HAS_CHEATED, isCheated);//如果作弊得到最高分，保存作弊记录至本地
         }
 
-        boolean maxScoreCheated = sp.getBoolean("MaxScoreCheated", false);
+        boolean maxScoreCheated = UserDataUtil.loadUserBooleanData(this, HAS_CHEATED);
 
         String showText1 = "" + thisScore;
         String showText2 = "" + maxScore;

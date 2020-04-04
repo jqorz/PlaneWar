@@ -54,8 +54,8 @@ public class MoveThread extends Thread {
 
                 if (ep.getY() > GameView.screenHeight) {
                     ep.setStatus(false);
-                } else if (ep.getStatus() && gameView.plane.getStatus() && gameView.plane.getBitmap() != null) {
-                    if (gameView.plane.contain(ep, gameView)) {
+                } else if (ep.getStatus() && gameView.heroPlane.getStatus() && gameView.heroPlane.getBitmap() != null) {
+                    if (gameView.heroPlane.contain(ep, gameView)) {
                         if (ep.getLife() <= 0) {
                             ep.setStatus(false);
                         }
@@ -71,8 +71,8 @@ public class MoveThread extends Thread {
             if (b.getY() > GameView.screenHeight) {
                 b.setStatus(false);
                 b.reset();
-            } else if (b.getStatus() && gameView.plane.getStatus() && gameView.plane.getBitmap() != null) {
-                if (gameView.plane.contain(b, gameView)) {
+            } else if (b.getStatus() && gameView.heroPlane.getStatus() && gameView.heroPlane.getBitmap() != null) {
+                if (gameView.heroPlane.contain(b, gameView)) {
                     b.setStatus(false);
                     b.reset();
 
@@ -87,8 +87,8 @@ public class MoveThread extends Thread {
             if (cb.getY() > GameView.screenHeight) {
                 cb.setStatus(false);
                 cb.reset();
-            } else if (cb.getStatus() && gameView.plane.getStatus() && gameView.plane.getBitmap() != null) {
-                if (gameView.plane.contain(cb)) {
+            } else if (cb.getStatus() && gameView.heroPlane.getStatus() && gameView.heroPlane.getBitmap() != null) {
+                if (gameView.heroPlane.contain(cb)) {
                     cb.setStatus(false);
                     cb.reset();
                 }

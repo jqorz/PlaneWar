@@ -9,9 +9,9 @@ import android.widget.ImageView;
 
 import com.jqorz.planewar.R;
 
-public class GameLauncher extends Activity implements View.OnClickListener,View.OnLongClickListener {
+public class GameLauncher extends Activity implements View.OnClickListener, View.OnLongClickListener {
     private ImageButton imgBtn_startGame, imgBtn_exitGame, imgBtn_about, imgBtn_setting;
-private ImageView iv_icon;
+    private ImageView iv_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ private ImageView iv_icon;
         imgBtn_exitGame = (ImageButton) findViewById(R.id.imgBtn_exitGame);
         imgBtn_about = (ImageButton) findViewById(R.id.imgBtn_about);
         imgBtn_setting = (ImageButton) findViewById(R.id.imgBtn_Setting);
-        iv_icon= (ImageView) findViewById(R.id.iv_icon);
+        iv_icon = (ImageView) findViewById(R.id.iv_icon);
     }
 
     private void initEvent() {
@@ -42,17 +42,14 @@ private ImageView iv_icon;
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgBtn_startGame:
-                Intent intent1 = new Intent(this, GamePlaying.class);
-                this.startActivity(intent1);
+                this.startActivity(new Intent(this, GamePlaying.class));
                 this.finish();
                 break;
             case R.id.imgBtn_about:
-                Intent intent2 = new Intent(this, GameAbout.class);
-                this.startActivity(intent2);
+                this.startActivity(new Intent(this, GameAbout.class));
                 break;
             case R.id.imgBtn_Setting:
-                Intent intent3 = new Intent(this, GameSetting.class);
-                this.startActivity(intent3);
+                this.startActivity(new Intent(this, GameSetting.class));
                 break;
             case R.id.imgBtn_exitGame:
                 this.finish();
@@ -63,7 +60,7 @@ private ImageView iv_icon;
 
     @Override
     public boolean onLongClick(View view) {
-        if (view.getId()==R.id.iv_icon){
+        if (view.getId() == R.id.iv_icon) {
             Intent intent = new Intent(this, GameCheat.class);
             this.startActivity(intent);
         }
