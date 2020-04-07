@@ -51,7 +51,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     static Bitmap[] bmps_heroPlane = new Bitmap[2];//英雄飞机飞行的数组
     public ArrayList<Explode> explodeList = new ArrayList<>();//爆炸
     public ChangeBullet changeBullet;//子弹补给
-    public Bomb bomb;//炸弹补给
+    public BombSupply mBombSupply;//炸弹补给
     public int bg1y, bg2y;//背景图的两个y坐标
     public HeroPlane heroPlane;
     public MoveThread moveThread;//移动物体的线程
@@ -127,8 +127,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         mDifficultyTime = System.currentTimeMillis();
         mBombTime = System.currentTimeMillis();
         mChangeBulletTime = System.currentTimeMillis();
-        changeBullet = new ChangeBullet(Map.getBullet());//取子弹补给
-        bomb = new Bomb(Map.getBomb()); //取炸弹补给
+        changeBullet = new ChangeBullet(GameView.bmp_bullet1);//取子弹补给
+        mBombSupply = new BombSupply(GameView.bmp_Bomb); //取炸弹补给
     }
 
 
@@ -279,17 +279,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawBomb(Canvas canvas, long now) {
-        if (bomb.getStatus()) {
-            bomb.move();
+        if (mBombSupply.getStatus()) {
+            mBombSupply.move();
         }
         //计算炸弹补给时间
         if (now - mBombTime >= ConstantUtil.SUPPLY_BOMB_INTERVAL_TIME) {
-            bomb.setStatus(true);
+            mBombSupply.setStatus(true);
             mBombTime = now;
         }
         //绘制炸弹补给
-        if (bomb.getStatus()) {
-            bomb.draw(canvas);
+        if (mBombSupply.getStatus()) {
+            mBombSupply.draw(canvas);
         }
 
     }

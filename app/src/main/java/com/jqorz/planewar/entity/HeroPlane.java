@@ -129,9 +129,9 @@ public class HeroPlane {
     }
 
     //碰撞到炸弹补给
-    public boolean contain(Bomb b, GameView gameView) {
+    public boolean contain(BombSupply b, GameView gameView) {
         Message msg = gameView.activity.myHandler.obtainMessage();
-        if (isContain(b.getX(), b.getY(), b.getBitmap().getWidth(), b.getBitmap().getHeight())) {//检测成功
+        if (isContain(b.getX(), b.getY(), b.getWidth(), b.getHeight())) {//检测成功
             msg.arg2 = 1;
             gameView.activity.myHandler.sendMessage(msg);
             return true;

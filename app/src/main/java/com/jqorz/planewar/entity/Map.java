@@ -1,21 +1,16 @@
 package com.jqorz.planewar.entity;
 
+import com.jqorz.planewar.base.BaseSupply;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 import java.util.HashMap;
 import java.util.Random;
 
- class Map {
+ public class Map {
 
-     static int getBomb() {//添加炸弹补给
-        Random r = new Random();
-        return r.nextInt(GameView.screenWidth - GameView.bmp_Bomb.getWidth());
-    }
-
-     static int getBullet() {//添加子弹补给
-        Random r = new Random();
-        return r.nextInt(GameView.screenWidth - GameView.bmp_changeBullet.getWidth());
-    }
+     public static int getNewSupplyPos(BaseSupply supply){
+         return new Random().nextInt(GameView.screenWidth - supply.getWidth());
+     }
 
 
      static HashMap<String, Integer> getEnemyPlan() {//添加敌机

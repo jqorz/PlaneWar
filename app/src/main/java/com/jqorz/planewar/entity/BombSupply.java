@@ -4,39 +4,25 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.jqorz.planewar.base.BaseSupply;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
  * 该类为炸弹补给类
  */
-public class Bomb {
-    private int x;//炸弹的坐标
-    private int y = 0;
+public class BombSupply extends BaseSupply {
     private boolean status = false;//炸弹补给的状态
-    private Bitmap bitmap;
 
-    Bomb(int x) {
-        this.bitmap = GameView.bmp_Bomb;
-        setX(x);
-        y = -bitmap.getHeight();
+
+    BombSupply(Bitmap defaultBitmap) {
+        super(defaultBitmap);
+        reset();
     }
 
     //重置坐标
     public void reset() {
-        this.setX(Map.getBomb());
-        this.y = -bitmap.getHeight();
-    }
-
-    int getX() {
-        return x;
-    }
-
-    private void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
+        setX(Map.getNewSupplyPos(this));
+        setY(-getHeight());
     }
 
 
@@ -46,10 +32,6 @@ public class Bomb {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    Bitmap getBitmap() {
-        return bitmap;
     }
 
 

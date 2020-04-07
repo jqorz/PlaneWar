@@ -1,6 +1,6 @@
 package com.jqorz.planewar.thread;
 
-import com.jqorz.planewar.entity.Bomb;
+import com.jqorz.planewar.entity.BombSupply;
 import com.jqorz.planewar.entity.Bullet;
 import com.jqorz.planewar.entity.ChangeBullet;
 import com.jqorz.planewar.entity.EnemyPlane;
@@ -67,7 +67,7 @@ public class MoveThread extends Thread {
 
 
             //移动炸弹补给
-            Bomb b = gameView.bomb;
+            BombSupply b = gameView.mBombSupply;
             if (b.getY() > GameView.screenHeight) {
                 b.setStatus(false);
                 b.reset();

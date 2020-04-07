@@ -4,26 +4,26 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.jqorz.planewar.base.BaseSupply;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
  * 该类为子弹补给类
  */
-public class ChangeBullet {
+public class ChangeBullet extends BaseSupply {
     private int x;
     private int y = 0;
     private boolean status = false;
     private Bitmap bitmap;
 
-    public ChangeBullet(int x) {
-        this.bitmap = GameView.bmp_changeBullet;
-        setX(x);
-        y = -bitmap.getHeight();
+    public ChangeBullet(Bitmap defaultBitmap) {
+        super(defaultBitmap);
+        reset();
     }
 
     //重置坐标
     public void reset() {
-        this.setX(Map.getBullet());
+        this.setX(Map.getNewSupplyPos(this));
         this.y = -bitmap.getHeight();
     }
 
