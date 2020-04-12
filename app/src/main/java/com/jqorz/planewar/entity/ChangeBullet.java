@@ -14,41 +14,16 @@ public class ChangeBullet extends BaseSupply {
     private int x;
     private int y = 0;
     private boolean status = false;
-    private Bitmap bitmap;
 
     public ChangeBullet(Bitmap defaultBitmap) {
         super(defaultBitmap);
-        reset();
     }
 
     //重置坐标
+    @Override
     public void reset() {
-        this.setX(Map.getNewSupplyPos(this));
-        this.y = -bitmap.getHeight();
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public Bitmap getBitmap() {
-        return bitmap;
+        setX(Map.getNewSupplyPos(this));
+        setY(-getHeight());
     }
 
 
@@ -59,7 +34,6 @@ public class ChangeBullet extends BaseSupply {
     }
 
     public void move() {
-        int velocity = ConstantUtil.ChangeBullet_Velocity;
-        this.y = this.y + velocity;
+        y += ConstantUtil.ChangeBullet_Velocity;
     }
 }

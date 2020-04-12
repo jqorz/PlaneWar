@@ -11,27 +11,21 @@ import com.jqorz.planewar.utils.ConstantUtil;
  * 该类为炸弹补给类
  */
 public class BombSupply extends BaseSupply {
-    private boolean status = false;//炸弹补给的状态
 
 
     BombSupply(Bitmap defaultBitmap) {
         super(defaultBitmap);
-        reset();
     }
 
-    //重置坐标
+    @Override
     public void reset() {
         setX(Map.getNewSupplyPos(this));
         setY(-getHeight());
     }
 
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
+    @Override
+    public void move() {
+        y += ConstantUtil.Bomb_Velocity;
     }
 
 
@@ -41,7 +35,4 @@ public class BombSupply extends BaseSupply {
         }
     }
 
-    public void move() {
-        this.y = this.y + ConstantUtil.Bomb_Velocity;
-    }
-}                                                                                                 
+}
