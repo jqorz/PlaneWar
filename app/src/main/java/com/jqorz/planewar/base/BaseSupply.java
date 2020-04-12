@@ -21,7 +21,7 @@ public abstract class BaseSupply extends BaseEntityImp {
 
     public abstract void move();
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
