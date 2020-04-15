@@ -17,6 +17,7 @@ import android.view.SurfaceView;
 
 import com.jqorz.planewar.R;
 import com.jqorz.planewar.frame.GamePlaying;
+import com.jqorz.planewar.manager.MapManager;
 import com.jqorz.planewar.thread.ExplodeThread;
 import com.jqorz.planewar.thread.MoveThread;
 import com.jqorz.planewar.thread.RunThread;
@@ -40,9 +41,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public static Bitmap[] bmps_enemyPlane3_explode = new Bitmap[6];//敌机3爆炸的数组
     public static Bitmap bmp_enemyPlane2_injured;//敌机2受伤的图片
     public static Bitmap bmp_enemyPlane3_injured;//敌机3受伤的图片
-    static Bitmap[] bmps_enemyPlane1 = new Bitmap[1];//敌机1飞行的数组
-    static Bitmap[] bmps_enemyPlane2 = new Bitmap[1];//敌机2飞行的数组
-    static Bitmap[] bmps_enemyPlane3 = new Bitmap[2];//敌机3飞行的数组
+    public static Bitmap[] bmps_enemyPlane1 = new Bitmap[1];//敌机1飞行的数组
+    public static Bitmap[] bmps_enemyPlane2 = new Bitmap[1];//敌机2飞行的数组
+    public static Bitmap[] bmps_enemyPlane3 = new Bitmap[2];//敌机3飞行的数组
     static Bitmap[] bmps_hero_explode = new Bitmap[4];//英雄飞机爆炸的数组
     static Bitmap bmp_changeBullet;//子弹补给的图片
     static Bitmap bmp_Bomb;//炸弹补给的图片
@@ -325,11 +326,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         //根据时间初始化敌军飞机
         if (mEnemyId < ConstantUtil.ENEMY_POOL_COUNT) {
             if (now - mEnemyTime >= ConstantUtil.ENEMY_TIME) {
-                HashMap<String, Integer> map = Map.getEnemyPlan();
-                mEnemy[mEnemyId].setX(map.get("Location"));
+                MapManager.PlaneInfo info = MapManager.getNewEnemyPlaneInfo();
+                mEnemy[mEnemyId].setX(info.getX());
                 mEnemy[mEnemyId].setY(-500);
-                mEnemy[mEnemyId].setVelocity(map.get("Velocity"));
-                mEnemy[mEnemyId].setType(map.get("Type"));
+                mEnemy[mEnemyId].setVelocity(info.getVelocity());
+                mEnemy[mEnemyId].setType(info.getType());
 
                 mEnemyTime = now;
                 mEnemy[mEnemyId].setStatus(true);
@@ -355,19 +356,24 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if (now - mSendTime >= ConstantUtil.BULLET_TIME) {
             int x = heroPlane.getX() + (int) ((bmps_heroPlane[0].getWidth() - bmp_bullet1.getWidth()) / 2.0);
             int y = heroPlane.getY() - ConstantUtil.BULLET_SPAN / 2;
+
+
             if (heroPlane.getBulletType() == ConstantUtil.BULLET_RED) {
-                Bullet b1 = new Bullet(x, y);
-                b1.setType(ConstantUtil.BULLET_RED);
+                Bullet b1 = new Bullet(ConstantUtil.BULLET_RED);
+                b1.setXY(x, y);
                 mBullets.add(b1);
+
             } else if (heroPlane.getBulletType() == ConstantUtil.BULLET_BLUE) {
-                Bullet b1 = new Bullet(x, y - ConstantUtil.BULLET_SPAN);
-                b1.setType(ConstantUtil.BULLET_BLUE);
+                Bullet b1 = new Bullet(ConstantUtil.BULLET_BLUE);
+                b1.setXY(x, y - ConstantUtil.BULLET_SPAN);
                 mBullets.add(b1);
-                Bullet b2 = new Bullet(x - ConstantUtil.BULLET_SPAN, y);
-                b2.setType(ConstantUtil.BULLET_BLUE);
+
+                Bullet b2 = new Bullet(ConstantUtil.BULLET_BLUE);
+                b2.setXY(x - ConstantUtil.BULLET_SPAN, y);
                 mBullets.add(b2);
-                Bullet b3 = new Bullet(x + ConstantUtil.BULLET_SPAN, y);
-                b3.setType(ConstantUtil.BULLET_BLUE);
+
+                Bullet b3 = new Bullet(ConstantUtil.BULLET_BLUE);
+                b3.setXY(x + ConstantUtil.BULLET_SPAN, y);
                 mBullets.add(b3);
             }
             mSendTime = now;

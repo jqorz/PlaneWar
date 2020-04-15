@@ -7,7 +7,6 @@ import com.jqorz.planewar.entity.EnemyPlane;
 import com.jqorz.planewar.entity.GameView;
 
 /**
- * copyright datedu
  *
  * @author j1997
  * @since 2020/4/12

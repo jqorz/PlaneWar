@@ -1,20 +1,18 @@
-package com.jqorz.planewar.entity;
+package com.jqorz.planewar.manager;
 
 import com.jqorz.planewar.base.BaseSupply;
+import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.utils.ConstantUtil;
 
-import java.util.HashMap;
 import java.util.Random;
 
- public class Map {
+public class MapManager {
 
-     public static int getNewSupplyPos(BaseSupply supply){
-         return new Random().nextInt(GameView.screenWidth - supply.getWidth());
-     }
+    public static int getNewSupplyPos(BaseSupply supply) {
+        return new Random().nextInt(GameView.screenWidth - supply.getWidth());
+    }
 
-
-     static HashMap<String, Integer> getEnemyPlan() {//添加敌机
-        HashMap<String, Integer> map = new HashMap<>();
+    public static PlaneInfo getNewEnemyPlaneInfo() {
         Random ra1 = new Random();
 
         int x;//随机飞机位置
@@ -45,12 +43,32 @@ import java.util.Random;
         } else {
             x = ra1.nextInt(GameView.screenWidth - GameView.bmps_enemyPlane3[0].getWidth());
         }
-        map.put("Location", x);
-        map.put("Velocity", velocity);
-        map.put("Type", type);
-
-        return map;
+        return new PlaneInfo(x, velocity, type);
     }
 
+
+    public static class PlaneInfo {
+        private int x;
+        private int velocity;
+        private int type;
+
+        public PlaneInfo(int x, int velocity, int type) {
+            this.x = x;
+            this.velocity = velocity;
+            this.type = type;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getVelocity() {
+            return velocity;
+        }
+
+        public int getType() {
+            return type;
+        }
+    }
 
 }

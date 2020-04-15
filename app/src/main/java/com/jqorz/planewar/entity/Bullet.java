@@ -3,7 +3,10 @@ package com.jqorz.planewar.entity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.annotation.IntDef;
 
+import com.jqorz.planewar.anim.AnimationImpl;
+import com.jqorz.planewar.base.BaseEntityImp;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
@@ -11,52 +14,31 @@ import com.jqorz.planewar.utils.ConstantUtil;
  * 记录了子弹自身的相关参数
  * 外界通过调用move方法移动子弹
  */
-public class Bullet {
-    private Bitmap bitmap;
-    private int x;
-    private int y;//子弹的坐标
+public class Bullet extends BaseEntityImp {
+    protected AnimationImpl mAnimation;
+    protected int mFrameId;
 
-    public Bullet(int x, int y) {
-        this.x = x;
-        this.y = y;
-        setType(ConstantUtil.BULLET_RED);
+    public Bullet(@BulletType int type) {
+        this(type == ConstantUtil.BULLET_RED ? GameView.bmp_bullet1 : GameView.bmp_bullet2);
     }
 
-
-    public void setType(int type) {
-        switch (type) {
-            case ConstantUtil.BULLET_RED:
-                bitmap = GameView.bmp_bullet1;
-                break;
-            case ConstantUtil.BULLET_BLUE:
-                bitmap = GameView.bmp_bullet2;
-                break;
-        }
+    public Bullet(Bitmap bitmap) {
+        super(bitmap);
+        mAnimation = new AnimationImpl(getBitmaps(), false);
     }
 
-
-    public Bitmap getBitmap() {
-        return bitmap;
+    @Override
+    public void draw(Canvas canvas, Paint paint) {
+        mAnimation.drawFrame(canvas, paint, x, y, mFrameId);
     }
 
-
-    public int getX() {
-        return x;
-    }
-
-
-    public int getY() {
-        return y;
-    }
-
-
-    public void draw(Canvas canvas) {
-        if (bitmap != null) {
-            canvas.drawBitmap(bitmap, x, y, new Paint());
-        }
-    }
 
     public void move() {
         this.y = this.y - ConstantUtil.BULLET_VELOCITY;
+    }
+
+    @IntDef({ConstantUtil.BULLET_RED, ConstantUtil.BULLET_BLUE})
+    public @interface BulletType {
+
     }
 }

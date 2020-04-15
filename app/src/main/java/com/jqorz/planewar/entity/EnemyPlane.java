@@ -4,29 +4,36 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Message;
+import android.support.annotation.IntDef;
 
+import com.jqorz.planewar.base.BasePlane;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
  * 该类为敌机类
  */
-public class EnemyPlane {
+public class EnemyPlane extends BasePlane {
 
     private int x;
     private int y = -GameView.bmps_enemyPlane3[0].getHeight();
     private boolean status = true;//飞机的状态
     private int type;//敌机的类型
-    private int life;//生命
     private Bitmap bitmap;//当前帧
     private int velocity;//飞机的速度
     private int k = 0;//当前帧数
     private Bitmap[] bitmaps;//储存敌机飞行的图片数组
 
-    public EnemyPlane(int x, int type) {
+    public EnemyPlane(Bitmap[] bitmaps) {
+        super(bitmaps);
         setType(type);
-        this.y = -GameView.screenHeight;
-        setX(x);
+        reset();
     }
+
+    public void reset() {
+        setX(0);
+        setY(-GameView.screenHeight);
+    }
+
 
     public boolean getStatus() {
         return status;
@@ -40,13 +47,8 @@ public class EnemyPlane {
         return type;
     }
 
-    public void setType(int type) {
-        if (type == ConstantUtil.ENEMY_TYPE1 || type == ConstantUtil.ENEMY_TYPE2 || type == ConstantUtil.ENEMY_TYPE3) {
-            this.type = type;
-
-        } else {
-            this.type = ConstantUtil.ENEMY_TYPE1;
-        }
+    public void setType(@PlaneType int type) {
+        this.type = type;
         setBmps_Life(type);
     }
 
@@ -54,16 +56,13 @@ public class EnemyPlane {
         return life;
     }
 
-
     public Bitmap getBitmap() {
         return bitmap;
     }
 
-
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }
-
 
     private void setBmps_Life(int type) {
         switch (type) {
@@ -94,7 +93,6 @@ public class EnemyPlane {
     public void move() {
         this.y = this.y + velocity;
     }
-
 
     private boolean isContain(int otherX, int otherY, int otherWidth, int otherHeight) {//判断两个矩形是否碰撞
         int xd;//大的x
@@ -199,7 +197,6 @@ public class EnemyPlane {
         return false;
     }
 
-
     public int getX() {
         return x;
     }
@@ -226,5 +223,9 @@ public class EnemyPlane {
             k = 0;
             bitmap = bitmaps[k];
         }
+    }
+
+    @IntDef({ConstantUtil.ENEMY_TYPE1, ConstantUtil.ENEMY_TYPE2, ConstantUtil.ENEMY_TYPE3})
+    public @interface PlaneType {
     }
 }

@@ -3,12 +3,13 @@ package com.jqorz.planewar.base;
 import android.graphics.Bitmap;
 
 /**
- * copyright datedu
  *
  * @author j1997
  * @since 2020/4/7
  */
 public interface IEntity {
+
+    void setXY(int x,int y);
 
     int getX();
 

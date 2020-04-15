@@ -1,10 +1,9 @@
 package com.jqorz.planewar.entity;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import com.jqorz.planewar.base.BaseSupply;
+import com.jqorz.planewar.manager.MapManager;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
@@ -19,20 +18,13 @@ public class BombSupply extends BaseSupply {
 
     @Override
     public void reset() {
-        setX(Map.getNewSupplyPos(this));
+        setX(MapManager.getNewSupplyPos(this));
         setY(-getHeight());
     }
 
     @Override
     public void move() {
         y += ConstantUtil.Bomb_Velocity;
-    }
-
-
-    public void draw(Canvas canvas) {
-        if (bitmap != null) {
-            canvas.drawBitmap(bitmap, x, y, new Paint());
-        }
     }
 
 }
