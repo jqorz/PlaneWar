@@ -3,22 +3,19 @@ package com.jqorz.planewar.thread;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import com.jqorz.planewar.entity.GameView;
-
 /**
  * 刷帧线程
  */
 public class MainRunThread extends Thread {
+    private final SurfaceHolder mSurfaceHolder;
     public boolean flag2 = true;
-    private final SurfaceHolder surfaceHolder;
-    private GameView gameView;
     private boolean flag = false;
+    private OnThreadRunListener mListener;
 
-    public MainRunThread(SurfaceHolder surfaceHolder, GameView gameView) {
-        this.surfaceHolder = surfaceHolder;
-        this.gameView = gameView;
+    public MainRunThread(OnThreadRunListener listener, SurfaceHolder surfaceHolder) {
+        mListener = listener;
+        mSurfaceHolder = surfaceHolder;
     }
-
 
     public void setFlag(boolean flag) {//设置循环标记位
         this.flag = flag;
@@ -29,24 +26,33 @@ public class MainRunThread extends Thread {
         Canvas c;
 
         while (this.flag) {
+            if (mListener != null) {
+                mListener.onThreadTime();
+            }
             c = null;
             try {
                 if (flag2) {
                     // 锁定整个画布，在内存要求比较高的情况下，建议参数不要为null
-                    c = this.surfaceHolder.lockCanvas(null);
+                    c = mSurfaceHolder.lockCanvas(null);
 
-                    synchronized (this.surfaceHolder) {
-
-
-                        gameView.mDraw(c);
+                    synchronized (mSurfaceHolder) {
+                        if (mListener != null) {
+                            mListener.onDrawTime(c);
+                        }
                     }
                 }
             } finally {
                 if (c != null) {
                     //更新屏幕显示内容
-                    this.surfaceHolder.unlockCanvasAndPost(c);
+                    this.mSurfaceHolder.unlockCanvasAndPost(c);
                 }
             }
         }
+    }
+
+    public interface OnThreadRunListener {
+        void onThreadTime();
+
+        void onDrawTime(Canvas canvas);
     }
 }

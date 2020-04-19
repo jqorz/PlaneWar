@@ -29,7 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * 主游戏界面控制类
  */
-public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+public class GameView extends SurfaceView implements SurfaceHolder.Callback, MainRunThread.OnThreadRunListener {
 
 
     public BulletSupply mBulletSupply;//子弹补给
@@ -37,11 +37,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public BgEntity mBgEntity1, mBgEntity2;
     public HeroPlane heroPlane;
     public MainRunThread mMainRunThread;//刷帧的线程
-
     public CopyOnWriteArrayList<Bullet> mBullets = new CopyOnWriteArrayList<>();//子弹数组
     public CopyOnWriteArrayList<EnemyPlane> mEnemyPlanes = new CopyOnWriteArrayList<>();//敌军飞机数组
     public GamePlaying activity;
-
     public Paint mBgPaint = new Paint();
     public Paint mHeroPlanePaint = new Paint();
     public Paint mEmptyPlanePaint = new Paint();
@@ -50,10 +48,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean showEnemy = false;
     private SoundPool soundPool;//声音
     private HashMap<Integer, Integer> soundPoolMap;
-
     private StatusManager mStatusManager;
     private MoveManager mMoveManager;
     private DrawManager mDrawManager;
+    private Canvas c;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -66,14 +64,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-
     public void initGameView() {
         int screenHeight = DeviceTools.getScreenHeight();
         int screenWidth = DeviceTools.getScreenWidth();
 
         getHolder().addCallback(this);//注册接口
 
-        mMainRunThread = new MainRunThread(getHolder(), this);//初始化刷帧线程
+        mMainRunThread = new MainRunThread(this, getHolder());//初始化刷帧线程
 
         mBullets = new CopyOnWriteArrayList<>();
         mEnemyPlanes = new CopyOnWriteArrayList<>();
@@ -113,11 +110,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             float volume = streamVolumeCurrent / streamVolumeMax;
             soundPool.play(soundPoolMap.get(sound), volume, volume, 1, loop, 1f);
         }
-    }
-
-    public void mDraw(final Canvas canvas) {
-
-
     }
 
 
@@ -193,5 +185,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    @Override
+    public void onThreadTime() {
+        mMoveManager.moveEntity();
+        mStatusManager.checkStatus();
+    }
 
+    @Override
+    public void onDrawTime(Canvas canvas) {
+        mDrawManager.drawEntity(canvas);
+    }
 }
