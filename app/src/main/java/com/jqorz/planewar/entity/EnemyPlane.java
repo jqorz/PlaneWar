@@ -66,7 +66,7 @@ public class EnemyPlane extends BasePlane {
     public void reset() {
         setX(0);
         setY(-getHeight());
-        setStatus(PlaneStatus.STATUS_HIDE);
+        setStatus(PlaneStatus.STATUS_FLY);
     }
 
 

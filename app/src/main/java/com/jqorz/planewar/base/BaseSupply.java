@@ -36,7 +36,7 @@ public abstract class BaseSupply extends BaseEntityImp {
 
     public abstract void move();
 
-    public boolean getShown() {
+    public boolean isShown() {
         return isShown;
     }
 

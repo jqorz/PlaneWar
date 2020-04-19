@@ -21,22 +21,30 @@ public class MoveManager {
     public void moveEntity() {
 
         //移动子弹
-        for (Bullet b : gameView.mBullets) {
-            b.move();
+        for (Bullet bullet : gameView.mBullets) {
+            if (bullet.isShown()) {
+                bullet.move();
+            }
         }
 
         //移动敌军飞机
-        for (EnemyPlane ep : gameView.mEnemyPlanes) {
-            ep.move();
+        for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
+            if (enemyPlane.isShown()) {
+                enemyPlane.move();
+            }
         }
 
         //移动炸弹补给
         BombSupply bombSupply = gameView.mBombSupply;
-        bombSupply.move();
+        if (bombSupply.isShown()) {
+            bombSupply.move();
+        }
 
         //移动子弹补给
         BulletSupply bulletSupply = gameView.mBulletSupply;
-        bulletSupply.move();
+        if (bulletSupply.isShown()) {
+            bulletSupply.move();
+        }
 
         //移动背景
         BgEntity bgEntity1 = gameView.mBgEntity1;

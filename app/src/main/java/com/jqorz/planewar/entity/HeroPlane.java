@@ -8,6 +8,7 @@ import com.jqorz.planewar.eenum.BulletType;
 import com.jqorz.planewar.eenum.PlaneStatus;
 import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
+import com.jqorz.planewar.tools.DeviceTools;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
@@ -38,7 +39,10 @@ public class HeroPlane extends BasePlane {
     }
 
     private void reset() {
+        setX((DeviceTools.getScreenWidth() - getWidth()) / 2);
+        setY((DeviceTools.getScreenHeight() / 3 * 2 - getHeight()) / 2);
         setBulletType(BulletType.BULLET_RED);
+        setStatus(PlaneStatus.STATUS_FLY);
     }
 
     @Override

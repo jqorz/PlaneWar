@@ -1,11 +1,14 @@
 package com.jqorz.planewar.tools;
 
 import com.jqorz.planewar.base.BaseSupply;
+import com.jqorz.planewar.eenum.BulletType;
 import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.entity.GameView;
-import com.jqorz.planewar.tools.BitmapLoader;
+import com.jqorz.planewar.entity.HeroPlane;
 import com.jqorz.planewar.utils.ConstantUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MapCreator {
@@ -48,13 +51,60 @@ public class MapCreator {
         return new PlaneInfo(x, velocity, type);
     }
 
+    public static List<BulletInfo> getNewBulletPos(HeroPlane heroPlane) {
+
+        List<BulletInfo> infoList = new ArrayList<>();
+        int x = heroPlane.getX() + (int) ((heroPlane.getWidth() - BitmapLoader.bmp_bullet1.getWidth()) / 2.0);
+        int y = heroPlane.getY() - ConstantUtil.BULLET_SPAN / 2;
+
+
+        if (heroPlane.getBulletType() == BulletType.BULLET_RED) {
+            BulletInfo b1 = new BulletInfo(x, y, BulletType.BULLET_RED);
+            infoList.add(b1);
+
+        } else if (heroPlane.getBulletType() == BulletType.BULLET_BLUE) {
+            BulletInfo b1 = new BulletInfo(x, y - ConstantUtil.BULLET_SPAN, BulletType.BULLET_BLUE);
+            infoList.add(b1);
+
+            BulletInfo b2 = new BulletInfo(x - ConstantUtil.BULLET_SPAN, y, BulletType.BULLET_BLUE);
+            infoList.add(b2);
+
+            BulletInfo b3 = new BulletInfo(x + ConstantUtil.BULLET_SPAN, y, BulletType.BULLET_BLUE);
+            infoList.add(b3);
+        }
+        return infoList;
+    }
+
+    public static class BulletInfo {
+        private int x;
+        private int y;
+        private int type;
+
+        public BulletInfo(int x, int y, @BulletType int type) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public int getType() {
+            return type;
+        }
+    }
 
     public static class PlaneInfo {
         private int x;
         private int velocity;
         private int type;
 
-        public PlaneInfo(int x, int velocity, int type) {
+        public PlaneInfo(int x, int velocity, @PlaneType int type) {
             this.x = x;
             this.velocity = velocity;
             this.type = type;

@@ -1,8 +1,8 @@
 package com.jqorz.planewar.entity;
 
 import com.jqorz.planewar.base.BaseSupply;
-import com.jqorz.planewar.tools.MapCreator;
 import com.jqorz.planewar.tools.BitmapLoader;
+import com.jqorz.planewar.tools.MapCreator;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
@@ -19,6 +19,7 @@ public class BombSupply extends BaseSupply {
     public void reset() {
         setX(MapCreator.getNewSupplyPos(this));
         setY(-getHeight());
+        setShown(true);
     }
 
     @Override

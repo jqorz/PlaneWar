@@ -15,9 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.jqorz.planewar.eenum.PlaneType;
-import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.R;
+import com.jqorz.planewar.entity.GameView;
+import com.jqorz.planewar.tools.TimeTools;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 public class GamePlaying extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -29,8 +29,6 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     private int bombNum = 0;//玩家炸弹数量
     private boolean isSound = true;//是否播放声音
 
-    private long pauseTime = 0L;//记录暂停时间
-    private long resumeTime = 0L;//记录恢复时间
 
     private TextView tv_BombNum, tv_Score;
     private Switch swt_Sound, swt_Music;
@@ -46,7 +44,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
                     @Override
                     public void run() {
                         if (gameView != null) {
-                            gameView.mainThread.setFlag(false);
+                            gameView.mMainRunThread.setFlag(false);
                             gameView = null;
                         }
                         initFailView();//切换到FailView
@@ -139,25 +137,17 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     public void initPauseView() {
-        if (gameView.mainThread != null) {
-            gameView.mainThread.flag2 = false;
+        if (gameView.mMainRunThread != null) {
+            gameView.mMainRunThread.flag2 = false;
         }
     }
 
     private void initResumeView() {
-        if (gameView.mainThread != null) {
-            gameView.mainThread.flag2 = true;
+        if (gameView.mMainRunThread != null) {
+            gameView.mMainRunThread.flag2 = true;
         }
     }
 
-    public long getCurrentTime() {
-        long now = System.currentTimeMillis();
-        if (resumeTime - pauseTime >= 0) {
-            return now - (resumeTime - pauseTime);
-        } else {
-            return now;
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -167,7 +157,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
             } else {
                 isPause = false;
                 imgBtn_Pause.setBackground(getResources().getDrawable(R.drawable.game_pause_nor));
-                resumeTime = System.currentTimeMillis();
+                TimeTools.setResumeTime();
                 checkMusic();
                 lv_switchers.setVisibility(View.GONE);
                 initResumeView();
@@ -185,7 +175,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     private void setPause() {
         isPause = true;
         imgBtn_Pause.setBackground(getResources().getDrawable(R.drawable.game_resume_nor));
-        pauseTime = System.currentTimeMillis();
+        TimeTools.setPauseTime();
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
         }
@@ -257,7 +247,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         } else {
             isPause = false;
             imgBtn_Pause.setBackground(getResources().getDrawable(R.drawable.game_pause_nor));
-            resumeTime = System.currentTimeMillis();
+            TimeTools.setResumeTime();
             checkMusic();
             lv_switchers.setVisibility(View.GONE);
             initResumeView();

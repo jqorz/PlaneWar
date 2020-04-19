@@ -12,6 +12,8 @@ import com.jqorz.planewar.entity.EnemyPlane;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.entity.HeroPlane;
 import com.jqorz.planewar.tools.CollisionCheck;
+import com.jqorz.planewar.tools.DeviceTools;
+import com.jqorz.planewar.tools.MapCreator;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 import java.util.ArrayList;
@@ -21,14 +23,17 @@ import java.util.List;
  * @author j1997
  * @since 2020/4/12
  */
-public class StatusManager {
+public class StatusManager implements CheckManager.OnEntityChangeListener {
     private GameView gameView;
     private List<Bullet> deleteBullets = new ArrayList<>();
     private List<EnemyPlane> deleteEnemyPlanes = new ArrayList<>();
     private long lastGetBulletSupplyTime = 0L;
+    private CheckManager mCheckManager;
 
     public StatusManager(GameView gameView) {//构造器
         this.gameView = gameView;
+        mCheckManager = new CheckManager(gameView);
+        mCheckManager.setOnEntityChangeListener(this);
     }
 
     public void checkStatus() {
@@ -83,7 +88,7 @@ public class StatusManager {
         HeroPlane heroPlane = gameView.heroPlane;
         for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
 
-            if (enemyPlane.getY() > GameView.screenHeight) {
+            if (enemyPlane.getY() > DeviceTools.getScreenHeight()) {
                 enemyPlane.setStatus(PlaneStatus.STATUS_HIDE);
             } else if (enemyPlane.isShown() && heroPlane.isShown()) {
                 if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
@@ -108,9 +113,9 @@ public class StatusManager {
 
         //检查炸弹补给
         BombSupply bombSupply = gameView.mBombSupply;
-        if (bombSupply.getY() > GameView.screenHeight) {
+        if (bombSupply.getY() > DeviceTools.getScreenHeight()) {
             bombSupply.setShown(false);
-        } else if (bombSupply.getShown() && gameView.heroPlane.isShown()) {
+        } else if (bombSupply.isShown() && gameView.heroPlane.isShown()) {
             if (CollisionCheck.isCollision(heroPlane, bombSupply)) {
                 bombSupply.setShown(false);
                 Message msg = gameView.activity.myHandler.obtainMessage();
@@ -123,9 +128,9 @@ public class StatusManager {
         //检查子弹补给
         BulletSupply bulletSupply = gameView.mBulletSupply;
 
-        if (bulletSupply.getY() > GameView.screenHeight) {
+        if (bulletSupply.getY() > DeviceTools.getScreenHeight()) {
             bulletSupply.setShown(false);
-        } else if (bulletSupply.getShown() && gameView.heroPlane.isShown()) {
+        } else if (bulletSupply.isShown() && gameView.heroPlane.isShown()) {
 
             if (CollisionCheck.isCollision(heroPlane, bulletSupply)) {
                 lastGetBulletSupplyTime = System.currentTimeMillis();
@@ -140,12 +145,37 @@ public class StatusManager {
         }
 
         //检查背景
-        if (gameView.mBgEntity1.getY() > GameView.screenHeight) {
-            gameView.mBgEntity1.setY(gameView.mBgEntity2.getY() - GameView.screenHeight);
+        if (gameView.mBgEntity1.getY() > DeviceTools.getScreenHeight()) {
+            gameView.mBgEntity1.setY(gameView.mBgEntity2.getY() - DeviceTools.getScreenHeight());
         }
-        if (gameView.mBgEntity2.getY() > GameView.screenHeight) {
-            gameView.mBgEntity2.setY(gameView.mBgEntity1.getY() - GameView.screenHeight);
+        if (gameView.mBgEntity2.getY() > DeviceTools.getScreenHeight()) {
+            gameView.mBgEntity2.setY(gameView.mBgEntity1.getY() - DeviceTools.getScreenHeight());
         }
+
+    }
+
+    @Override
+    public void onNewEnemy(MapCreator.PlaneInfo planeInfo) {
+        EnemyPlane enemyPlane = new EnemyPlane(planeInfo.getType());
+        enemyPlane.setVelocity(planeInfo.getVelocity());
+        gameView.mEnemyPlanes.add(enemyPlane);
+    }
+
+    @Override
+    public void onNewBullet(MapCreator.BulletInfo bulletInfo) {
+        Bullet b1 = new Bullet(bulletInfo.getType());
+        b1.setXY(bulletInfo.getX(), bulletInfo.getY());
+        gameView.mBullets.add(b1);
+    }
+
+    @Override
+    public void onShowBulletSupply() {
+        gameView.mBulletSupply.setShown(true);
+    }
+
+    @Override
+    public void onShowBombSupply() {
+        gameView.mBombSupply.setShown(true);
 
     }
 }
