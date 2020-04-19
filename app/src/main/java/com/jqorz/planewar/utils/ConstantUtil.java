@@ -9,14 +9,6 @@ public class ConstantUtil {
     public static final int Enemy1_life = 1;//敌军飞机1的生命
     public static final int Enemy2_life = 3;//敌军飞机2的生命
     public static final int Enemy3_life = 6;//敌军飞机3的生命
-    /**
-     * 飞机状态
-     */
-    public static final int STATUS_HIDE = 0;//飞机默认状态
-    public static final int STATUS_FLY = 1;
-    public static final int STATUS_EXPLORE = 2;
-    public static final int STATUS_INJURE = 3;
-
 
     /**
      * 补给类型
@@ -26,22 +18,11 @@ public class ConstantUtil {
     public static final int SUPPLY_BOMB_INTERVAL_TIME = 35000;//炸弹补给间隔时间
 
     /**
-     * 子弹类型
-     */
-    public static final int BULLET_RED = 1;//子弹1
-    public static final int BULLET_BLUE = 2;//子弹2
-    /**
      * 子弹的参数
      */
     public final static int BULLET_TIME = 300;//子弹发射时间间隔
     public final static int BULLET_SPAN = 60;//子弹2的三角形坐标偏移量
-    /**
-     * 飞机类型
-     */
-    public static final int ENEMY_TYPE1 = 1;//敌军类型1
-    public static final int ENEMY_TYPE2 = 2;//敌军类型2
-    public static final int ENEMY_TYPE3 = 3;//敌军类型3
-    public static final int HERO_TYPE = 4;//英雄飞机类型
+
     /**
      * 敌军飞机参数
      */
@@ -71,7 +52,7 @@ public class ConstantUtil {
     public static final int BULLET_VELOCITY = 18;//子弹的飞行速度
     public static final int Bomb_Velocity = 10;//炸弹补给的飞行速度
     public static final int ChangeBullet_Velocity = 10;//子弹补给的飞行速度
-    public static final int Bg_Velocity = 10;//背景移动速度
+    public static final int Bg_Velocity = 4;//背景移动速度
     /**
      * 游戏状态 表示游戏结束
      */
@@ -79,9 +60,7 @@ public class ConstantUtil {
     /**
      * 线程休眠时长
      */
-    public static final int RUN_THREAD_SPAN = 100;
-    public static final int MOVE_THREAD_SPAN = 10;
-    public static final int EXPLORE_THREAD_SPAN = 67;
+    public static final int MAIN_THREAD_SPAN = 16;
 
     /**
      * 作弊码

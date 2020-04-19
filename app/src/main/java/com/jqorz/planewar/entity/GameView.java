@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Message;
-import android.transition.Explode;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -15,17 +14,16 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.jqorz.planewar.R;
+import com.jqorz.planewar.eenum.BulletType;
+import com.jqorz.planewar.eenum.PlaneStatus;
+import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.frame.GamePlaying;
-import com.jqorz.planewar.manager.MapManager;
-import com.jqorz.planewar.thread.ExplodeThread;
-import com.jqorz.planewar.thread.MoveThread;
-import com.jqorz.planewar.thread.RunThread;
-import com.jqorz.planewar.thread.TutorialThread;
+import com.jqorz.planewar.tools.MapCreator;
+import com.jqorz.planewar.thread.MainRunThread;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
 import com.jqorz.planewar.utils.Logg;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -37,14 +35,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public static int screenHeight, screenWidth;
 
-    public ChangeBullet changeBullet;//子弹补给
+    public BulletSupply mBulletSupply;//子弹补给
     public BombSupply mBombSupply;//炸弹补给
     public BgEntity mBgEntity1, mBgEntity2;
     public HeroPlane heroPlane;
-    public MoveThread moveThread;//移动物体的线程
-    public RunThread runThread;//飞机飞行动画的线程
-    public ExplodeThread explodeThread;//爆炸换帧的线程
-    public TutorialThread thread;//刷帧的线程
+    public MainRunThread mainThread;//刷帧的线程
     public int mEnemyId = 0; //初始化敌军ID
     public Long mSendTime = 0L; //上一颗子弹发射的时间
     public Long mEnemyTime = 0L; //上一次敌军出现的时间
@@ -53,8 +48,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public Long mBombTime = 0L; //计算炸弹补给出现的时间
     public Long mChangeBulletTime = 0L; //计算子弹补给出现的时间
     public CopyOnWriteArrayList<Bullet> mBullets = new CopyOnWriteArrayList<>();//子弹数组
-    public CopyOnWriteArrayList<EnemyPlane> mEnemy = new CopyOnWriteArrayList<>();//敌军飞机数组
-    GamePlaying activity;
+    public CopyOnWriteArrayList<EnemyPlane> mEnemyPlanes = new CopyOnWriteArrayList<>();//敌军飞机数组
+    public GamePlaying activity;
 
     private Paint mBgPaint = new Paint();
     private Paint mHeroPlanePaint = new Paint();
@@ -90,22 +85,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         getHolder().addCallback(this);//注册接口
 
-        this.thread = new TutorialThread(getHolder(), this);//初始化刷帧线程
-        this.runThread = new RunThread(this);//初始化飞行动画线程
-        this.moveThread = new MoveThread(this);//初始化物品及敌机飞行线程
-        this.explodeThread = new ExplodeThread(this);//初始化爆炸线程
+        this.mainThread = new MainRunThread(getHolder(), this);//初始化刷帧线程
 
 //        mBullet = new Bullet[ConstantUtil.BULLET_POOL_COUNT];
         mBullets = new CopyOnWriteArrayList<>();
 //        for (int i = 0; i < ConstantUtil.BULLET_POOL_COUNT; i++) {
 //            mBullet[i] = new Bullet(0, 0);
 //        }
-        mEnemy = new CopyOnWriteArrayList<>();
+        mEnemyPlanes = new CopyOnWriteArrayList<>();
         mTime = System.currentTimeMillis();
         mDifficultyTime = System.currentTimeMillis();
         mBombTime = System.currentTimeMillis();
         mChangeBulletTime = System.currentTimeMillis();
-        changeBullet = new ChangeBullet();//取子弹补给
+        mBulletSupply = new BulletSupply();//取子弹补给
         mBombSupply = new BombSupply(); //取炸弹补给
 
         mBgEntity1 = new BgEntity();
@@ -147,7 +139,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             mBgEntity2.draw(canvas, mBgPaint);
 
             //绘制玩家飞机
-            if (heroPlane.isLive()) {
+            if (heroPlane.isShown()) {
                 heroPlane.draw(canvas,mHeroPlanePaint);
             }
 
@@ -157,7 +149,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             //绘制子弹及敌机
             if (now - mTime >= ConstantUtil.FIRST_ENEMY_TIME) {
                 drawEnemy(canvas, now);
-                if (heroPlane.isLive()) {
+                if (heroPlane.isShown()) {
                     drawBullets(canvas, now);
                 }
             }
@@ -176,33 +168,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private void drawChangeBullet(Canvas canvas, long now) {
-        if (changeBullet.getStatus()) {
-            changeBullet.move();
+        if (mBulletSupply.getShown()) {
+            mBulletSupply.move();
         }
         //计算子弹补给时间
         if (now - mChangeBulletTime >= ConstantUtil.SUPPLY_BULLET_INTERVAL_TIME) {
-            changeBullet.setStatus(true);
+            mBulletSupply.setShown(true);
             mChangeBulletTime = now;
         }
 
 
-        if (changeBullet.getStatus()) {
-            changeBullet.draw(canvas,mSupplyPlanePaint);
+        if (mBulletSupply.getShown()) {
+            mBulletSupply.draw(canvas,mSupplyPlanePaint);
 
         }
     }
 
     private void drawBomb(Canvas canvas, long now) {
-        if (mBombSupply.getStatus()) {
+        if (mBombSupply.getShown()) {
             mBombSupply.move();
         }
         //计算炸弹补给时间
         if (now - mBombTime >= ConstantUtil.SUPPLY_BOMB_INTERVAL_TIME) {
-            mBombSupply.setStatus(true);
+            mBombSupply.setShown(true);
             mBombTime = now;
         }
         //绘制炸弹补给
-        if (mBombSupply.getStatus()) {
+        if (mBombSupply.getShown()) {
             mBombSupply.draw(canvas,mSupplyPlanePaint);
         }
 
@@ -231,7 +223,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private void drawEnemy(Canvas canvas, long now) {
 
         //移动敌军飞机
-        for (EnemyPlane ep : mEnemy) {
+        for (EnemyPlane ep : mEnemyPlanes) {
             ep.move();
         }
 
@@ -239,14 +231,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         //根据时间初始化敌军飞机
         if (mEnemyId < ConstantUtil.ENEMY_POOL_COUNT) {
             if (now - mEnemyTime >= ConstantUtil.ENEMY_TIME) {
-                MapManager.PlaneInfo info = MapManager.getNewEnemyPlaneInfo();
-                mEnemy[mEnemyId].setX(info.getX());
-                mEnemy[mEnemyId].setY(-500);
-                mEnemy[mEnemyId].setVelocity(info.getVelocity());
-                mEnemy[mEnemyId].setType(info.getType());
+                MapCreator.PlaneInfo info = MapCreator.getNewEnemyPlaneInfo();
+                mEnemyPlanes[mEnemyId].setX(info.getX());
+                mEnemyPlanes[mEnemyId].setY(-500);
+                mEnemyPlanes[mEnemyId].setVelocity(info.getVelocity());
+                mEnemyPlanes[mEnemyId].setType(info.getType());
 
                 mEnemyTime = now;
-                mEnemy[mEnemyId].setStatus(true);
+                mEnemyPlanes[mEnemyId].setStatus(true);
                 mEnemyId++;
             }
         } else {
@@ -254,8 +246,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //绘制状态正常的敌军飞机
-        for (EnemyPlane ep : mEnemy) {
-            if (ep.isLive()) {
+        for (EnemyPlane ep : mEnemyPlanes) {
+            if (ep.isShown()) {
                 ep.draw(canvas,mEmptyPlanePaint);
             }
         }
@@ -271,21 +263,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             int y = heroPlane.getY() - ConstantUtil.BULLET_SPAN / 2;
 
 
-            if (heroPlane.getBulletType() == ConstantUtil.BULLET_RED) {
-                Bullet b1 = new Bullet(ConstantUtil.BULLET_RED);
+            if (heroPlane.getBulletType() == BulletType.BULLET_RED) {
+                Bullet b1 = new Bullet(BulletType.BULLET_RED);
                 b1.setXY(x, y);
                 mBullets.add(b1);
 
-            } else if (heroPlane.getBulletType() == ConstantUtil.BULLET_BLUE) {
-                Bullet b1 = new Bullet(ConstantUtil.BULLET_BLUE);
+            } else if (heroPlane.getBulletType() == BulletType.BULLET_BLUE) {
+                Bullet b1 = new Bullet(BulletType.BULLET_BLUE);
                 b1.setXY(x, y - ConstantUtil.BULLET_SPAN);
                 mBullets.add(b1);
 
-                Bullet b2 = new Bullet(ConstantUtil.BULLET_BLUE);
+                Bullet b2 = new Bullet(BulletType.BULLET_BLUE);
                 b2.setXY(x - ConstantUtil.BULLET_SPAN, y);
                 mBullets.add(b2);
 
-                Bullet b3 = new Bullet(ConstantUtil.BULLET_BLUE);
+                Bullet b3 = new Bullet(BulletType.BULLET_BLUE);
                 b3.setXY(x + ConstantUtil.BULLET_SPAN, y);
                 mBullets.add(b3);
             }
@@ -314,20 +306,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setBomb() {
 
-        for (EnemyPlane ep : mEnemy) {
-            if (ep.isLive()) {
-                ep.setStatus(ConstantUtil.STATUS_EXPLORE);
+        for (EnemyPlane ep : mEnemyPlanes) {
+            if (ep.isShown()) {
+                ep.setStatus(PlaneStatus.STATUS_EXPLORE);
                 Message msg = activity.myHandler.obtainMessage();
                 switch (ep.getType()) {
-                    case ConstantUtil.ENEMY_TYPE1:
+                    case PlaneType.ENEMY_TYPE1:
                         playSound(2, 0);
                         msg.arg1 = ConstantUtil.ENEMY_TYPE1_SCORE;
                         break;
-                    case ConstantUtil.ENEMY_TYPE2:
+                    case PlaneType.ENEMY_TYPE2:
                         playSound(3, 0);
                         msg.arg1 = ConstantUtil.ENEMY_TYPE2_SCORE;
                         break;
-                    case ConstantUtil.ENEMY_TYPE3:
+                    case PlaneType.ENEMY_TYPE3:
                         playSound(4, 0);
                         msg.arg1 = ConstantUtil.ENEMY_TYPE3_SCORE;
                         break;
@@ -364,34 +356,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void surfaceCreated(SurfaceHolder holder) {//创建时启动相应进程
 
-        this.thread.setFlag(true);//启动刷帧线程
-        this.thread.start();
+        this.mainThread.setFlag(true);//启动刷帧线程
+        this.mainThread.start();
 
-        this.runThread.setFlag(true);//启动飞行动画效果线程
-        this.runThread.start();
-
-        this.moveThread.setFlag(true);
-        moveThread.start();//启动所有移动物的移动线程
-
-        this.explodeThread.setFlag(true);
-        explodeThread.start();//启动爆炸效果线程
 
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {//摧毁时释放相应进程
         boolean retry = true;
-        this.thread.setFlag(false);
-        this.moveThread.setFlag(false);
-        this.explodeThread.setFlag(false);
-        this.runThread.setFlag(false);
+        this.mainThread.setFlag(false);
 
         soundPool.release();
         while (retry) {
             try {
-                thread.join();
-                moveThread.join();
-                explodeThread.join();
-                runThread.join();
+                mainThread.join();
                 retry = false;
             } catch (InterruptedException e) {//不断地循环，直到刷帧线程结束
             }

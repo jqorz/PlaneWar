@@ -1,22 +1,22 @@
 package com.jqorz.planewar.entity;
 
 import com.jqorz.planewar.base.BaseSupply;
-import com.jqorz.planewar.manager.MapManager;
+import com.jqorz.planewar.tools.MapCreator;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
  * 该类为子弹补给类
  */
-public class ChangeBullet extends BaseSupply {
+public class BulletSupply extends BaseSupply {
 
-    ChangeBullet() {
+    BulletSupply() {
         super(BitmapLoader.bmp_bullet1);
     }
 
     @Override
     public void reset() {
-        setX(MapManager.getNewSupplyPos(this));
+        setX(MapCreator.getNewSupplyPos(this));
         setY(-getHeight());
     }
 

@@ -3,7 +3,7 @@ package com.jqorz.planewar.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.jqorz.planewar.anim.AnimationImpl;
+import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.base.BaseEntityImp;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;

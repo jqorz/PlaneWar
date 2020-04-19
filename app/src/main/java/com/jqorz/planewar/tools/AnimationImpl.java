@@ -1,4 +1,4 @@
-package com.jqorz.planewar.anim;
+package com.jqorz.planewar.tools;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -66,8 +66,6 @@ public class AnimationImpl {
     public Bitmap readBitmap(Context context, int resId) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
-        opt.inPurgeable = true;
-        opt.inInputShareable = true;
         // 获取资源图片
         InputStream is = context.getResources().openRawResource(resId);
         return BitmapFactory.decodeStream(is, null, opt);

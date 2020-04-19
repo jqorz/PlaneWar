@@ -8,14 +8,13 @@ import com.jqorz.planewar.entity.GameView;
 /**
  * 刷帧线程
  */
-public class TutorialThread extends Thread {
+public class MainRunThread extends Thread {
     public boolean flag2 = true;
-    int speed = 4;
-    private SurfaceHolder surfaceHolder;
+    private final SurfaceHolder surfaceHolder;
     private GameView gameView;
     private boolean flag = false;
 
-    public TutorialThread(SurfaceHolder surfaceHolder, GameView gameView) {
+    public MainRunThread(SurfaceHolder surfaceHolder, GameView gameView) {
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
     }
@@ -38,14 +37,7 @@ public class TutorialThread extends Thread {
 
                     synchronized (this.surfaceHolder) {
 
-                        gameView.bg1y += speed;
-                        gameView.bg2y += speed;
-                        if (gameView.bg1y > GameView.screenHeight) {
-                            gameView.bg1y = gameView.bg2y - GameView.screenHeight;
-                        }
-                        if (gameView.bg2y > GameView.screenHeight) {
-                            gameView.bg2y = gameView.bg1y - GameView.screenHeight;
-                        }
+
                         gameView.mDraw(c);
                     }
                 }

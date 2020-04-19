@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.jqorz.planewar.anim.AnimationImpl;
+import com.jqorz.planewar.tools.AnimationImpl;
 
 /**
  * @author j1997
@@ -12,7 +12,7 @@ import com.jqorz.planewar.anim.AnimationImpl;
  */
 public abstract class BaseSupply extends BaseEntityImp {
 
-    protected boolean status = false;//补给的状态
+    protected boolean isShown = false;//补给的状态
     protected AnimationImpl mAnimation;
     protected int mFrameId;
 
@@ -36,11 +36,11 @@ public abstract class BaseSupply extends BaseEntityImp {
 
     public abstract void move();
 
-    public boolean getStatus() {
-        return status;
+    public boolean getShown() {
+        return isShown;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setShown(boolean shown) {
+        this.isShown = shown;
     }
 }

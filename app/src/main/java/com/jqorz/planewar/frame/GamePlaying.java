@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.R;
 import com.jqorz.planewar.utils.ConstantUtil;
@@ -45,10 +46,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
                     @Override
                     public void run() {
                         if (gameView != null) {
-                            gameView.moveThread.setFlag(false);
-                            gameView.runThread.setFlag(false);
-                            gameView.explodeThread.setFlag(false);
-                            gameView.thread.setFlag(false);
+                            gameView.mainThread.setFlag(false);
                             gameView = null;
                         }
                         initFailView();//切换到FailView
@@ -141,14 +139,14 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     public void initPauseView() {
-        if (gameView.thread != null) {
-            gameView.thread.flag2 = false;
+        if (gameView.mainThread != null) {
+            gameView.mainThread.flag2 = false;
         }
     }
 
     private void initResumeView() {
-        if (gameView.thread != null) {
-            gameView.thread.flag2 = true;
+        if (gameView.mainThread != null) {
+            gameView.mainThread.flag2 = true;
         }
     }
 

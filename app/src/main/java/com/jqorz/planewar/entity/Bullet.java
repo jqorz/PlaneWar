@@ -2,10 +2,11 @@ package com.jqorz.planewar.entity;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.IntDef;
 
-import com.jqorz.planewar.anim.AnimationImpl;
+import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.base.BaseEntityImp;
+import com.jqorz.planewar.eenum.BulletType;
+import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
@@ -16,9 +17,10 @@ import com.jqorz.planewar.utils.ConstantUtil;
 public class Bullet extends BaseEntityImp {
     protected AnimationImpl mAnimation;
     protected int mFrameId;
+    protected boolean isShown = false;//补给的状态
 
     public Bullet(@BulletType int type) {
-        super(type == ConstantUtil.BULLET_RED ? GameView.bmp_bullet1 : GameView.bmp_bullet2);
+        super(type == BulletType.BULLET_RED ? BitmapLoader.bmp_bullet1 : BitmapLoader.bmp_bullet2);
     }
 
     @Override
@@ -31,13 +33,16 @@ public class Bullet extends BaseEntityImp {
         mAnimation.drawFrame(canvas, paint, x, y, mFrameId);
     }
 
+    public boolean isShown() {
+        return isShown;
+    }
+
+    public void setShown(boolean shown) {
+        this.isShown = shown;
+    }
 
     public void move() {
         this.y = this.y - ConstantUtil.BULLET_VELOCITY;
     }
 
-    @IntDef({ConstantUtil.BULLET_RED, ConstantUtil.BULLET_BLUE})
-    public @interface BulletType {
-
-    }
 }
