@@ -1,6 +1,5 @@
 package com.jqorz.planewar.thread;
 
-import com.jqorz.planewar.entity.Explode;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.utils.ConstantUtil;
 

@@ -22,6 +22,8 @@ public abstract class BaseEntityImp implements IEntity {
         this.mBitmaps = bitmaps;
     }
 
+    public abstract void init();
+
     public abstract void draw(Canvas canvas, Paint paint);
 
     private Bitmap getDefaultBitmap() {

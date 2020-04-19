@@ -36,7 +36,7 @@ public class MoveThread extends Thread {
                         deleteBullets.add(b);
                     } else {
                         for (EnemyPlane ep : gameView.mEnemy) {
-                            if (ep.getStatus() && ep.getBitmap() != null) {
+                            if (ep.isLive() && ep.getBitmap() != null) {
                                 if (ep.contain(b, gameView)) {//打中敌机
                                     deleteBullets.add(b);
                                 }
@@ -54,7 +54,7 @@ public class MoveThread extends Thread {
 
                 if (ep.getY() > GameView.screenHeight) {
                     ep.setStatus(false);
-                } else if (ep.getStatus() && gameView.heroPlane.getStatus() && gameView.heroPlane.getBitmap() != null) {
+                } else if (ep.isLive() && gameView.heroPlane.isLive() && gameView.heroPlane.getBitmap() != null) {
                     if (gameView.heroPlane.contain(ep, gameView)) {
                         if (ep.getLife() <= 0) {
                             ep.setStatus(false);
@@ -71,7 +71,7 @@ public class MoveThread extends Thread {
             if (b.getY() > GameView.screenHeight) {
                 b.setStatus(false);
                 b.reset();
-            } else if (b.getStatus() && gameView.heroPlane.getStatus() && gameView.heroPlane.getBitmap() != null) {
+            } else if (b.getStatus() && gameView.heroPlane.isLive() && gameView.heroPlane.getBitmap() != null) {
                 if (gameView.heroPlane.contain(b, gameView)) {
                     b.setStatus(false);
                     b.reset();
@@ -87,7 +87,7 @@ public class MoveThread extends Thread {
             if (cb.getY() > GameView.screenHeight) {
                 cb.setStatus(false);
                 cb.reset();
-            } else if (cb.getStatus() && gameView.heroPlane.getStatus() && gameView.heroPlane.getBitmap() != null) {
+            } else if (cb.getStatus() && gameView.heroPlane.isLive() && gameView.heroPlane.getBitmap() != null) {
                 if (gameView.heroPlane.contain(cb)) {
                     cb.setStatus(false);
                     cb.reset();

@@ -2,37 +2,36 @@ package com.jqorz.planewar.base;
 
 import android.graphics.Bitmap;
 
+import com.jqorz.planewar.anim.AnimationImpl;
+import com.jqorz.planewar.utils.ConstantUtil;
+
 /**
- *
  * @author j1997
  * @since 2020/4/7
  */
 public abstract class BasePlane extends BaseEntityImp {
-    protected boolean status = false;//补给的状态
+    protected int status = ConstantUtil.STATUS_HIDE;
     protected int life;//生命
-
-    public BasePlane(Bitmap defaultBitmap) {
-        super(defaultBitmap);
-    }
+    protected AnimationImpl mFlyAnimation;
+    protected AnimationImpl mExploreAnimation;
+    protected AnimationImpl mInjureAnimation;
+    protected int mFlyFrameId;
+    protected int mExploreFrameId;
+    protected int mInjureFrameId;
 
     public BasePlane(Bitmap[] bitmaps) {
         super(bitmaps);
     }
 
-    public int getLife() {
-        return life;
+    public abstract int getLife();
+
+    protected abstract void initLife();
+
+    public boolean isLive() {
+        return status == ConstantUtil.STATUS_FLY;
     }
 
-    public void setLife(int life) {
-        this.life = life;
-    }
-
-
-    public boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

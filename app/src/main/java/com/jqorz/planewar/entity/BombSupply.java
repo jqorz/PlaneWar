@@ -1,9 +1,8 @@
 package com.jqorz.planewar.entity;
 
-import android.graphics.Bitmap;
-
 import com.jqorz.planewar.base.BaseSupply;
 import com.jqorz.planewar.manager.MapManager;
+import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
@@ -12,8 +11,8 @@ import com.jqorz.planewar.utils.ConstantUtil;
 public class BombSupply extends BaseSupply {
 
 
-    BombSupply(Bitmap defaultBitmap) {
-        super(defaultBitmap);
+    BombSupply() {
+        super(BitmapLoader.bmp_Bomb);
     }
 
     @Override

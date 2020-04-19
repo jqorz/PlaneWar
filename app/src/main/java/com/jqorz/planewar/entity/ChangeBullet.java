@@ -1,9 +1,8 @@
 package com.jqorz.planewar.entity;
 
-import android.graphics.Bitmap;
-
 import com.jqorz.planewar.base.BaseSupply;
 import com.jqorz.planewar.manager.MapManager;
+import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 /**
@@ -11,8 +10,8 @@ import com.jqorz.planewar.utils.ConstantUtil;
  */
 public class ChangeBullet extends BaseSupply {
 
-    ChangeBullet(Bitmap defaultBitmap) {
-        super(defaultBitmap);
+    ChangeBullet() {
+        super(BitmapLoader.bmp_bullet1);
     }
 
     @Override

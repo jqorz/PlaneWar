@@ -17,6 +17,9 @@ public class AnimationImpl {
     private Bitmap[] mFrameBitmap;
     private boolean mIsLoop;
 
+    public AnimationImpl(Bitmap frameBitmap, boolean isLoop) {
+        this(new Bitmap[]{frameBitmap}, isLoop);
+    }
 
     public AnimationImpl(Bitmap[] frameBitmap, boolean isLoop) {
         mFrameCount = frameBitmap.length;

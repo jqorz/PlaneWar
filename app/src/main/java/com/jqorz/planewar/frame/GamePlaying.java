@@ -113,14 +113,14 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     private void initView() {
-        lv_switchers = (LinearLayout) findViewById(R.id.lv_switchers);
-        gameView = (GameView) findViewById(R.id.mSurfaceView);
-        tv_BombNum = (TextView) findViewById(R.id.tv_BombNum);
-        tv_Score = (TextView) findViewById(R.id.tv_Score);
-        swt_Sound = (Switch) findViewById(R.id.swt_Sound);
-        swt_Music = (Switch) findViewById(R.id.swt_Music);
-        imgBtn_Pause = (ImageButton) findViewById(R.id.imgBtn_Pause);
-        lv_Bomb = (LinearLayout) findViewById(R.id.lv_Bomb);
+        lv_switchers = findViewById(R.id.lv_switchers);
+        gameView = findViewById(R.id.mSurfaceView);
+        tv_BombNum = findViewById(R.id.tv_BombNum);
+        tv_Score = findViewById(R.id.tv_Score);
+        swt_Sound = findViewById(R.id.swt_Sound);
+        swt_Music = findViewById(R.id.swt_Music);
+        imgBtn_Pause = findViewById(R.id.imgBtn_Pause);
+        lv_Bomb = findViewById(R.id.lv_Bomb);
     }
 
     private void initEvent() {

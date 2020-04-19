@@ -18,6 +18,10 @@ public abstract class BaseSupply extends BaseEntityImp {
 
     public BaseSupply(Bitmap defaultBitmap) {
         super(defaultBitmap);
+    }
+
+    @Override
+    public void init() {
         mAnimation = new AnimationImpl(getBitmaps(), false);
         mFrameId = 0;
         reset();

@@ -5,10 +5,19 @@ public class ConstantUtil {
     /**
      * 飞机生命值
      */
-    public static final int life = 1;//玩家飞机的生命
+    public static final int Hero_life = 1;//玩家飞机的生命
     public static final int Enemy1_life = 1;//敌军飞机1的生命
     public static final int Enemy2_life = 3;//敌军飞机2的生命
     public static final int Enemy3_life = 6;//敌军飞机3的生命
+    /**
+     * 飞机状态
+     */
+    public static final int STATUS_HIDE = 0;//飞机默认状态
+    public static final int STATUS_FLY = 1;
+    public static final int STATUS_EXPLORE = 2;
+    public static final int STATUS_INJURE = 3;
+
+
     /**
      * 补给类型
      */
@@ -50,8 +59,6 @@ public class ConstantUtil {
     public static final int ENEMY_VELOCITY_MAX2 = 12;//敌军飞机2的最大飞行速度
     public static final int ENEMY_VELOCITY_AND_TIME = 40000;//敌军飞机的飞行速度的递增时间及敌军飞机出现时间的减少时间
 
-
-
     /**
      * 敌军飞机分数
      */
@@ -64,6 +71,7 @@ public class ConstantUtil {
     public static final int BULLET_VELOCITY = 18;//子弹的飞行速度
     public static final int Bomb_Velocity = 10;//炸弹补给的飞行速度
     public static final int ChangeBullet_Velocity = 10;//子弹补给的飞行速度
+    public static final int Bg_Velocity = 10;//背景移动速度
     /**
      * 游戏状态 表示游戏结束
      */
