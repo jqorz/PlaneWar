@@ -26,8 +26,8 @@ public class TimeManager {
         this.mStatusManager = statusManager;
     }
 
-    public void setTimeToNow() {
-        long time = System.currentTimeMillis();
+    public void initTime() {
+        long time = TimeTools.getCurrentTime();
         mTime = time;
         mDifficultyTime = time;
         mBombTime = time;
@@ -35,7 +35,7 @@ public class TimeManager {
     }
 
     public void onGetBulletSupply() {
-        lastGetBulletSupplyTime = System.currentTimeMillis();
+        lastGetBulletSupplyTime = TimeTools.getCurrentTime();
     }
 
     public void checkNew() {

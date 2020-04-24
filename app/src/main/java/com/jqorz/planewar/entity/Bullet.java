@@ -20,11 +20,12 @@ public class Bullet extends BaseEntityImp {
 
     public Bullet(@BulletType int type) {
         super(type == BulletType.BULLET_RED ? BitmapLoader.bmp_bullet1 : BitmapLoader.bmp_bullet2);
+        init();
     }
 
     @Override
     public void init() {
-        mAnimation = new AnimationImpl(getBitmaps(), false);
+        mAnimation = new AnimationImpl(getBitmaps(), true);
     }
 
     @Override

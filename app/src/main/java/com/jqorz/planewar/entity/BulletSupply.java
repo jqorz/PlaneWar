@@ -11,7 +11,8 @@ import com.jqorz.planewar.utils.ConstantUtil;
 public class BulletSupply extends BaseSupply {
 
     BulletSupply() {
-        super(BitmapLoader.bmp_bullet1);
+        super(BitmapLoader.bmp_bulletSupply);
+        init();
     }
 
     @Override

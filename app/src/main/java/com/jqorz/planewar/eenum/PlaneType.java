@@ -13,5 +13,4 @@ public @interface PlaneType {
     int ENEMY_TYPE1 = 1;//敌军类型1
     int ENEMY_TYPE2 = 2;//敌军类型2
     int ENEMY_TYPE3 = 3;//敌军类型3
-    int HERO_TYPE = 4;//英雄飞机类型
 }

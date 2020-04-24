@@ -12,7 +12,8 @@ public class BombSupply extends BaseSupply {
 
 
     BombSupply() {
-        super(BitmapLoader.bmp_Bomb);
+        super(BitmapLoader.bmp_bombSupply);
+        init();
     }
 
     @Override

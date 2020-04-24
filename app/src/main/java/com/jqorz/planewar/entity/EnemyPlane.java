@@ -9,6 +9,7 @@ import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.utils.Logg;
 
 /**
  * 该类为敌机类
@@ -21,6 +22,7 @@ public class EnemyPlane extends BasePlane {
     public EnemyPlane(@PlaneType int type) {
         super(type == PlaneType.ENEMY_TYPE1 ? BitmapLoader.bmps_enemyPlane1 : type == PlaneType.ENEMY_TYPE2 ? BitmapLoader.bmps_enemyPlane2 : BitmapLoader.bmps_enemyPlane3);
         setType(type);
+        init();
     }
 
     @Override
@@ -35,22 +37,23 @@ public class EnemyPlane extends BasePlane {
         switch (type) {
             case PlaneType.ENEMY_TYPE1:
                 mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_enemyPlane1_explode, false);
-                mInjureAnimation = new AnimationImpl(getBitmaps(), false);
+                mInjureAnimation = new AnimationImpl(getBitmaps(), true);
                 break;
             case PlaneType.ENEMY_TYPE2:
                 mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_enemyPlane2_explode, false);
-                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane2_injured, false);
+                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane2_injured, true);
                 break;
             case PlaneType.ENEMY_TYPE3:
                 mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_enemyPlane3_explode, false);
-                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane3_injured, false);
+                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane3_injured, true);
                 break;
         }
     }
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        getStatusAnim().drawAnimation(canvas, paint, x, y);
+        Logg.i(TAG, toString());
+        getStatusAnim(status).drawAnimation(canvas, paint, x, y);
     }
 
     public void reset() {
@@ -92,8 +95,8 @@ public class EnemyPlane extends BasePlane {
         int lastStatus = getStatus();
         super.setStatus(status);
         if (status != lastStatus) {
-            pauseAllAnim();
-            getStatusAnim().resume();
+            getStatusAnim(lastStatus).pause();
+            getStatusAnim(status).resume();
         }
     }
 
@@ -101,5 +104,17 @@ public class EnemyPlane extends BasePlane {
         this.y = this.y + velocity;
     }
 
+    @Override
+    public String toString() {
+        return "EnemyPlane{" +
+                "type=" + type +
+                ", status=" + status +
+                ", life=" + life +
+                '}';
+    }
 
+
+    public boolean isExploreEnd() {
+        return isExplore() && getStatusAnim(PlaneStatus.STATUS_EXPLORE).isEnd;
+    }
 }

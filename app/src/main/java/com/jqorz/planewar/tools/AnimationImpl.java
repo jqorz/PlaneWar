@@ -12,6 +12,7 @@ import java.io.InputStream;
 public class AnimationImpl {
 
     public boolean isEnd = false;
+    public boolean isPause = false;
     private int mPlayID = 0;
     private int mFrameCount;
     private Bitmap[] mFrameBitmap;
@@ -25,20 +26,22 @@ public class AnimationImpl {
         mFrameCount = frameBitmap.length;
         mFrameBitmap = frameBitmap;
         mIsLoop = isLoop;
+        reset();
     }
 
     //重置动画
     public void reset() {
         mPlayID = 0;
         isEnd = false;
+        isPause = false;
     }
 
     public void pause() {
-        isEnd = true;
+        isPause = true;
     }
 
     public void resume() {
-        isEnd = false;
+        isPause = false;
     }
 
     /**
@@ -53,7 +56,7 @@ public class AnimationImpl {
      * 绘制动画
      */
     public void drawAnimation(Canvas canvas, Paint paint, int x, int y) {
-        if (!isEnd) {
+        if (!isEnd && !isPause) {
             canvas.drawBitmap(mFrameBitmap[mPlayID], x, y, paint);
             mPlayID++;
             if (mPlayID >= mFrameCount) {
@@ -66,6 +69,10 @@ public class AnimationImpl {
                 }
             }
         }
+    }
+
+    public boolean isEnd() {
+        return isEnd;
     }
 
     /**

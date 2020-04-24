@@ -20,6 +20,7 @@ public class HeroPlane extends BasePlane {
 
     public HeroPlane() {
         super(BitmapLoader.bmps_heroPlane);
+        init();
     }
 
     public int getBulletType() {
@@ -40,20 +41,20 @@ public class HeroPlane extends BasePlane {
 
     private void reset() {
         setX((DeviceTools.getScreenWidth() - getWidth()) / 2);
-        setY((DeviceTools.getScreenHeight() / 3 * 2 - getHeight()) / 2);
+        setY((DeviceTools.getScreenHeight() / 3 * 2 - getHeight() / 2));
         setBulletType(BulletType.BULLET_RED);
         setStatus(PlaneStatus.STATUS_FLY);
     }
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        getStatusAnim().drawAnimation(canvas, paint, x, y);
+        getStatusAnim(status).drawAnimation(canvas, paint, x, y);
     }
 
     private void initAnimation() {
         mFlyAnimation = new AnimationImpl(getBitmaps(), true);
         mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_hero_explode, false);
-        mInjureAnimation = new AnimationImpl(getBitmaps(), false);
+        mInjureAnimation = new AnimationImpl(getBitmaps(), true);
     }
 
 
@@ -87,8 +88,8 @@ public class HeroPlane extends BasePlane {
         int lastStatus = getStatus();
         super.setStatus(status);
         if (status != lastStatus) {
-            pauseAllAnim();
-            getStatusAnim().resume();
+            getStatusAnim(lastStatus).pause();
+            getStatusAnim(status).resume();
         }
     }
 
@@ -100,6 +101,10 @@ public class HeroPlane extends BasePlane {
     @Override
     public void move() {
 
+    }
+
+    public boolean isExploreEnd() {
+        return isExplore() && getStatusAnim(PlaneStatus.STATUS_EXPLORE).isEnd;
     }
 }
 

@@ -12,7 +12,7 @@ import com.jqorz.planewar.tools.DeviceTools;
  * @since 2020/4/7
  */
 public abstract class BaseEntityImp implements IEntity {
-
+    protected String TAG = getClass().getSimpleName();
     protected int x;
     protected int y;
     protected Bitmap[] mBitmaps;
@@ -23,7 +23,6 @@ public abstract class BaseEntityImp implements IEntity {
 
     public BaseEntityImp(Bitmap[] bitmaps) {
         this.mBitmaps = bitmaps;
-        init();
     }
 
     public abstract void init();
@@ -88,5 +87,13 @@ public abstract class BaseEntityImp implements IEntity {
         } else {
             return getY() < -getHeight();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "BaseEntityImp{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

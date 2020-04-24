@@ -58,7 +58,7 @@ public abstract class BasePlane extends BaseEntityImp {
         this.status = status;
     }
 
-    protected AnimationImpl getStatusAnim() {
+    protected AnimationImpl getStatusAnim(int status) {
         switch (status) {
             case PlaneStatus.STATUS_EXPLORE:
                 return mExploreAnimation;
@@ -69,11 +69,6 @@ public abstract class BasePlane extends BaseEntityImp {
         }
     }
 
-    protected void pauseAllAnim() {
-        mExploreAnimation.pause();
-        mInjureAnimation.pause();
-        mFlyAnimation.pause();
-    }
 
     public abstract void move();
 }

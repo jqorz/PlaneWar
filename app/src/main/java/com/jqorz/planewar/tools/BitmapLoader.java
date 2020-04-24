@@ -24,8 +24,8 @@ public class BitmapLoader {
     public static Bitmap[] bmps_enemyPlane3 = new Bitmap[2];//敌机3飞行的数组
     public static Bitmap[] bmps_heroPlane = new Bitmap[2];//英雄飞机飞行的数组
 
-    public static Bitmap bmp_changeBullet;//子弹补给的图片
-    public static Bitmap bmp_Bomb;//炸弹补给的图片
+    public static Bitmap bmp_bulletSupply;//子弹补给的图片
+    public static Bitmap bmp_bombSupply;//炸弹补给的图片
     public static Bitmap bmp_bullet1;
     public static Bitmap bmp_bullet2;
 
@@ -40,8 +40,8 @@ public class BitmapLoader {
         bmps_enemyPlane3[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_enemy3_run1);//敌机3的图片1
         bmps_enemyPlane3[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_enemy3_run2);//敌机3的图片2
 
-        bmp_Bomb = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_supply_bomb);
-        bmp_changeBullet = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_supply_bullet);
+        bmp_bombSupply = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_supply_bomb);
+        bmp_bulletSupply = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_supply_bullet);
 
         bmp_bullet1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_bullet_red);
         bmp_bullet2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.playing_bullet_blue);

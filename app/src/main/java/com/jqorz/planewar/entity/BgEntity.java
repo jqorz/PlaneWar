@@ -7,7 +7,6 @@ import com.jqorz.planewar.base.BaseEntityImp;
 import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
-import com.jqorz.planewar.utils.Logg;
 
 /**
  * @author j1997
@@ -18,11 +17,12 @@ public class BgEntity extends BaseEntityImp {
 
     public BgEntity() {
         super(BitmapLoader.background);
+        init();
     }
 
     @Override
     public void init() {
-        mAnimation = new AnimationImpl(getBitmaps(), false);
+        mAnimation = new AnimationImpl(getBitmaps(), true);
     }
 
     @Override
