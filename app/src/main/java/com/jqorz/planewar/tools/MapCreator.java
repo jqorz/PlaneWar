@@ -14,7 +14,7 @@ import java.util.Random;
 public class MapCreator {
 
     public static int getNewSupplyPos(BaseSupply supply) {
-        return new Random().nextInt(GameView.screenWidth - supply.getWidth());
+        return new Random().nextInt(DeviceTools.getScreenWidth() - supply.getWidth());
     }
 
     public static PlaneInfo getNewEnemyPlaneInfo() {
@@ -42,11 +42,11 @@ public class MapCreator {
         }
 
         if (type == PlaneType.ENEMY_TYPE1) {
-            x = ra1.nextInt(GameView.screenWidth - BitmapLoader.bmps_enemyPlane1[0].getWidth());
+            x = ra1.nextInt(DeviceTools.getScreenWidth() - BitmapLoader.bmps_enemyPlane1[0].getWidth());
         } else if (type == PlaneType.ENEMY_TYPE2) {
-            x = ra1.nextInt(GameView.screenWidth - BitmapLoader.bmps_enemyPlane2[0].getWidth());
+            x = ra1.nextInt(DeviceTools.getScreenWidth() - BitmapLoader.bmps_enemyPlane2[0].getWidth());
         } else {
-            x = ra1.nextInt(GameView.screenWidth - BitmapLoader.bmps_enemyPlane3[0].getWidth());
+            x = ra1.nextInt(DeviceTools.getScreenWidth() - BitmapLoader.bmps_enemyPlane3[0].getWidth());
         }
         return new PlaneInfo(x, velocity, type);
     }

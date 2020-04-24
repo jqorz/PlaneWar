@@ -14,7 +14,6 @@ public abstract class BaseSupply extends BaseEntityImp {
 
     protected boolean isShown = false;//补给的状态
     protected AnimationImpl mAnimation;
-    protected int mFrameId;
 
     public BaseSupply(Bitmap defaultBitmap) {
         super(defaultBitmap);
@@ -23,13 +22,12 @@ public abstract class BaseSupply extends BaseEntityImp {
     @Override
     public void init() {
         mAnimation = new AnimationImpl(getBitmaps(), false);
-        mFrameId = 0;
         reset();
     }
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        mAnimation.drawFrame(canvas, paint, x, y, mFrameId);
+        mAnimation.drawAnimation(canvas, paint, x, y);
     }
 
     public abstract void reset();

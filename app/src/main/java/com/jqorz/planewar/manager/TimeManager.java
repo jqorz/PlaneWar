@@ -1,7 +1,5 @@
 package com.jqorz.planewar.manager;
 
-import com.jqorz.planewar.entity.Bullet;
-import com.jqorz.planewar.entity.EnemyPlane;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.tools.MapCreator;
 import com.jqorz.planewar.tools.TimeTools;
@@ -11,21 +9,24 @@ import com.jqorz.planewar.utils.ConstantUtil;
  * @author j1997
  * @since 2020/4/19
  */
-public class CheckManager {
-    public long mSendTime = 0L; //上一颗子弹发射的时间
-    public long mEnemyTime = 0L; //上一次敌军出现的时间
-    public long mTime = 0L; //计算敌机出现,,用的基准时间
-    public long mDifficultyTime = 0L; //计算难度用的时间
-    public long mBombTime = 0L; //计算炸弹补给出现的时间
-    public long mChangeBulletTime = 0L; //计算子弹补给出现的时间
+public class TimeManager {
+    private long mSendTime = 0L; //上一颗子弹发射的时间
+    private long mEnemyTime = 0L; //上一次敌军出现的时间
+    private long mTime = 0L; //计算敌机出现用的基准时间
+    private long mDifficultyTime = 0L; //计算难度用的时间
+    private long mBombTime = 0L; //计算炸弹补给出现的时间
+    private long mChangeBulletTime = 0L; //计算子弹补给出现的时间
+    private long lastGetBulletSupplyTime = 0L;
     private GameView gameView;
     private OnEntityChangeListener mOnEntityChangeListener;
+    private StatusManager mStatusManager;
 
-    public CheckManager(GameView gameView) {//构造器
+    public TimeManager(GameView gameView, StatusManager statusManager) {//构造器
         this.gameView = gameView;
+        this.mStatusManager = statusManager;
     }
 
-    private void initTime() {
+    public void setTimeToNow() {
         long time = System.currentTimeMillis();
         mTime = time;
         mDifficultyTime = time;
@@ -33,19 +34,27 @@ public class CheckManager {
         mChangeBulletTime = time;
     }
 
+    public void onGetBulletSupply() {
+        lastGetBulletSupplyTime = System.currentTimeMillis();
+    }
+
     public void checkNew() {
-        if (mOnEntityChangeListener==null){
+        if (mOnEntityChangeListener == null) {
             return;
         }
         long now = TimeTools.getCurrentTime();
 
         //检查是否应该显示敌人
-        if (now - mTime >= ConstantUtil.FIRST_ENEMY_TIME) {
-            gameView.showEnemy = true;
+        if (now - mTime >= ConstantUtil.FIRST_ENEMY_TIME && !mStatusManager.showEnemy) {
+            mOnEntityChangeListener.onFirstShowEnemy();
+        }
+
+        if (!mStatusManager.showHero) {
+            mOnEntityChangeListener.onFirstShowHero();
         }
 
         //检查是否应该显示新敌人
-        if (gameView.showEnemy && now - mEnemyTime >= ConstantUtil.ENEMY_TIME) {
+        if (mStatusManager.showEnemy && now - mEnemyTime >= ConstantUtil.ENEMY_TIME) {
             MapCreator.PlaneInfo info = MapCreator.getNewEnemyPlaneInfo();
             mOnEntityChangeListener.onNewEnemy(info);
             mEnemyTime = now;
@@ -65,16 +74,18 @@ public class CheckManager {
 
         //计算上次发送子弹的时间
         if (now - mSendTime >= ConstantUtil.BULLET_TIME) {
-            for (MapCreator.BulletInfo info:MapCreator.getNewBulletPos(gameView.heroPlane)) {
+            for (MapCreator.BulletInfo info : MapCreator.getNewBulletPos(gameView.heroPlane)) {
                 mOnEntityChangeListener.onNewBullet(info);
             }
             mSendTime = now;
         }
+
+        //检查子弹补给的持续时间
+        if (now - lastGetBulletSupplyTime > ConstantUtil.SUPPLY_BULLET_LONG_TIME) {
+            mOnEntityChangeListener.onBulletSupplyEnd();
+        }
     }
 
-    public void checkOutOfRange() {
-
-    }
 
     private void addDifficulty(long now) {
         if (now - mDifficultyTime > ConstantUtil.ENEMY_VELOCITY_AND_TIME) {//每隔一段时间
@@ -106,5 +117,11 @@ public class CheckManager {
         void onShowBulletSupply();
 
         void onShowBombSupply();
+
+        void onFirstShowEnemy();
+
+        void onFirstShowHero();
+
+        void onBulletSupplyEnd();
     }
 }

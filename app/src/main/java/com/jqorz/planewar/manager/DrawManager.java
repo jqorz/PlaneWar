@@ -24,7 +24,7 @@ public class DrawManager {
         gameView.mBgEntity2.draw(canvas, gameView.mBgPaint);
 
         //绘制玩家飞机
-        if (gameView.heroPlane.isShown()) {
+        if (gameView.heroPlane.isLive()) {
             gameView.heroPlane.draw(canvas, gameView.mHeroPlanePaint);
         }
 
@@ -38,13 +38,9 @@ public class DrawManager {
             gameView.mBulletSupply.draw(canvas, gameView.mSupplyPlanePaint);
         }
 
-        if (!gameView.showEnemy) {
-            return;
-        }
-
         //绘制状态正常的敌军飞机
         for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
-            if (enemyPlane.isShown()) {
+            if (enemyPlane.isLive()) {
                 enemyPlane.draw(canvas, gameView.mEmptyPlanePaint);
             }
         }

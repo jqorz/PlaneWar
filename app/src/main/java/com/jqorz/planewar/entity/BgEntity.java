@@ -3,8 +3,8 @@ package com.jqorz.planewar.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.base.BaseEntityImp;
+import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
 
@@ -14,7 +14,6 @@ import com.jqorz.planewar.utils.ConstantUtil;
  */
 public class BgEntity extends BaseEntityImp {
     protected AnimationImpl mAnimation;
-    private int mFrameId;
 
     public BgEntity() {
         super(BitmapLoader.background);
@@ -27,7 +26,7 @@ public class BgEntity extends BaseEntityImp {
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        mAnimation.drawFrame(canvas, paint, x, y, mFrameId);
+        mAnimation.drawAnimation(canvas, paint, x, y);
     }
 
     public void move() {

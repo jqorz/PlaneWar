@@ -3,9 +3,9 @@ package com.jqorz.planewar.entity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.base.BaseEntityImp;
 import com.jqorz.planewar.eenum.BulletType;
+import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.utils.ConstantUtil;
 
@@ -16,7 +16,6 @@ import com.jqorz.planewar.utils.ConstantUtil;
  */
 public class Bullet extends BaseEntityImp {
     protected AnimationImpl mAnimation;
-    protected int mFrameId;
     protected boolean isShown = false;//补给的状态
 
     public Bullet(@BulletType int type) {
@@ -30,7 +29,7 @@ public class Bullet extends BaseEntityImp {
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        mAnimation.drawFrame(canvas, paint, x, y, mFrameId);
+        mAnimation.drawAnimation(canvas, paint, x, y);
     }
 
     public boolean isShown() {

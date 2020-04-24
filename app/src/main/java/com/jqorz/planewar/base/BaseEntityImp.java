@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.jqorz.planewar.entity.Bullet;
+import com.jqorz.planewar.tools.DeviceTools;
+
 /**
  * @author j1997
  * @since 2020/4/7
@@ -20,6 +23,7 @@ public abstract class BaseEntityImp implements IEntity {
 
     public BaseEntityImp(Bitmap[] bitmaps) {
         this.mBitmaps = bitmaps;
+        init();
     }
 
     public abstract void init();
@@ -67,5 +71,22 @@ public abstract class BaseEntityImp implements IEntity {
 
     public int getHeight() {
         return getDefaultBitmap().getHeight();
+    }
+
+
+    public boolean isOutOfBound() {
+        if (this instanceof Bullet) {
+            return isOutOfBounds(false);
+        } else {
+            return isOutOfBounds(true);
+        }
+    }
+
+    public boolean isOutOfBounds(boolean isToBottom) {
+        if (isToBottom) {
+            return getY() > DeviceTools.getScreenHeight() + getHeight();
+        } else {
+            return getY() < -getHeight();
+        }
     }
 }

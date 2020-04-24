@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.jqorz.planewar.R;
-import com.jqorz.planewar.entity.GameView;
 
 /**
  * @author j1997
@@ -95,7 +94,7 @@ public class BitmapLoader {
         }
 
         Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.game_background);//大背景图片
-        background = Bitmap.createScaledBitmap(bmp, GameView.screenWidth, GameView.screenHeight, true);
+        background = Bitmap.createScaledBitmap(bmp, DeviceTools.getScreenWidth(), DeviceTools.getScreenHeight(), true);
 
     }
 }

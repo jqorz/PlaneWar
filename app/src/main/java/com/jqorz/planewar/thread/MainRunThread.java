@@ -3,6 +3,8 @@ package com.jqorz.planewar.thread;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import com.jqorz.planewar.utils.Logg;
+
 /**
  * 刷帧线程
  */
@@ -41,6 +43,8 @@ public class MainRunThread extends Thread {
                         }
                     }
                 }
+            } catch (Exception e) {
+                Logg.e("thread", e);
             } finally {
                 if (c != null) {
                     //更新屏幕显示内容

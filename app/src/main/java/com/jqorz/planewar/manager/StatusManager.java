@@ -23,29 +23,34 @@ import java.util.List;
  * @author j1997
  * @since 2020/4/12
  */
-public class StatusManager implements CheckManager.OnEntityChangeListener {
+public class StatusManager implements TimeManager.OnEntityChangeListener {
+    public boolean showEnemy = false;
+    public boolean showHero = false;
     private GameView gameView;
     private List<Bullet> deleteBullets = new ArrayList<>();
     private List<EnemyPlane> deleteEnemyPlanes = new ArrayList<>();
-    private long lastGetBulletSupplyTime = 0L;
-    private CheckManager mCheckManager;
+    private TimeManager mTimeManager;
 
     public StatusManager(GameView gameView) {//构造器
         this.gameView = gameView;
-        mCheckManager = new CheckManager(gameView);
-        mCheckManager.setOnEntityChangeListener(this);
+        mTimeManager = new TimeManager(gameView, this);
+        mTimeManager.setTimeToNow();
+        mTimeManager.setOnEntityChangeListener(this);
     }
 
     public void checkStatus() {
 
+        mTimeManager.checkNew();
+        mTimeManager.setTimeToNow();
+
         //检查子弹
         for (Bullet bullet : gameView.mBullets) {
-            if (bullet.getY() < -bullet.getHeight()) {
+            if (bullet.isOutOfBound()) {
                 bullet.setShown(false);
             } else {
                 for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
-                    if (enemyPlane.isShown()) {//打中敌机
-                        if (CollisionCheck.isCollision(enemyPlane, bullet)) {
+                    if (enemyPlane.isFly()) {
+                        if (CollisionCheck.isCollision(enemyPlane, bullet)) {//打中敌机
                             enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
                             gameView.playSound(2, 0);//播放受到攻击音效
                             enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
@@ -87,10 +92,9 @@ public class StatusManager implements CheckManager.OnEntityChangeListener {
         //检查敌军飞机
         HeroPlane heroPlane = gameView.heroPlane;
         for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
-
-            if (enemyPlane.getY() > DeviceTools.getScreenHeight()) {
+            if (enemyPlane.isOutOfBound()) {
                 enemyPlane.setStatus(PlaneStatus.STATUS_HIDE);
-            } else if (enemyPlane.isShown() && heroPlane.isShown()) {
+            } else if (enemyPlane.isLive() && heroPlane.isLive()) {
                 if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
                     if (enemyPlane.getLife() <= 0) {
                         enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
@@ -103,7 +107,7 @@ public class StatusManager implements CheckManager.OnEntityChangeListener {
                     }
                 }
             }
-            if (!enemyPlane.isShown()) {
+            if (enemyPlane.isHide()) {
                 deleteEnemyPlanes.add(enemyPlane);
             }
         }
@@ -113,9 +117,9 @@ public class StatusManager implements CheckManager.OnEntityChangeListener {
 
         //检查炸弹补给
         BombSupply bombSupply = gameView.mBombSupply;
-        if (bombSupply.getY() > DeviceTools.getScreenHeight()) {
+        if (bombSupply.isOutOfBound()) {
             bombSupply.setShown(false);
-        } else if (bombSupply.isShown() && gameView.heroPlane.isShown()) {
+        } else if (bombSupply.isShown() && gameView.heroPlane.isLive()) {
             if (CollisionCheck.isCollision(heroPlane, bombSupply)) {
                 bombSupply.setShown(false);
                 Message msg = gameView.activity.myHandler.obtainMessage();
@@ -128,20 +132,15 @@ public class StatusManager implements CheckManager.OnEntityChangeListener {
         //检查子弹补给
         BulletSupply bulletSupply = gameView.mBulletSupply;
 
-        if (bulletSupply.getY() > DeviceTools.getScreenHeight()) {
+        if (bulletSupply.isOutOfBound()) {
             bulletSupply.setShown(false);
-        } else if (bulletSupply.isShown() && gameView.heroPlane.isShown()) {
-
+        } else if (bulletSupply.isShown() && gameView.heroPlane.isLive()) {
             if (CollisionCheck.isCollision(heroPlane, bulletSupply)) {
-                lastGetBulletSupplyTime = System.currentTimeMillis();
+                mTimeManager.onGetBulletSupply();
                 heroPlane.setBulletType(BulletType.BULLET_BLUE);
                 bulletSupply.setShown(false);
-
             }
 
-        }
-        if (System.currentTimeMillis() - lastGetBulletSupplyTime > ConstantUtil.SUPPLY_BULLET_LONG_TIME) {
-            heroPlane.setBulletType(BulletType.BULLET_RED);
         }
 
         //检查背景
@@ -163,9 +162,9 @@ public class StatusManager implements CheckManager.OnEntityChangeListener {
 
     @Override
     public void onNewBullet(MapCreator.BulletInfo bulletInfo) {
-        Bullet b1 = new Bullet(bulletInfo.getType());
-        b1.setXY(bulletInfo.getX(), bulletInfo.getY());
-        gameView.mBullets.add(b1);
+        Bullet bullet = new Bullet(bulletInfo.getType());
+        bullet.setXY(bulletInfo.getX(), bulletInfo.getY());
+        gameView.mBullets.add(bullet);
     }
 
     @Override
@@ -176,6 +175,21 @@ public class StatusManager implements CheckManager.OnEntityChangeListener {
     @Override
     public void onShowBombSupply() {
         gameView.mBombSupply.setShown(true);
+    }
 
+    @Override
+    public void onFirstShowEnemy() {
+        showEnemy = true;
+    }
+
+    @Override
+    public void onFirstShowHero() {
+        showHero = true;
+        gameView.heroPlane.setStatus(PlaneStatus.STATUS_FLY);
+    }
+
+    @Override
+    public void onBulletSupplyEnd() {
+        gameView.heroPlane.setBulletType(BulletType.BULLET_RED);
     }
 }

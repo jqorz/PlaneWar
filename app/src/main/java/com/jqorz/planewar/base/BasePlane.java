@@ -15,9 +15,6 @@ public abstract class BasePlane extends BaseEntityImp {
     protected AnimationImpl mFlyAnimation;
     protected AnimationImpl mExploreAnimation;
     protected AnimationImpl mInjureAnimation;
-    protected int mFlyFrameId;
-    protected int mExploreFrameId;
-    protected int mInjureFrameId;
 
     public BasePlane(Bitmap[] bitmaps) {
         super(bitmaps);
@@ -33,8 +30,16 @@ public abstract class BasePlane extends BaseEntityImp {
 
     protected abstract void initLife();
 
-    public boolean isShown() {
+    public boolean isLive() {
         return status != PlaneStatus.STATUS_HIDE;
+    }
+
+    public boolean isFly() {
+        return status == PlaneStatus.STATUS_FLY;
+    }
+
+    public boolean isHide() {
+        return status == PlaneStatus.STATUS_HIDE;
     }
 
     public boolean isExplore() {

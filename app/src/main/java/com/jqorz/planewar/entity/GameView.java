@@ -3,6 +3,7 @@ package com.jqorz.planewar.entity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Message;
@@ -45,13 +46,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     public Paint mEmptyPlanePaint = new Paint();
     public Paint mSupplyPlanePaint = new Paint();
     public Paint mBulletPlanePaint = new Paint();
-    public boolean showEnemy = false;
+
     private SoundPool soundPool;//声音
     private HashMap<Integer, Integer> soundPoolMap;
     private StatusManager mStatusManager;
     private MoveManager mMoveManager;
     private DrawManager mDrawManager;
-    private Canvas c;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -66,11 +66,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
 
     public void initGameView() {
         int screenHeight = DeviceTools.getScreenHeight();
-        int screenWidth = DeviceTools.getScreenWidth();
 
         getHolder().addCallback(this);//注册接口
 
         mMainRunThread = new MainRunThread(this, getHolder());//初始化刷帧线程
+
+        heroPlane = new HeroPlane();//初始化我方飞机
 
         mBullets = new CopyOnWriteArrayList<>();
         mEnemyPlanes = new CopyOnWriteArrayList<>();
@@ -84,9 +85,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         mBgEntity1.setY(Math.abs(mBgEntity1.getHeight() - screenHeight));
         mBgEntity2.setY(mBgEntity1.getY() - mBgEntity1.getHeight());
 
-        heroPlane = new HeroPlane();//初始化我方飞机
-        heroPlane.setX((screenWidth - heroPlane.getWidth()) / 2);
-        heroPlane.setY((screenHeight / 3 * 2 - heroPlane.getHeight()) / 2);
 
         mStatusManager = new StatusManager(this);
         mMoveManager = new MoveManager(this);
@@ -95,7 +93,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     }
 
     private void initSounds() {
-        soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 100);
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(new AudioAttributes.Builder().setLegacyStreamType(AudioManager.STREAM_MUSIC).build())
+                .setMaxStreams(4)
+                .build();
         soundPoolMap = new HashMap<>();
         soundPoolMap.put(2, soundPool.load(getContext(), R.raw.attack, 1));
         soundPoolMap.put(3, soundPool.load(getContext(), R.raw.boom_noraml, 1));
@@ -116,7 +117,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     public void setBomb() {
 
         for (EnemyPlane ep : mEnemyPlanes) {
-            if (ep.isShown()) {
+            if (ep.isFly() || ep.isInjure()) {
                 ep.setStatus(PlaneStatus.STATUS_EXPLORE);
                 Message msg = activity.myHandler.obtainMessage();
                 switch (ep.getType()) {

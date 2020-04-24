@@ -49,13 +49,13 @@ public class HeroPlane extends BasePlane {
     public void draw(Canvas canvas, Paint paint) {
         switch (status) {
             case PlaneStatus.STATUS_FLY:
-                mFlyAnimation.drawFrame(canvas, paint, x, y, mFlyFrameId);
+                mFlyAnimation.drawAnimation(canvas, paint, x, y);
                 break;
             case PlaneStatus.STATUS_EXPLORE:
-                mExploreAnimation.drawFrame(canvas, paint, x, y, mExploreFrameId);
+                mExploreAnimation.drawAnimation(canvas, paint, x, y);
                 break;
             case PlaneStatus.STATUS_INJURE:
-                mInjureAnimation.drawFrame(canvas, paint, x, y, mInjureFrameId);
+                mInjureAnimation.drawAnimation(canvas, paint, x, y);
                 break;
         }
     }
@@ -68,7 +68,7 @@ public class HeroPlane extends BasePlane {
 
 
     public void setX(int x) {
-        this.x = Math.min(Math.max(0, x), GameView.screenWidth - getWidth());
+        this.x = Math.min(Math.max(0, x), DeviceTools.getScreenWidth() - getWidth());
     }
 
     @Override
@@ -78,7 +78,7 @@ public class HeroPlane extends BasePlane {
 
     @Override
     public void setY(int y) {
-        this.y = Math.min(Math.max(0, y), GameView.screenHeight - getHeight());
+        this.y = Math.min(Math.max(0, y), DeviceTools.getScreenHeight() - getHeight());
     }
 
 

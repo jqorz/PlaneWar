@@ -52,13 +52,13 @@ public class EnemyPlane extends BasePlane {
     public void draw(Canvas canvas, Paint paint) {
         switch (status) {
             case PlaneStatus.STATUS_FLY:
-                mFlyAnimation.drawFrame(canvas, paint, x, y, mFlyFrameId);
+                mFlyAnimation.drawAnimation(canvas, paint, x, y);
                 break;
             case PlaneStatus.STATUS_EXPLORE:
-                mExploreAnimation.drawFrame(canvas, paint, x, y, mExploreFrameId);
+                mExploreAnimation.drawAnimation(canvas, paint, x, y);
                 break;
             case PlaneStatus.STATUS_INJURE:
-                mInjureAnimation.drawFrame(canvas, paint, x, y, mInjureFrameId);
+                mInjureAnimation.drawAnimation(canvas, paint, x, y);
                 break;
         }
     }
