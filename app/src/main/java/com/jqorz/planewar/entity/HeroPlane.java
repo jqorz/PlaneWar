@@ -54,7 +54,7 @@ public class HeroPlane extends BasePlane {
     private void initAnimation() {
         mFlyAnimation = new AnimationImpl(getBitmaps(), true);
         mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_hero_explode, false);
-        mInjureAnimation = new AnimationImpl(getBitmaps(), true);
+        mInjureAnimation = new AnimationImpl(getBitmaps(), false);
     }
 
 

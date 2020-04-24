@@ -37,15 +37,15 @@ public class EnemyPlane extends BasePlane {
         switch (type) {
             case PlaneType.ENEMY_TYPE1:
                 mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_enemyPlane1_explode, false);
-                mInjureAnimation = new AnimationImpl(getBitmaps(), true);
+                mInjureAnimation = new AnimationImpl(getBitmaps(), false);
                 break;
             case PlaneType.ENEMY_TYPE2:
                 mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_enemyPlane2_explode, false);
-                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane2_injured, true);
+                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane2_injured, false);
                 break;
             case PlaneType.ENEMY_TYPE3:
                 mExploreAnimation = new AnimationImpl(BitmapLoader.bmps_enemyPlane3_explode, false);
-                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane3_injured, true);
+                mInjureAnimation = new AnimationImpl(BitmapLoader.bmp_enemyPlane3_injured, false);
                 break;
         }
     }
@@ -114,7 +114,5 @@ public class EnemyPlane extends BasePlane {
     }
 
 
-    public boolean isExploreEnd() {
-        return isExplore() && getStatusAnim(PlaneStatus.STATUS_EXPLORE).isEnd;
-    }
+
 }

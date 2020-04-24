@@ -80,39 +80,40 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                         }
                     }
                 }
-                for (Bullet bullet : gameView.mBullets) {
-                    if (enemyPlane.isFly()) {
+                if (enemyPlane.isFly()) {
+                    for (Bullet bullet : gameView.mBullets) {
                         if (CollisionCheck.isCollision(enemyPlane, bullet)) {//打中敌机
                             enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
                             gameView.playSound(2, 0);//播放受到攻击音效
                             enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
                             bullet.setShown(false);
+                            break;
                         }
-                    } else if (enemyPlane.isInjure()) {
-                        if (enemyPlane.getLife() <= 0) {//当生命小于0时，向主线程发送得分信息
-                            Message msg = gameView.activity.myHandler.obtainMessage();
-                            switch (enemyPlane.getType()) {
-                                case PlaneType.ENEMY_TYPE1:
-                                    gameView.playSound(2, 0);
-                                    msg.arg1 = ConstantUtil.ENEMY_TYPE1_SCORE;
-                                    break;
-                                case PlaneType.ENEMY_TYPE2:
-                                    gameView.playSound(3, 0);
-                                    msg.arg1 = ConstantUtil.ENEMY_TYPE2_SCORE;
-                                    break;
-                                case PlaneType.ENEMY_TYPE3:
-                                    gameView.playSound(4, 0);
-                                    msg.arg1 = ConstantUtil.ENEMY_TYPE3_SCORE;
-                                    break;
-                            }
-                            gameView.activity.myHandler.sendMessage(msg);
-                            enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
-                        } else {
-                            enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
-                        }
-                    } else if (enemyPlane.isExploreEnd()) {
-                        enemyPlane.setStatus(PlaneStatus.STATUS_HIDE);
                     }
+                } else if (enemyPlane.isInjureEnd()) {
+                    if (enemyPlane.getLife() <= 0) {//当生命小于0时，向主线程发送得分信息
+                        Message msg = gameView.activity.myHandler.obtainMessage();
+                        switch (enemyPlane.getType()) {
+                            case PlaneType.ENEMY_TYPE1:
+                                gameView.playSound(2, 0);
+                                msg.arg1 = ConstantUtil.ENEMY_TYPE1_SCORE;
+                                break;
+                            case PlaneType.ENEMY_TYPE2:
+                                gameView.playSound(3, 0);
+                                msg.arg1 = ConstantUtil.ENEMY_TYPE2_SCORE;
+                                break;
+                            case PlaneType.ENEMY_TYPE3:
+                                gameView.playSound(4, 0);
+                                msg.arg1 = ConstantUtil.ENEMY_TYPE3_SCORE;
+                                break;
+                        }
+                        gameView.activity.myHandler.sendMessage(msg);
+                        enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
+                    } else {
+                        enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
+                    }
+                } else if (enemyPlane.isExploreEnd()) {
+                    enemyPlane.setStatus(PlaneStatus.STATUS_HIDE);
                 }
 
 

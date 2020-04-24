@@ -69,6 +69,13 @@ public abstract class BasePlane extends BaseEntityImp {
         }
     }
 
+    public boolean isExploreEnd() {
+        return isExplore() && getStatusAnim(PlaneStatus.STATUS_EXPLORE).isEnd;
+    }
+
+    public boolean isInjureEnd() {
+        return isInjure() ;
+    }
 
     public abstract void move();
 }
