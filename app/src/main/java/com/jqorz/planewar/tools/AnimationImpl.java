@@ -33,6 +33,14 @@ public class AnimationImpl {
         isEnd = false;
     }
 
+    public void pause() {
+        isEnd = true;
+    }
+
+    public void resume() {
+        isEnd = false;
+    }
+
     /**
      * 绘制动画中的其中一帧
      */

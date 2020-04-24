@@ -50,17 +50,7 @@ public class EnemyPlane extends BasePlane {
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        switch (status) {
-            case PlaneStatus.STATUS_FLY:
-                mFlyAnimation.drawAnimation(canvas, paint, x, y);
-                break;
-            case PlaneStatus.STATUS_EXPLORE:
-                mExploreAnimation.drawAnimation(canvas, paint, x, y);
-                break;
-            case PlaneStatus.STATUS_INJURE:
-                mInjureAnimation.drawAnimation(canvas, paint, x, y);
-                break;
-        }
+        getStatusAnim().drawAnimation(canvas, paint, x, y);
     }
 
     public void reset() {
@@ -97,6 +87,15 @@ public class EnemyPlane extends BasePlane {
         }
     }
 
+    @Override
+    public void setStatus(int status) {
+        int lastStatus = getStatus();
+        super.setStatus(status);
+        if (status != lastStatus) {
+            pauseAllAnim();
+            getStatusAnim().resume();
+        }
+    }
 
     public void move() {
         this.y = this.y + velocity;

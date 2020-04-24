@@ -47,17 +47,7 @@ public class HeroPlane extends BasePlane {
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        switch (status) {
-            case PlaneStatus.STATUS_FLY:
-                mFlyAnimation.drawAnimation(canvas, paint, x, y);
-                break;
-            case PlaneStatus.STATUS_EXPLORE:
-                mExploreAnimation.drawAnimation(canvas, paint, x, y);
-                break;
-            case PlaneStatus.STATUS_INJURE:
-                mInjureAnimation.drawAnimation(canvas, paint, x, y);
-                break;
-        }
+        getStatusAnim().drawAnimation(canvas, paint, x, y);
     }
 
     private void initAnimation() {
@@ -82,16 +72,25 @@ public class HeroPlane extends BasePlane {
     }
 
 
-/*
+    /*
 
-    public void drawLife(Canvas canvas) {
-        if (bmp_life != null) {
-            for (int j = 0; j < ((5 - Hp) < 0 ? 5 : Hp); j++) {//绘制表示生命的小数条
-                canvas.drawBitmap(bmp_life, 45 + bmp_life.getWidth() * j, 13, new Paint());
+        public void drawLife(Canvas canvas) {
+            if (bmp_life != null) {
+                for (int j = 0; j < ((5 - Hp) < 0 ? 5 : Hp); j++) {//绘制表示生命的小数条
+                    canvas.drawBitmap(bmp_life, 45 + bmp_life.getWidth() * j, 13, new Paint());
+                }
             }
         }
+    */
+    @Override
+    public void setStatus(int status) {
+        int lastStatus = getStatus();
+        super.setStatus(status);
+        if (status != lastStatus) {
+            pauseAllAnim();
+            getStatusAnim().resume();
+        }
     }
-*/
 
     @Override
     protected void initLife() {

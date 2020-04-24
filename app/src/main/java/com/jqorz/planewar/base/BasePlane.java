@@ -50,8 +50,29 @@ public abstract class BasePlane extends BaseEntityImp {
         return status == PlaneStatus.STATUS_INJURE;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    protected AnimationImpl getStatusAnim() {
+        switch (status) {
+            case PlaneStatus.STATUS_EXPLORE:
+                return mExploreAnimation;
+            case PlaneStatus.STATUS_INJURE:
+                return mInjureAnimation;
+            default:
+                return mFlyAnimation;
+        }
+    }
+
+    protected void pauseAllAnim() {
+        mExploreAnimation.pause();
+        mInjureAnimation.pause();
+        mFlyAnimation.pause();
     }
 
     public abstract void move();

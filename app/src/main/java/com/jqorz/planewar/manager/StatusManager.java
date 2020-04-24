@@ -157,6 +157,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
     public void onNewEnemy(MapCreator.PlaneInfo planeInfo) {
         EnemyPlane enemyPlane = new EnemyPlane(planeInfo.getType());
         enemyPlane.setVelocity(planeInfo.getVelocity());
+        enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
         gameView.mEnemyPlanes.add(enemyPlane);
     }
 
@@ -164,6 +165,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
     public void onNewBullet(MapCreator.BulletInfo bulletInfo) {
         Bullet bullet = new Bullet(bulletInfo.getType());
         bullet.setXY(bulletInfo.getX(), bulletInfo.getY());
+        bullet.setShown(true);
         gameView.mBullets.add(bullet);
     }
 
