@@ -17,11 +17,12 @@ public class DrawManager {
         this.gameView = gameView;
     }
 
-    public void drawEntity(Canvas canvas) {
-
-        //绘制游戏背景
+    public void drawBg(Canvas canvas) {
         gameView.mBgEntity1.draw(canvas, gameView.mBgPaint);
         gameView.mBgEntity2.draw(canvas, gameView.mBgPaint);
+    }
+
+    public void drawEntity(Canvas canvas) {
 
         //绘制玩家飞机
         if (gameView.heroPlane.isLive()) {

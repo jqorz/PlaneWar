@@ -6,15 +6,12 @@ import android.graphics.Paint;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.jqorz.planewar.R;
-import com.jqorz.planewar.eenum.PlaneStatus;
-import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.frame.GamePlaying;
 import com.jqorz.planewar.manager.DrawManager;
 import com.jqorz.planewar.manager.MoveManager;
@@ -22,7 +19,6 @@ import com.jqorz.planewar.manager.StatusManager;
 import com.jqorz.planewar.thread.MainRunThread;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.tools.DeviceTools;
-import com.jqorz.planewar.utils.ConstantUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,33 +107,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         }
     }
 
-    public void setBomb() {
-
-        for (EnemyPlane ep : mEnemyPlanes) {
-            if (ep.isFly() || ep.isInjure()) {
-                ep.setStatus(PlaneStatus.STATUS_EXPLORE);
-                Message msg = activity.myHandler.obtainMessage();
-                switch (ep.getType()) {
-                    case PlaneType.ENEMY_TYPE1:
-                        playSound(2, 0);
-                        msg.arg1 = ConstantUtil.ENEMY_TYPE1_SCORE;
-                        break;
-                    case PlaneType.ENEMY_TYPE2:
-                        playSound(3, 0);
-                        msg.arg1 = ConstantUtil.ENEMY_TYPE2_SCORE;
-                        break;
-                    case PlaneType.ENEMY_TYPE3:
-                        playSound(4, 0);
-                        msg.arg1 = ConstantUtil.ENEMY_TYPE3_SCORE;
-                        break;
-                }
-                activity.myHandler.sendMessage(msg);
-            }
-        }
-
-    }
-
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float X = event.getRawX();
@@ -194,6 +163,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
 
     @Override
     public void onDrawTime(Canvas canvas) {
+        mDrawManager.drawBg(canvas);
         mDrawManager.drawEntity(canvas);
+    }
+
+    public void setBomb() {
+        mStatusManager.useBomb = true;
     }
 }

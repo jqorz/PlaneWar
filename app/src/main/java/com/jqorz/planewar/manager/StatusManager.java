@@ -26,6 +26,7 @@ import java.util.List;
 public class StatusManager implements TimeManager.OnEntityChangeListener {
     public boolean showEnemy = false;
     public boolean showHero = false;
+    public boolean useBomb = false;
     private GameView gameView;
     private List<Bullet> deleteBullets = new ArrayList<>();
     private List<EnemyPlane> deleteEnemyPlanes = new ArrayList<>();
@@ -67,31 +68,33 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
         //检查敌军飞机
         for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
             if (enemyPlane.isLive()) {
-                if (heroPlane.isLive()) {
-                    if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
-                        if (enemyPlane.getLife() <= 0) {
-                            enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
-                        }
-                        heroPlane.setLife(heroPlane.getLife() - 1);
-                        if (heroPlane.getLife() <= 0) {//当生命小于0时
-                            heroPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
-                            showHero = false;
-                            gameView.playSound(4, 0);
-                            gameView.activity.myHandler.sendEmptyMessage(ConstantUtil.STATE_END);//向主activity发送Handler消息
-                        }
+
+                if (useBomb) {
+                    if (enemyPlane.isFly() || enemyPlane.isInjure()) {
+                        enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
+                        enemyPlane.setLife(0);
                     }
+                    useBomb = false;
                 }
+
+
                 if (enemyPlane.isFly()) {
                     for (Bullet bullet : gameView.mBullets) {
                         if (CollisionCheck.isCollision(enemyPlane, bullet)) {//打中敌机
                             enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
-                            gameView.playSound(2, 0);//播放受到攻击音效
                             enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
                             bullet.setShown(false);
-                            break;
+                            gameView.playSound(2, 0);//播放受到攻击音效
                         }
                     }
-                } else if (enemyPlane.isInjureEnd()) {
+                    if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
+                        enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
+                        enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
+                        heroPlane.setStatus(PlaneStatus.STATUS_INJURE);
+                        heroPlane.setLife(heroPlane.getLife() - 1);
+                        gameView.playSound(2, 0);//播放受到攻击音效
+                    }
+                } else if (enemyPlane.isInjure()) {
                     if (enemyPlane.getLife() <= 0) {//当生命小于0时，向主线程发送得分信息
                         Message msg = gameView.activity.myHandler.obtainMessage();
                         switch (enemyPlane.getType()) {
@@ -120,7 +123,6 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
 
             }
         }
-
         for (EnemyPlane enemyPlane1 : gameView.mEnemyPlanes) {
             if (enemyPlane1.isHide()) {
                 deleteEnemyPlanes.add(enemyPlane1);
@@ -136,6 +138,18 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
         }
         gameView.mBullets.removeAll(deleteBullets);
         deleteBullets.clear();
+
+        //检查英雄飞机状态
+        if (heroPlane.isInjure()) {
+            if (heroPlane.getLife() <= 0) {//当生命小于0时
+                heroPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
+                gameView.playSound(4, 0);
+            } else {
+                heroPlane.setStatus(PlaneStatus.STATUS_FLY);
+            }
+        } else if (heroPlane.isExploreEnd()) {
+            gameView.activity.myHandler.sendEmptyMessage(ConstantUtil.STATE_END);//向主activity发送Handler消息
+        }
 
         //检查炸弹补给
         if (bombSupply.isShown() && gameView.heroPlane.isLive()) {
