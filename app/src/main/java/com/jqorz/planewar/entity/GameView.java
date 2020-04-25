@@ -26,7 +26,6 @@ import com.jqorz.planewar.utils.ConstantUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 主游戏界面控制类
@@ -34,6 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, MainRunThread.OnThreadRunListener {
 
 
+    private static final int clickLimitValue = 5;
     public BulletSupply mBulletSupply;//子弹补给
     public BombSupply mBombSupply;//炸弹补给
     public BgEntity mBgEntity1, mBgEntity2;
@@ -47,12 +47,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     public Paint mEmptyPlanePaint = new Paint();
     public Paint mSupplyPlanePaint = new Paint();
     public Paint mBulletPlanePaint = new Paint();
-
     private SoundPool soundPool;//声音
     private HashMap<Integer, Integer> soundPoolMap;
     private StatusManager mStatusManager;
     private MoveManager mMoveManager;
     private DrawManager mDrawManager;
+    private float dX, dY = 0f;
+    private float downX, downY = 0f;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -110,7 +111,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         }
     }
 
-
     public void setBomb() {
 
         for (EnemyPlane ep : mEnemyPlanes) {
@@ -137,24 +137,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
 
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-//        int x=heroPlane.getX();
-//        int y=heroPlane.getY();
-        if (event.getAction() == MotionEvent.ACTION_DOWN) { //处理屏幕屏点下事件 手指点击屏幕时触发
-//            xx = (int)event.getX();
-//            yy = (int)event.getY();
-
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {//处理移动事件 手指在屏幕上移动时触发
-
-            int Px = (int) event.getX();
-            int Py = (int) event.getY();
-
-            heroPlane.setX(Px - heroPlane.getWidth() / 2);
-            heroPlane.setY(Py - heroPlane.getHeight());
+        float X = event.getRawX();
+        float Y = event.getRawY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                downX = X;
+                downY = Y;
+                dX = heroPlane.getX() - event.getRawX();
+                dY = heroPlane.getY() - event.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (!(Math.abs(X - downX) < clickLimitValue) || !(Math.abs(Y - downY) < clickLimitValue)) {
+                    heroPlane.setX((int) (event.getRawX() + dX));
+                    heroPlane.setY((int) (event.getRawY() + dY));
+                }
+                break;
+            default:
+                return false;
         }
-
         return true;
     }
 
