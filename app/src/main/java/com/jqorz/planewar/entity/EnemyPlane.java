@@ -20,13 +20,13 @@ public class EnemyPlane extends BasePlane {
     private int velocity;//飞机的速度
 
     public EnemyPlane(@PlaneType int type) {
-        super(type == PlaneType.ENEMY_TYPE1 ? BitmapLoader.bmps_enemyPlane1 : type == PlaneType.ENEMY_TYPE2 ? BitmapLoader.bmps_enemyPlane2 : BitmapLoader.bmps_enemyPlane3);
-        setType(type);
-        init();
+        super(type == PlaneType.ENEMY_TYPE1 ? BitmapLoader.bmps_enemyPlane1 : type == PlaneType.ENEMY_TYPE2 ? BitmapLoader.bmps_enemyPlane2 : BitmapLoader.bmps_enemyPlane3, type);
     }
 
+
     @Override
-    public void init() {
+    public void init(int type) {
+        setType(type);
         initLife();
         initAnimation();
         reset();
@@ -112,7 +112,6 @@ public class EnemyPlane extends BasePlane {
                 ", life=" + life +
                 '}';
     }
-
 
 
 }

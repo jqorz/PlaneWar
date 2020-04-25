@@ -20,7 +20,7 @@ public abstract class BaseSupply extends BaseEntityImp {
     }
 
     @Override
-    public void init() {
+    public void init(int type) {
         mAnimation = new AnimationImpl(getBitmaps(), true);
         reset();
     }

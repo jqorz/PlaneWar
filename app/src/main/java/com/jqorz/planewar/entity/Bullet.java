@@ -19,12 +19,11 @@ public class Bullet extends BaseEntityImp {
     protected boolean isShown = false;//补给的状态
 
     public Bullet(@BulletType int type) {
-        super(type == BulletType.BULLET_RED ? BitmapLoader.bmp_bullet1 : BitmapLoader.bmp_bullet2);
-        init();
+        super(type == BulletType.BULLET_RED ? BitmapLoader.bmp_bullet1 : BitmapLoader.bmp_bullet2, type);
     }
 
     @Override
-    public void init() {
+    public void init(int type) {
         mAnimation = new AnimationImpl(getBitmaps(), true);
     }
 

@@ -12,7 +12,6 @@ public class BulletSupply extends BaseSupply {
 
     BulletSupply() {
         super(BitmapLoader.bmp_bulletSupply);
-        init();
     }
 
     @Override

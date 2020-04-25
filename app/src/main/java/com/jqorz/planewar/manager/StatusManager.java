@@ -171,6 +171,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
         EnemyPlane enemyPlane = new EnemyPlane(planeInfo.getType());
         enemyPlane.setVelocity(planeInfo.getVelocity());
         enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
+        enemyPlane.setX(planeInfo.getX());
         gameView.mEnemyPlanes.add(enemyPlane);
     }
 

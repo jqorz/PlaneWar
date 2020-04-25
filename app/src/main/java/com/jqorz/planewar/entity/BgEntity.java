@@ -17,11 +17,10 @@ public class BgEntity extends BaseEntityImp {
 
     public BgEntity() {
         super(BitmapLoader.background);
-        init();
     }
 
     @Override
-    public void init() {
+    public void init(int type) {
         mAnimation = new AnimationImpl(getBitmaps(), true);
     }
 

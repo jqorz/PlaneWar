@@ -18,14 +18,23 @@ public abstract class BaseEntityImp implements IEntity {
     protected Bitmap[] mBitmaps;
 
     public BaseEntityImp(Bitmap defaultBitmap) {
-        this(new Bitmap[]{defaultBitmap});
+        this(defaultBitmap, -1);
     }
 
     public BaseEntityImp(Bitmap[] bitmaps) {
-        this.mBitmaps = bitmaps;
+        this(bitmaps, -1);
     }
 
-    public abstract void init();
+    public BaseEntityImp(Bitmap defaultBitmap, int type) {
+        this(new Bitmap[]{defaultBitmap}, type);
+    }
+
+    public BaseEntityImp(Bitmap[] bitmaps, int type) {
+        this.mBitmaps = bitmaps;
+        init(type);
+    }
+
+    public abstract void init(int type);
 
     public abstract void draw(Canvas canvas, Paint paint);
 

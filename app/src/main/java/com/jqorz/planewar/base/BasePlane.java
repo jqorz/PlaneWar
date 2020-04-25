@@ -20,6 +20,10 @@ public abstract class BasePlane extends BaseEntityImp {
         super(bitmaps);
     }
 
+    public BasePlane(Bitmap[] bitmaps, int type) {
+        super(bitmaps, type);
+    }
+
     public int getLife() {
         return life;
     }
@@ -74,7 +78,7 @@ public abstract class BasePlane extends BaseEntityImp {
     }
 
     public boolean isInjureEnd() {
-        return isInjure() ;
+        return isInjure();
     }
 
     public abstract void move();

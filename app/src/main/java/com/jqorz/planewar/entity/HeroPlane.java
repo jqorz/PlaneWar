@@ -20,7 +20,6 @@ public class HeroPlane extends BasePlane {
 
     public HeroPlane() {
         super(BitmapLoader.bmps_heroPlane);
-        init();
     }
 
     public int getBulletType() {
@@ -33,7 +32,7 @@ public class HeroPlane extends BasePlane {
 
 
     @Override
-    public void init() {
+    public void init(int type) {
         initLife();
         initAnimation();
         reset();
