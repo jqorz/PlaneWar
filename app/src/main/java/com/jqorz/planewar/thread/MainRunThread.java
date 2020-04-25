@@ -10,7 +10,7 @@ import com.jqorz.planewar.utils.Logg;
  */
 public class MainRunThread extends Thread {
     private final SurfaceHolder mSurfaceHolder;
-    public boolean flag2 = true;
+    public boolean isPlaying = true;
     private boolean flag = false;
     private OnThreadRunListener mListener;
 
@@ -28,12 +28,13 @@ public class MainRunThread extends Thread {
         Canvas c;
 
         while (this.flag) {
-            if (mListener != null) {
-                mListener.onThreadTime();
-            }
             c = null;
             try {
-                if (flag2) {
+                if (isPlaying) {
+                    if (mListener != null) {
+                        mListener.onThreadTime();
+                    }
+
                     // 锁定整个画布，在内存要求比较高的情况下，建议参数不要为null
                     c = mSurfaceHolder.lockCanvas(null);
 

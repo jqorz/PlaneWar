@@ -24,6 +24,7 @@ import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.tools.DeviceTools;
 import com.jqorz.planewar.utils.ConstantUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -38,8 +39,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     public BgEntity mBgEntity1, mBgEntity2;
     public HeroPlane heroPlane;
     public MainRunThread mMainRunThread;//刷帧的线程
-    public CopyOnWriteArrayList<Bullet> mBullets = new CopyOnWriteArrayList<>();//子弹数组
-    public CopyOnWriteArrayList<EnemyPlane> mEnemyPlanes = new CopyOnWriteArrayList<>();//敌军飞机数组
+    public ArrayList<Bullet> mBullets = new ArrayList<>();//子弹数组
+    public ArrayList<EnemyPlane> mEnemyPlanes = new ArrayList<>();//敌军飞机数组
     public GamePlaying activity;
     public Paint mBgPaint = new Paint();
     public Paint mHeroPlanePaint = new Paint();
@@ -73,9 +74,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
 
         heroPlane = new HeroPlane();//初始化我方飞机
 
-        mBullets = new CopyOnWriteArrayList<>();
-        mEnemyPlanes = new CopyOnWriteArrayList<>();
-
         mBulletSupply = new BulletSupply();//取子弹补给
         mBombSupply = new BombSupply(); //取炸弹补给
 
@@ -84,7 +82,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
 
         mBgEntity1.setY(Math.abs(mBgEntity1.getHeight() - screenHeight));
         mBgEntity2.setY(mBgEntity1.getY() - mBgEntity1.getHeight());
-
 
         mStatusManager = new StatusManager(this);
         mMoveManager = new MoveManager(this);

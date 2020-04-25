@@ -75,6 +75,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                         heroPlane.setLife(heroPlane.getLife() - 1);
                         if (heroPlane.getLife() <= 0) {//当生命小于0时
                             heroPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
+                            showHero = false;
                             gameView.playSound(4, 0);
                             gameView.activity.myHandler.sendEmptyMessage(ConstantUtil.STATE_END);//向主activity发送Handler消息
                         }
@@ -186,11 +187,13 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
     @Override
     public void onShowBulletSupply() {
         gameView.mBulletSupply.setShown(true);
+        gameView.mBulletSupply.reset();
     }
 
     @Override
     public void onShowBombSupply() {
         gameView.mBombSupply.setShown(true);
+        gameView.mBombSupply.reset();
     }
 
     @Override

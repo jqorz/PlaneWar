@@ -136,15 +136,15 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         this.startActivity(intent);
     }
 
-    public void initPauseView() {
+    public void pauseThread() {
         if (gameView.mMainRunThread != null) {
-            gameView.mMainRunThread.flag2 = false;
+            gameView.mMainRunThread.isPlaying = false;
         }
     }
 
-    private void initResumeView() {
+    private void resumeThread() {
         if (gameView.mMainRunThread != null) {
-            gameView.mMainRunThread.flag2 = true;
+            gameView.mMainRunThread.isPlaying = true;
         }
     }
 
@@ -160,7 +160,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
                 TimeTools.setResumeTime();
                 checkMusic();
                 lv_switchers.setVisibility(View.GONE);
-                initResumeView();
+                resumeThread();
             }
         } else if (view.getId() == R.id.lv_Bomb) {
             if (bombNum > 0 && !isPause) {
@@ -180,7 +180,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
             mMediaPlayer.pause();
         }
         lv_switchers.setVisibility(View.VISIBLE);
-        initPauseView();
+        pauseThread();
     }
 
 
@@ -250,7 +250,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
             TimeTools.setResumeTime();
             checkMusic();
             lv_switchers.setVisibility(View.GONE);
-            initResumeView();
+            resumeThread();
         }
     }
 

@@ -73,7 +73,7 @@ public class TimeManager {
         }
 
         //计算上次发送子弹的时间
-        if (now - mSendTime >= ConstantUtil.BULLET_TIME) {
+        if (mStatusManager.showHero && now - mSendTime >= ConstantUtil.BULLET_TIME) {
             for (MapCreator.BulletInfo info : MapCreator.getNewBulletPos(gameView.heroPlane)) {
                 mOnEntityChangeListener.onNewBullet(info);
             }
