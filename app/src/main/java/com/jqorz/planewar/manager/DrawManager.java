@@ -25,7 +25,7 @@ public class DrawManager {
     public void drawEntity(Canvas canvas) {
 
         //绘制玩家飞机
-        if (gameView.heroPlane.isLive()) {
+        if (!gameView.heroPlane.isHide()) {
             gameView.heroPlane.draw(canvas, gameView.mHeroPlanePaint);
         }
 
@@ -41,7 +41,7 @@ public class DrawManager {
 
         //绘制状态正常的敌军飞机
         for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
-            if (enemyPlane.isLive()) {
+            if (!enemyPlane.isHide()) {
                 enemyPlane.draw(canvas, gameView.mEmptyPlanePaint);
             }
         }

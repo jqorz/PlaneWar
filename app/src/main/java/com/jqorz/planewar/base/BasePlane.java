@@ -34,10 +34,6 @@ public abstract class BasePlane extends BaseEntityImp {
 
     protected abstract void initLife();
 
-    public boolean isLive() {
-        return status != PlaneStatus.STATUS_HIDE;
-    }
-
     public boolean isFly() {
         return status == PlaneStatus.STATUS_FLY;
     }

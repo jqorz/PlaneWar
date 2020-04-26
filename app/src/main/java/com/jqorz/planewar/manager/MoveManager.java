@@ -29,7 +29,7 @@ public class MoveManager {
 
         //移动敌军飞机
         for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
-            if (enemyPlane.isLive()) {
+            if (!enemyPlane.isHide()) {
                 enemyPlane.move();
             }
         }

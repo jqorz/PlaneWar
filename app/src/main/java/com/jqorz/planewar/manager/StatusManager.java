@@ -67,60 +67,59 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
 
         //检查敌军飞机
         for (EnemyPlane enemyPlane : gameView.mEnemyPlanes) {
-            if (enemyPlane.isLive()) {
-
-                if (useBomb) {
-                    if (enemyPlane.isFly() || enemyPlane.isInjure()) {
-                        enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
-                        enemyPlane.setLife(0);
-                    }
-                    useBomb = false;
+            if (enemyPlane.isHide()) {
+                continue;
+            }
+            if (useBomb) {
+                if (enemyPlane.isFly() || enemyPlane.isInjure()) {
+                    enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
+                    enemyPlane.setLife(0);
                 }
+                useBomb = false;
+            }
 
 
-                if (enemyPlane.isFly()) {
-                    for (Bullet bullet : gameView.mBullets) {
-                        if (CollisionCheck.isCollision(enemyPlane, bullet)) {//打中敌机
-                            enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
-                            enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
-                            bullet.setShown(false);
-                            gameView.playSound(2, 0);//播放受到攻击音效
-                        }
-                    }
-                    if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
+            if (enemyPlane.isFly()) {
+                for (Bullet bullet : gameView.mBullets) {
+                    if (CollisionCheck.isCollision(enemyPlane, bullet)) {//打中敌机
                         enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
                         enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
-                        heroPlane.setStatus(PlaneStatus.STATUS_INJURE);
-                        heroPlane.setLife(heroPlane.getLife() - 1);
+                        bullet.setShown(false);
                         gameView.playSound(2, 0);//播放受到攻击音效
                     }
-                } else if (enemyPlane.isInjure()) {
-                    if (enemyPlane.getLife() <= 0) {//当生命小于0时，向主线程发送得分信息
-                        Message msg = gameView.activity.myHandler.obtainMessage();
-                        switch (enemyPlane.getType()) {
-                            case PlaneType.ENEMY_TYPE1:
-                                gameView.playSound(2, 0);
-                                msg.arg1 = ConstantUtil.ENEMY_TYPE1_SCORE;
-                                break;
-                            case PlaneType.ENEMY_TYPE2:
-                                gameView.playSound(3, 0);
-                                msg.arg1 = ConstantUtil.ENEMY_TYPE2_SCORE;
-                                break;
-                            case PlaneType.ENEMY_TYPE3:
-                                gameView.playSound(4, 0);
-                                msg.arg1 = ConstantUtil.ENEMY_TYPE3_SCORE;
-                                break;
-                        }
-                        gameView.activity.myHandler.sendMessage(msg);
-                        enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
-                    } else {
-                        enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
-                    }
-                } else if (enemyPlane.isExploreEnd()) {
-                    enemyPlane.setStatus(PlaneStatus.STATUS_HIDE);
                 }
-
-
+                if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
+                    enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
+                    enemyPlane.setLife(0);//生命减1
+                    heroPlane.setStatus(PlaneStatus.STATUS_INJURE);
+                    heroPlane.setLife(0);
+                    gameView.playSound(2, 0);//播放受到攻击音效
+                }
+            } else if (enemyPlane.isInjure()) {
+                if (enemyPlane.getLife() <= 0) {//当生命小于0时，向主线程发送得分信息
+                    Message msg = gameView.activity.myHandler.obtainMessage();
+                    switch (enemyPlane.getType()) {
+                        case PlaneType.ENEMY_TYPE1:
+                            gameView.playSound(2, 0);
+                            msg.arg1 = ConstantUtil.ENEMY_TYPE1_SCORE;
+                            break;
+                        case PlaneType.ENEMY_TYPE2:
+                            gameView.playSound(3, 0);
+                            msg.arg1 = ConstantUtil.ENEMY_TYPE2_SCORE;
+                            break;
+                        case PlaneType.ENEMY_TYPE3:
+                            gameView.playSound(4, 0);
+                            msg.arg1 = ConstantUtil.ENEMY_TYPE3_SCORE;
+                            break;
+                    }
+                    gameView.activity.myHandler.sendMessage(msg);
+                    enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
+                } else {
+                    enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
+                    enemyPlane.resetInjureAnim();
+                }
+            } else if (enemyPlane.isExploreEnd()) {
+                enemyPlane.setStatus(PlaneStatus.STATUS_HIDE);
             }
         }
         for (EnemyPlane enemyPlane1 : gameView.mEnemyPlanes) {
@@ -146,13 +145,14 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                 gameView.playSound(4, 0);
             } else {
                 heroPlane.setStatus(PlaneStatus.STATUS_FLY);
+                heroPlane.resetInjureAnim();
             }
         } else if (heroPlane.isExploreEnd()) {
             gameView.activity.myHandler.sendEmptyMessage(ConstantUtil.STATE_END);//向主activity发送Handler消息
         }
 
         //检查炸弹补给
-        if (bombSupply.isShown() && gameView.heroPlane.isLive()) {
+        if (bombSupply.isShown() && !gameView.heroPlane.isHide()) {
             if (CollisionCheck.isCollision(heroPlane, bombSupply)) {
                 bombSupply.setShown(false);
                 Message msg = gameView.activity.myHandler.obtainMessage();
@@ -163,7 +163,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
 
 
         //检查子弹补给
-        if (bulletSupply.isShown() && gameView.heroPlane.isLive()) {
+        if (bulletSupply.isShown() && !gameView.heroPlane.isHide()) {
             if (CollisionCheck.isCollision(heroPlane, bulletSupply)) {
                 mTimeManager.onGetBulletSupply();
                 heroPlane.setBulletType(BulletType.BULLET_BLUE);

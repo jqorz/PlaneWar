@@ -71,6 +71,9 @@ public class HeroPlane extends BasePlane {
         this.y = Math.min(Math.max(0, y), DeviceTools.getScreenHeight() - getHeight());
     }
 
+    public void resetInjureAnim() {
+        getStatusAnim(PlaneStatus.STATUS_INJURE).reset();
+    }
 
     /*
 

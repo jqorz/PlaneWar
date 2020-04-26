@@ -20,13 +20,12 @@ public class ConstantUtil {
     /**
      * 子弹的参数
      */
-    public final static int BULLET_TIME = 300;//子弹发射时间间隔
+    public final static int BULLET_TIME = 500;//子弹发射时间间隔
     public final static int BULLET_SPAN = 60;//子弹2的三角形坐标偏移量
 
     /**
      * 敌军飞机参数
      */
-    public final static int ENEMY_POOL_COUNT = 15;  //敌人对象的数量
     public final static int FIRST_ENEMY_TIME = 2000;//敌军飞机第一次出现的时间
 
     public static int ENEMY_TIME = 800;//敌军飞机初始出现时间间隔

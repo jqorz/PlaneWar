@@ -62,6 +62,9 @@ public class EnemyPlane extends BasePlane {
         setStatus(PlaneStatus.STATUS_FLY);
     }
 
+    public void resetInjureAnim() {
+        getStatusAnim(PlaneStatus.STATUS_INJURE).reset();
+    }
 
     public int getType() {
         return type;
@@ -110,6 +113,7 @@ public class EnemyPlane extends BasePlane {
                 "type=" + type +
                 ", status=" + status +
                 ", life=" + life +
+                ", x=" + x +
                 '}';
     }
 
