@@ -40,7 +40,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     public Handler myHandler = new Handler() {//用来更新UI线程中的控件
         public void handleMessage(Message msg) {
             if (msg.what == ConstantUtil.STATE_END) {//游戏失败，玩家飞机坠毁
-                postDelayed(new Runnable() {
+                post(new Runnable() {
                     @Override
                     public void run() {
                         if (gameView != null) {
@@ -49,7 +49,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
                         }
                         initFailView();//切换到FailView
                     }
-                }, 800);//为了使英雄飞机爆炸的动画能够播放完，以此延迟执行
+                });
 
             } else {
                 score = score + msg.arg1;

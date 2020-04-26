@@ -17,6 +17,7 @@ public class AnimationImpl {
     private int mFrameCount;
     private Bitmap[] mFrameBitmap;
     private boolean mIsLoop;
+    private int animIndex;
 
     public AnimationImpl(Bitmap frameBitmap, boolean isLoop) {
         this(new Bitmap[]{frameBitmap}, isLoop);
@@ -58,7 +59,12 @@ public class AnimationImpl {
     public void drawAnimation(Canvas canvas, Paint paint, int x, int y) {
         if (!isEnd && !isPause) {
             canvas.drawBitmap(mFrameBitmap[mPlayID], x, y, paint);
-            mPlayID++;
+            if (animIndex == 2) {
+                mPlayID++;
+                animIndex = 0;
+            } else {
+                animIndex++;
+            }
             if (mPlayID >= mFrameCount) {
                 //标志动画播放结束
                 isEnd = true;

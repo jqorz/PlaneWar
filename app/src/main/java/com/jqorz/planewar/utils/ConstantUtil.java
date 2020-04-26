@@ -20,23 +20,23 @@ public class ConstantUtil {
     /**
      * 子弹的参数
      */
-    public final static int BULLET_TIME = 500;//子弹发射时间间隔
+    public final static int BULLET_TIME = 420;//子弹发射时间间隔
     public final static int BULLET_SPAN = 60;//子弹2的三角形坐标偏移量
 
     /**
      * 敌军飞机参数
      */
-    public final static int FIRST_ENEMY_TIME = 2000;//敌军飞机第一次出现的时间
+    public final static int FIRST_ENEMY_TIME = 1500;//敌军飞机第一次出现的时间
 
-    public static int ENEMY_TIME = 800;//敌军飞机初始出现时间间隔
+    public static int ENEMY_TIME = 900;//敌军飞机初始出现时间间隔
     public final static int ENEMY_TIME_MUL = 100;//敌军飞机出现时间间隔的递减时间
     public final static int ENEMY_TIME_MIN = 600;//敌军飞机出现最小时间间隔
 
-    public static int ENEMY_VELOCITY = 5;//敌军飞机的初始飞行速度
+    public static int ENEMY_VELOCITY = 4;//敌军飞机的初始飞行速度
     public static final int ENEMY_VELOCITY_ADD = 1;//敌军飞机的飞行的递增速度
     public static final int ENEMY_VELOCITY_ADD_MAX = 10;//敌军飞机的递增后最大飞行速度
-    public static final int ENEMY_VELOCITY_MAX1 = 18;//敌军飞机1的最大飞行速度
-    public static final int ENEMY_VELOCITY_MAX2 = 12;//敌军飞机2的最大飞行速度
+    public static final int ENEMY_VELOCITY_MAX1 = 15;//敌军飞机1的最大飞行速度
+    public static final int ENEMY_VELOCITY_MAX2 = 10;//敌军飞机2的最大飞行速度
     public static final int ENEMY_VELOCITY_AND_TIME = 40000;//敌军飞机的飞行速度的递增时间及敌军飞机出现时间的减少时间
 
     /**
@@ -51,16 +51,11 @@ public class ConstantUtil {
     public static final int BULLET_VELOCITY = 18;//子弹的飞行速度
     public static final int Bomb_Velocity = 10;//炸弹补给的飞行速度
     public static final int ChangeBullet_Velocity = 10;//子弹补给的飞行速度
-    public static final int Bg_Velocity = 4;//背景移动速度
+    public static final int Bg_Velocity = 3;//背景移动速度
     /**
      * 游戏状态 表示游戏结束
      */
     public static final int STATE_END = 2;
-    /**
-     * 线程休眠时长
-     */
-    public static final int MAIN_THREAD_SPAN = 16;
-
     /**
      * 作弊码
      */
