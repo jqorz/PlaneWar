@@ -85,7 +85,9 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                         enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
                         enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
                         bullet.setShown(false);
-                        gameView.playSound(2, 0);//播放受到攻击音效
+                        if (enemyPlane.getType() != PlaneType.ENEMY_TYPE1) {
+                            gameView.playSound(2, 0);//播放受到攻击音效
+                        }
                     }
                 }
                 if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
