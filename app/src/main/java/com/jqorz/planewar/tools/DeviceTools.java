@@ -1,7 +1,6 @@
 package com.jqorz.planewar.tools;
 
 import android.app.Application;
-import android.util.DisplayMetrics;
 
 /**
  * @author j1997
@@ -9,24 +8,24 @@ import android.util.DisplayMetrics;
  */
 public class DeviceTools {
     private static Application sApplication;
+    private static int screenHeight = -1;
+    private static int screenWidth = -1;
 
     public static void init(Application application) {
         sApplication = application;
     }
 
     public static int getScreenWidth() {
-        if (sApplication != null) {
-            DisplayMetrics metrics = sApplication.getResources().getDisplayMetrics();
-            return metrics.widthPixels;
+        if (screenWidth == -1) {
+            screenWidth = sApplication.getResources().getDisplayMetrics().widthPixels;
         }
-        return 0;
+        return screenWidth;
     }
 
     public static int getScreenHeight() {
-        if (sApplication != null) {
-            DisplayMetrics metrics = sApplication.getResources().getDisplayMetrics();
-            return metrics.heightPixels;
+        if (screenHeight == -1) {
+            screenHeight = sApplication.getResources().getDisplayMetrics().heightPixels;
         }
-        return 0;
+        return screenHeight;
     }
 }

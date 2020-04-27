@@ -94,7 +94,13 @@ public class BitmapLoader {
         }
 
         Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.game_background);//大背景图片
-        background = Bitmap.createScaledBitmap(bmp, DeviceTools.getScreenWidth(), DeviceTools.getScreenHeight(), true);
+        int toWidth = DeviceTools.getScreenWidth();
+        int toHeight = DeviceTools.getScreenHeight();
+        if (bmp.getWidth() != 0) {
+            toHeight = toWidth * bmp.getHeight() / bmp.getWidth();
+        }
+        //按照背景图的宽高比，将背景图的宽度缩放至屏幕宽度，高度等比缩放
+        background = Bitmap.createScaledBitmap(bmp, toWidth, toHeight, true);
 
     }
 }

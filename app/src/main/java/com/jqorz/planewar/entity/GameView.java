@@ -32,7 +32,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     private static final int clickLimitValue = 5;
     public BulletSupply mBulletSupply;//子弹补给
     public BombSupply mBombSupply;//炸弹补给
-    public BgEntity mBgEntity1, mBgEntity2;
+    public BgEntity[] mBgEntityArray;
     public HeroPlane heroPlane;
     public MainRunThread mMainRunThread;//刷帧的线程
     public ArrayList<Bullet> mBullets = new ArrayList<>();//子弹数组
@@ -63,7 +63,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     }
 
     public void initGameView() {
-        int screenHeight = DeviceTools.getScreenHeight();
 
         getHolder().addCallback(this);//注册接口
 
@@ -74,11 +73,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         mBulletSupply = new BulletSupply();//取子弹补给
         mBombSupply = new BombSupply(); //取炸弹补给
 
-        mBgEntity1 = new BgEntity();
-        mBgEntity2 = new BgEntity();
+        int bgSize = (int) Math.ceil(DeviceTools.getScreenHeight() / (BitmapLoader.background.getHeight() * 1.0f)) + 1;
 
-        mBgEntity1.setY(screenHeight-mBgEntity1.getHeight());
-        mBgEntity2.setY(mBgEntity1.getY() - mBgEntity2.getHeight());
+        mBgEntityArray = new BgEntity[bgSize];
+
+        for (int i = 0; i < mBgEntityArray.length; i++) {
+            BgEntity bgEntity = new BgEntity();
+            if (i == 0) {
+                bgEntity.setY(DeviceTools.getScreenHeight() - bgEntity.getHeight());
+            } else {
+                BgEntity lastBg = mBgEntityArray[i - 1];
+                bgEntity.setY(lastBg.getY() - bgEntity.getHeight());
+            }
+            mBgEntityArray[i] = bgEntity;
+        }
 
         mStatusManager = new StatusManager(this);
         mMoveManager = new MoveManager(this);

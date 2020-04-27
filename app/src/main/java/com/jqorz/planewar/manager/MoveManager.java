@@ -47,11 +47,9 @@ public class MoveManager {
         }
 
         //移动背景
-        BgEntity bgEntity1 = gameView.mBgEntity1;
-        bgEntity1.move();
-        BgEntity bgEntity2 = gameView.mBgEntity2;
-        bgEntity2.move();
-
+        for (BgEntity bgEntity:gameView.mBgEntityArray) {
+            bgEntity.move();
+        }
 
     }
 }

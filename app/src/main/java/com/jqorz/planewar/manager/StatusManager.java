@@ -5,6 +5,7 @@ import android.os.Message;
 import com.jqorz.planewar.eenum.BulletType;
 import com.jqorz.planewar.eenum.PlaneStatus;
 import com.jqorz.planewar.eenum.PlaneType;
+import com.jqorz.planewar.entity.BgEntity;
 import com.jqorz.planewar.entity.BombSupply;
 import com.jqorz.planewar.entity.Bullet;
 import com.jqorz.planewar.entity.BulletSupply;
@@ -174,13 +175,14 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
         }
 
         //检查背景
-        if (gameView.mBgEntity1.getY() > DeviceTools.getScreenHeight()) {
-            gameView.mBgEntity1.setY(gameView.mBgEntity2.getY() - DeviceTools.getScreenHeight());
+        for (int i = 0; i < gameView.mBgEntityArray.length; i++) {
+            BgEntity bgEntity = gameView.mBgEntityArray[i];
+            if (bgEntity.getY() > DeviceTools.getScreenHeight()) {
+                //如果是第0个，应该把它排到第length-1后面，否则应该排到i-1后面
+                int lastPos = i == 0 ? gameView.mBgEntityArray.length - 1 : i - 1;
+                bgEntity.setY(gameView.mBgEntityArray[lastPos].getY() - bgEntity.getHeight());
+            }
         }
-        if (gameView.mBgEntity2.getY() > DeviceTools.getScreenHeight()) {
-            gameView.mBgEntity2.setY(gameView.mBgEntity1.getY() - DeviceTools.getScreenHeight());
-        }
-
     }
 
     @Override

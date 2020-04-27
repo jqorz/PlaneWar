@@ -2,6 +2,7 @@ package com.jqorz.planewar.manager;
 
 import android.graphics.Canvas;
 
+import com.jqorz.planewar.entity.BgEntity;
 import com.jqorz.planewar.entity.Bullet;
 import com.jqorz.planewar.entity.EnemyPlane;
 import com.jqorz.planewar.entity.GameView;
@@ -18,8 +19,9 @@ public class DrawManager {
     }
 
     public void drawBg(Canvas canvas) {
-        gameView.mBgEntity1.draw(canvas, gameView.mBgPaint);
-        gameView.mBgEntity2.draw(canvas, gameView.mBgPaint);
+        for (BgEntity bgEntity : gameView.mBgEntityArray) {
+            bgEntity.draw(canvas, gameView.mBgPaint);
+        }
     }
 
     public void drawEntity(Canvas canvas) {
