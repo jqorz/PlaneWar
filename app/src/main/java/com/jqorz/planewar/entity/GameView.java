@@ -77,8 +77,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         mBgEntity1 = new BgEntity();
         mBgEntity2 = new BgEntity();
 
-        mBgEntity1.setY(Math.abs(mBgEntity1.getHeight() - screenHeight));
-        mBgEntity2.setY(mBgEntity1.getY() - mBgEntity1.getHeight());
+        mBgEntity1.setY(screenHeight-mBgEntity1.getHeight());
+        mBgEntity2.setY(mBgEntity1.getY() - mBgEntity2.getHeight());
 
         mStatusManager = new StatusManager(this);
         mMoveManager = new MoveManager(this);
