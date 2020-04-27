@@ -76,7 +76,6 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                     enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
                     enemyPlane.setLife(0);
                 }
-                useBomb = false;
             }
 
 
@@ -125,6 +124,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                 enemyPlane.setStatus(PlaneStatus.STATUS_HIDE);
             }
         }
+        useBomb = false;
         for (EnemyPlane enemyPlane1 : gameView.mEnemyPlanes) {
             if (enemyPlane1.isHide()) {
                 deleteEnemyPlanes.add(enemyPlane1);

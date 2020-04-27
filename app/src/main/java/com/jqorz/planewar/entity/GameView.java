@@ -19,6 +19,7 @@ import com.jqorz.planewar.manager.StatusManager;
 import com.jqorz.planewar.thread.MainRunThread;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.tools.DeviceTools;
+import com.jqorz.planewar.utils.Logg;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,8 +74,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         mBulletSupply = new BulletSupply();//取子弹补给
         mBombSupply = new BombSupply(); //取炸弹补给
 
-        int bgSize = (int) Math.ceil(DeviceTools.getScreenHeight() / (BitmapLoader.background.getHeight() * 1.0f)) + 1;
+        mStatusManager = new StatusManager(this);
+        mMoveManager = new MoveManager(this);
+        mDrawManager = new DrawManager(this);
 
+        initBgArray();
+
+    }
+
+    private void initBgArray() {
+        int bgSize = (int) Math.ceil(DeviceTools.getScreenHeight() / (BitmapLoader.background.getHeight() * 1.0f)) + 1;
+        Logg.i("屏幕高度=" + DeviceTools.getScreenHeight() + " 背景高度=" + BitmapLoader.background.getHeight() + " 背景图数量=" + bgSize);
         mBgEntityArray = new BgEntity[bgSize];
 
         for (int i = 0; i < mBgEntityArray.length; i++) {
@@ -87,11 +97,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
             }
             mBgEntityArray[i] = bgEntity;
         }
-
-        mStatusManager = new StatusManager(this);
-        mMoveManager = new MoveManager(this);
-        mDrawManager = new DrawManager(this);
-
     }
 
     private void initSounds() {
