@@ -3,7 +3,7 @@
     <string name="cheat">金手指</string>
     <string name="theMostHighScore">历史最高:</string>
     <string name="thisScore">恭喜! 您的最终成绩是</string>
-    <string name="about_author">作者:jqorz\n邮箱:1055774013@qq.com\nQQ:1055774013</string>
+    <string name="about_author">作者:jqorz</string>
     <string name="about_statement">本游戏所有素材均来自于网上搜集\n如有权益侵犯请联系作者</string>
-    <string name="about_version">Version:V1.0.1\n有部分Bug,请见谅</string>
+    <string name="about_version">Version:V1.0.2</string>
 </resources>

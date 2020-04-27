@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,7 +32,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
 
     private TextView tv_BombNum, tv_Score;
     private Switch swt_Sound, swt_Music;
-    private ImageButton imgBtn_Pause;
+    private ImageView imgBtn_Pause;
     private LinearLayout lv_Bomb;
 
     private MediaPlayer mMediaPlayer;
@@ -115,7 +115,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         tv_Score = findViewById(R.id.tv_Score);
         swt_Sound = findViewById(R.id.swt_Sound);
         swt_Music = findViewById(R.id.swt_Music);
-        imgBtn_Pause = findViewById(R.id.imgBtn_Pause);
+        imgBtn_Pause = findViewById(R.id.iv_Pause);
         lv_Bomb = findViewById(R.id.lv_Bomb);
     }
 
@@ -151,7 +151,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.imgBtn_Pause) {
+        if (view.getId() == R.id.iv_Pause) {
             if (!isPause) {
                 setPause();
             } else {

@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ImageView;
 
 import com.jqorz.planewar.R;
 
 public class GameLauncher extends Activity implements View.OnClickListener, View.OnLongClickListener {
-    private ImageButton imgBtn_startGame, imgBtn_exitGame, imgBtn_about, imgBtn_setting;
+    private ImageView imgBtn_startGame, imgBtn_exitGame, imgBtn_about, imgBtn_setting;
     private ImageView iv_icon;
 
     @Override
@@ -22,10 +22,10 @@ public class GameLauncher extends Activity implements View.OnClickListener, View
     }
 
     private void initView() {
-        imgBtn_startGame = (ImageButton) findViewById(R.id.imgBtn_startGame);
-        imgBtn_exitGame = (ImageButton) findViewById(R.id.imgBtn_exitGame);
-        imgBtn_about = (ImageButton) findViewById(R.id.imgBtn_about);
-        imgBtn_setting = (ImageButton) findViewById(R.id.imgBtn_Setting);
+        imgBtn_startGame = (ImageView) findViewById(R.id.imgBtn_startGame);
+        imgBtn_exitGame = (ImageView) findViewById(R.id.imgBtn_exitGame);
+        imgBtn_about = (ImageView) findViewById(R.id.imgBtn_about);
+        imgBtn_setting = (ImageView) findViewById(R.id.imgBtn_Setting);
         iv_icon = (ImageView) findViewById(R.id.iv_icon);
     }
 

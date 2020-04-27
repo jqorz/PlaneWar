@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jqorz.planewar.R;
@@ -17,7 +17,7 @@ public class GameOver extends Activity implements View.OnClickListener {
     private final String MAX_SCORE = "MAX_SCORE";
     private final String HAS_CHEATED = "HAS_CHEATED";
     private TextView tv_MaxScore, tv_thisScore;
-    private ImageButton imgBtn_restartGame, imgBtn_backHome, imgBtn_exitGame;
+    private ImageView imgBtn_restartGame, imgBtn_backHome, imgBtn_exitGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +73,9 @@ public class GameOver extends Activity implements View.OnClickListener {
     private void initView() {
         tv_MaxScore = (TextView) findViewById(R.id.tv_MaxScore);
         tv_thisScore = (TextView) findViewById(R.id.tv_thisScore);
-        imgBtn_restartGame = (ImageButton) findViewById(R.id.imgBtn_restartGame);
-        imgBtn_backHome = (ImageButton) findViewById(R.id.imgBtn_backHome);
-        imgBtn_exitGame = (ImageButton) findViewById(R.id.imgBtn_exitGame);
+        imgBtn_restartGame = (ImageView) findViewById(R.id.imgBtn_restartGame);
+        imgBtn_backHome = (ImageView) findViewById(R.id.imgBtn_backHome);
+        imgBtn_exitGame = (ImageView) findViewById(R.id.imgBtn_exitGame);
     }
 
     @Override

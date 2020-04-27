@@ -52,7 +52,6 @@ public class EnemyPlane extends BasePlane {
 
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        Logg.i(TAG, toString());
         getStatusAnim(status).drawAnimation(canvas, paint, x, y);
     }
 

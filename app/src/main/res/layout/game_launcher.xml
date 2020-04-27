@@ -33,13 +33,13 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/imgBtn_startGame"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:background="@drawable/launcher_start_btn_selector" />
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/imgBtn_exitGame"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
@@ -48,7 +48,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imgBtn_Setting"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -57,12 +57,12 @@
         android:background="@drawable/launcher_setting_btn_selector"
         android:contentDescription="Setting" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/imgBtn_about"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="20dp"
         android:background="@drawable/launcher_about_btn_selector"
         android:contentDescription="About" />

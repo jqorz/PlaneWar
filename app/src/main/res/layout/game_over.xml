@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginLeft="7dp"
+        android:layout_marginStart="7dp"
         android:layout_marginTop="13dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -63,20 +63,20 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imgBtn_restartGame"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:background="@drawable/end_restart_btn_selector" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imgBtn_backHome"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/end_back_btn_selector" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imgBtn_exitGame"
             android:layout_width="150dp"
             android:layout_height="50dp"
