@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -17,10 +15,11 @@ import android.widget.TextView;
 
 import com.jqorz.planewar.R;
 import com.jqorz.planewar.entity.GameView;
+import com.jqorz.planewar.listener.GameListener;
 import com.jqorz.planewar.tools.TimeTools;
 import com.jqorz.planewar.utils.ConstantUtil;
 
-public class GamePlaying extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class GamePlaying extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, GameListener {
     GameView gameView;//GameView的引用
     SharedPreferences sp;
 
@@ -37,31 +36,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
 
     private MediaPlayer mMediaPlayer;
 
-    public Handler myHandler = new Handler() {//用来更新UI线程中的控件
-        public void handleMessage(Message msg) {
-            if (msg.what == ConstantUtil.STATE_END) {//游戏失败，玩家飞机坠毁
-                post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (gameView != null) {
-                            gameView.mMainRunThread.setFlag(false);
-                            gameView = null;
-                        }
-                        initFailView();//切换到FailView
-                    }
-                });
 
-            } else {
-                score = score + msg.arg1;
-                String showText = "" + score;
-                tv_Score.setText(showText);
-
-                bombNum = bombNum + msg.arg2;
-                String showText2 = "X" + bombNum;
-                tv_BombNum.setText(showText2);
-            }
-        }
-    };
     private LinearLayout lv_switchers;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -95,9 +70,9 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     private void setSwitch() {
-        Boolean b1 = sp.getBoolean("swt_Music", false);
+        boolean b1 = sp.getBoolean("swt_Music", false);
         swt_Music.setChecked(b1);
-        Boolean b2 = sp.getBoolean("swt_Sound", true);
+        boolean b2 = sp.getBoolean("swt_Sound", true);
         swt_Sound.setChecked(b2);
     }
 
@@ -120,6 +95,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     private void initEvent() {
+        gameView.setGameListener(this);
         imgBtn_Pause.setOnClickListener(this);
         swt_Sound.setOnCheckedChangeListener(this);
         swt_Music.setOnCheckedChangeListener(this);
@@ -259,5 +235,34 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         super.onStop();
         mMediaPlayer.release();
         this.finish();
+    }
+
+    @Override
+    public void onGameOver() {
+        initFailView();//切换到FailVie
+    }
+
+    @Override
+    public void onGetBomb(int count) {
+        bombNum += count;
+        runOnUiThread(() -> {
+            String showText2 = "X" + bombNum;
+            tv_BombNum.setText(showText2);
+        });
+
+    }
+
+    @Override
+    public void onScoreAdd(int score) {
+        this.score += score;
+        runOnUiThread(() -> {
+            tv_Score.setText(String.valueOf(this.score));
+        });
+
+    }
+
+    @Override
+    public void onPlaySound() {
+
     }
 }

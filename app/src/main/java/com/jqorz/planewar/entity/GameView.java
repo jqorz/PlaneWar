@@ -12,13 +12,16 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.jqorz.planewar.R;
+import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.frame.GamePlaying;
+import com.jqorz.planewar.listener.GameListener;
 import com.jqorz.planewar.manager.DrawManager;
 import com.jqorz.planewar.manager.MoveManager;
 import com.jqorz.planewar.manager.StatusManager;
 import com.jqorz.planewar.thread.MainRunThread;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.tools.DeviceTools;
+import com.jqorz.planewar.utils.ConstantUtil;
 import com.jqorz.planewar.utils.Logg;
 
 import java.util.ArrayList;
@@ -51,6 +54,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     private DrawManager mDrawManager;
     private float dX, dY = 0f;
     private float downX, downY = 0f;
+    private GameListener mGameListener;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -185,5 +189,45 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
 
     public void setBomb() {
         mStatusManager.useBomb = true;
+    }
+
+    public void onHeroDie() {
+        if (mGameListener != null) {
+            mGameListener.onGameOver();
+        }
+        mMainRunThread.setFlag(false);
+    }
+
+    public void onEnemyDie(int type) {
+        switch (type) {
+            case PlaneType.ENEMY_TYPE1:
+                playSound(2, 0);
+                if (mGameListener != null) {
+                    mGameListener.onScoreAdd(ConstantUtil.ENEMY_TYPE1_SCORE);
+                }
+                break;
+            case PlaneType.ENEMY_TYPE2:
+                playSound(3, 0);
+                if (mGameListener != null) {
+                    mGameListener.onScoreAdd(ConstantUtil.ENEMY_TYPE2_SCORE);
+                }
+                break;
+            case PlaneType.ENEMY_TYPE3:
+                playSound(4, 0);
+                if (mGameListener != null) {
+                    mGameListener.onScoreAdd(ConstantUtil.ENEMY_TYPE3_SCORE);
+                }
+                break;
+        }
+    }
+
+    public void onGetBomb(int count) {
+        if (mGameListener != null) {
+            mGameListener.onGetBomb(count);
+        }
+    }
+
+    public void setGameListener(GameListener gameListener) {
+        mGameListener = gameListener;
     }
 }

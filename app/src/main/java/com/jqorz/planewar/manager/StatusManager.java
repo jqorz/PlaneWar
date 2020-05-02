@@ -1,7 +1,5 @@
 package com.jqorz.planewar.manager;
 
-import android.os.Message;
-
 import com.jqorz.planewar.eenum.BulletType;
 import com.jqorz.planewar.eenum.PlaneStatus;
 import com.jqorz.planewar.eenum.PlaneType;
@@ -15,7 +13,6 @@ import com.jqorz.planewar.entity.HeroPlane;
 import com.jqorz.planewar.tools.CollisionCheck;
 import com.jqorz.planewar.tools.DeviceTools;
 import com.jqorz.planewar.tools.MapCreator;
-import com.jqorz.planewar.utils.ConstantUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,22 +96,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                 }
             } else if (enemyPlane.isInjure()) {
                 if (enemyPlane.getLife() <= 0) {//当生命小于0时，向主线程发送得分信息
-                    Message msg = gameView.activity.myHandler.obtainMessage();
-                    switch (enemyPlane.getType()) {
-                        case PlaneType.ENEMY_TYPE1:
-                            gameView.playSound(2, 0);
-                            msg.arg1 = ConstantUtil.ENEMY_TYPE1_SCORE;
-                            break;
-                        case PlaneType.ENEMY_TYPE2:
-                            gameView.playSound(3, 0);
-                            msg.arg1 = ConstantUtil.ENEMY_TYPE2_SCORE;
-                            break;
-                        case PlaneType.ENEMY_TYPE3:
-                            gameView.playSound(4, 0);
-                            msg.arg1 = ConstantUtil.ENEMY_TYPE3_SCORE;
-                            break;
-                    }
-                    gameView.activity.myHandler.sendMessage(msg);
+                    gameView.onEnemyDie(enemyPlane.getType());
                     enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
                 } else {
                     enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
@@ -151,16 +133,14 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                 heroPlane.resetInjureAnim();
             }
         } else if (heroPlane.isExploreEnd()) {
-            gameView.activity.myHandler.sendEmptyMessage(ConstantUtil.STATE_END);//向主activity发送Handler消息
+            gameView.onHeroDie();
         }
 
         //检查炸弹补给
         if (bombSupply.isShown() && !gameView.heroPlane.isHide()) {
             if (CollisionCheck.isCollision(heroPlane, bombSupply)) {
                 bombSupply.setShown(false);
-                Message msg = gameView.activity.myHandler.obtainMessage();
-                msg.arg2 = 1;
-                gameView.activity.myHandler.sendMessage(msg);
+                gameView.onGetBomb(1);
             }
         }
 
