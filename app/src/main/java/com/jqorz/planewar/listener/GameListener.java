@@ -5,12 +5,16 @@ package com.jqorz.planewar.listener;
  * @since 2020/5/2
  */
 public interface GameListener {
-    void onGameOver();
+
+    void onHeroAttacked();
+
+    void onHeroDie();
+
+    void onEnemyDie(int type);
+
+    void onEnemyAttacked(int type);
 
     void onGetBomb(int count);
 
-    void onScoreAdd(int score);
-
-    void onPlaySound();
-
+    void onGameOver();
 }

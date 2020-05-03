@@ -3,16 +3,11 @@ package com.jqorz.planewar.entity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.jqorz.planewar.R;
-import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.frame.GamePlaying;
 import com.jqorz.planewar.listener.GameListener;
 import com.jqorz.planewar.manager.DrawManager;
@@ -21,11 +16,9 @@ import com.jqorz.planewar.manager.StatusManager;
 import com.jqorz.planewar.thread.MainRunThread;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.tools.DeviceTools;
-import com.jqorz.planewar.utils.ConstantUtil;
 import com.jqorz.planewar.utils.Logg;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * 主游戏界面控制类
@@ -47,8 +40,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     public Paint mEmptyPlanePaint = new Paint();
     public Paint mSupplyPlanePaint = new Paint();
     public Paint mBulletPlanePaint = new Paint();
-    private SoundPool soundPool;//声音
-    private HashMap<Integer, Integer> soundPoolMap;
+
     private StatusManager mStatusManager;
     private MoveManager mMoveManager;
     private DrawManager mDrawManager;
@@ -62,7 +54,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         this.setKeepScreenOn(true);//保持屏幕常亮
         this.setFocusableInTouchMode(false);//设置不允许按键
         BitmapLoader.init(context);
-        initSounds();
         initGameView();
 
     }
@@ -103,26 +94,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
         }
     }
 
-    private void initSounds() {
-        soundPool = new SoundPool.Builder()
-                .setAudioAttributes(new AudioAttributes.Builder().setLegacyStreamType(AudioManager.STREAM_MUSIC).build())
-                .setMaxStreams(4)
-                .build();
-        soundPoolMap = new HashMap<>();
-        soundPoolMap.put(2, soundPool.load(getContext(), R.raw.attack, 1));
-        soundPoolMap.put(3, soundPool.load(getContext(), R.raw.boom_noraml, 1));
-        soundPoolMap.put(4, soundPool.load(getContext(), R.raw.boom_big, 1));
-    }
-
-    public void playSound(int sound, int loop) {
-        if (activity.getIsSound()) {
-            AudioManager mgr = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-            float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
-            float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            float volume = streamVolumeCurrent / streamVolumeMax;
-            soundPool.play(soundPoolMap.get(sound), volume, volume, 1, loop, 1f);
-        }
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -164,8 +135,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
     public void surfaceDestroyed(SurfaceHolder holder) {//摧毁时释放相应进程
         boolean retry = true;
         this.mMainRunThread.setFlag(false);
-
-        soundPool.release();
         while (retry) {
             try {
                 mMainRunThread.join();
@@ -193,31 +162,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Mai
 
     public void onHeroDie() {
         if (mGameListener != null) {
+            mGameListener.onHeroDie();
+        }
+    }
+
+    public void onGameOver() {
+        if (mGameListener != null) {
             mGameListener.onGameOver();
         }
         mMainRunThread.setFlag(false);
     }
 
+    public void onEnemyAttacked(int type) {
+        if (mGameListener != null) {
+            mGameListener.onEnemyAttacked(type);
+        }
+    }
+
+    public void onHeroAttacked() {
+        if (mGameListener != null) {
+            mGameListener.onHeroAttacked();
+        }
+    }
+
     public void onEnemyDie(int type) {
-        switch (type) {
-            case PlaneType.ENEMY_TYPE1:
-                playSound(2, 0);
-                if (mGameListener != null) {
-                    mGameListener.onScoreAdd(ConstantUtil.ENEMY_TYPE1_SCORE);
-                }
-                break;
-            case PlaneType.ENEMY_TYPE2:
-                playSound(3, 0);
-                if (mGameListener != null) {
-                    mGameListener.onScoreAdd(ConstantUtil.ENEMY_TYPE2_SCORE);
-                }
-                break;
-            case PlaneType.ENEMY_TYPE3:
-                playSound(4, 0);
-                if (mGameListener != null) {
-                    mGameListener.onScoreAdd(ConstantUtil.ENEMY_TYPE3_SCORE);
-                }
-                break;
+        if (mGameListener != null) {
+            mGameListener.onEnemyDie(type);
         }
     }
 

@@ -1,10 +1,14 @@
 package com.jqorz.planewar.frame;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -14,10 +18,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.jqorz.planewar.R;
+import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.listener.GameListener;
 import com.jqorz.planewar.tools.TimeTools;
 import com.jqorz.planewar.utils.ConstantUtil;
+
+import java.util.HashMap;
 
 public class GamePlaying extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, GameListener {
     GameView gameView;//GameView的引用
@@ -28,6 +35,8 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     private int bombNum = 0;//玩家炸弹数量
     private boolean isSound = true;//是否播放声音
 
+    private SoundPool soundPool;//声音
+    private HashMap<Integer, Integer> soundPoolMap;
 
     private TextView tv_BombNum, tv_Score;
     private Switch swt_Sound, swt_Music;
@@ -46,6 +55,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         initView();
         initEvent();
         initMusic();
+        initSounds();
         setTypeface();
         getSetting();
         setSwitch();
@@ -53,6 +63,11 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         checkCheat();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        soundPool.release();
+    }
 
     private void initMusic() {
         mMediaPlayer = MediaPlayer.create(this, R.raw.bgm);
@@ -110,6 +125,27 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         Intent intent = new Intent(this, GameOver.class);
         intent.putExtra("Score", score);
         this.startActivity(intent);
+    }
+
+    private void initSounds() {
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(new AudioAttributes.Builder().setLegacyStreamType(AudioManager.STREAM_MUSIC).build())
+                .setMaxStreams(4)
+                .build();
+        soundPoolMap = new HashMap<>();
+        soundPoolMap.put(2, soundPool.load(this, R.raw.attack, 1));
+        soundPoolMap.put(3, soundPool.load(this, R.raw.boom_noraml, 1));
+        soundPoolMap.put(4, soundPool.load(this, R.raw.boom_big, 1));
+    }
+
+    public void playSound(int sound, int loop) {
+        if (getIsSound()) {
+            AudioManager mgr = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+            float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
+            float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            float volume = streamVolumeCurrent / streamVolumeMax;
+            soundPool.play(soundPoolMap.get(sound), volume, volume, 1, loop, 1f);
+        }
     }
 
     public void pauseThread() {
@@ -237,10 +273,6 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         this.finish();
     }
 
-    @Override
-    public void onGameOver() {
-        initFailView();//切换到FailVie
-    }
 
     @Override
     public void onGetBomb(int count) {
@@ -253,16 +285,43 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     @Override
-    public void onScoreAdd(int score) {
-        this.score += score;
-        runOnUiThread(() -> {
-            tv_Score.setText(String.valueOf(this.score));
-        });
-
+    public void onGameOver() {
+        initFailView();//切换到FailVie
     }
 
     @Override
-    public void onPlaySound() {
+    public void onHeroAttacked() {
+        playSound(2, 0);
+    }
 
+    @Override
+    public void onHeroDie() {
+        playSound(4, 0);
+    }
+
+    @Override
+    public void onEnemyDie(@PlaneType int type) {
+        this.score += ConstantUtil.getEnemyScore(type);
+        runOnUiThread(() -> {
+            tv_Score.setText(String.valueOf(this.score));
+        });
+        switch (type) {
+            case PlaneType.ENEMY_TYPE1:
+                playSound(2, 0);
+                break;
+            case PlaneType.ENEMY_TYPE2:
+                playSound(3, 0);
+                break;
+            case PlaneType.ENEMY_TYPE3:
+                playSound(4, 0);
+                break;
+        }
+    }
+
+    @Override
+    public void onEnemyAttacked(int type) {
+        if (type != PlaneType.ENEMY_TYPE1) {
+            playSound(2, 0);
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.jqorz.planewar.manager;
 
 import com.jqorz.planewar.eenum.BulletType;
 import com.jqorz.planewar.eenum.PlaneStatus;
-import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.entity.BgEntity;
 import com.jqorz.planewar.entity.BombSupply;
 import com.jqorz.planewar.entity.Bullet;
@@ -82,9 +81,7 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                         enemyPlane.setStatus(PlaneStatus.STATUS_INJURE);
                         enemyPlane.setLife(enemyPlane.getLife() - 1);//生命减1
                         bullet.setShown(false);
-                        if (enemyPlane.getType() != PlaneType.ENEMY_TYPE1) {
-                            gameView.playSound(2, 0);//播放受到攻击音效
-                        }
+                        gameView.onEnemyAttacked(enemyPlane.getType());
                     }
                 }
                 if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
@@ -92,12 +89,13 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
                     enemyPlane.setLife(0);//生命减1
                     heroPlane.setStatus(PlaneStatus.STATUS_INJURE);
                     heroPlane.setLife(0);
-                    gameView.playSound(2, 0);//播放受到攻击音效
+                    gameView.onHeroAttacked();
                 }
             } else if (enemyPlane.isInjure()) {
                 if (enemyPlane.getLife() <= 0) {//当生命小于0时，向主线程发送得分信息
                     gameView.onEnemyDie(enemyPlane.getType());
                     enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
+                    gameView.onEnemyDie(enemyPlane.getType());
                 } else {
                     enemyPlane.setStatus(PlaneStatus.STATUS_FLY);
                     enemyPlane.resetInjureAnim();
@@ -127,13 +125,13 @@ public class StatusManager implements TimeManager.OnEntityChangeListener {
         if (heroPlane.isInjure()) {
             if (heroPlane.getLife() <= 0) {//当生命小于0时
                 heroPlane.setStatus(PlaneStatus.STATUS_EXPLORE);
-                gameView.playSound(4, 0);
+                gameView.onHeroDie();
             } else {
                 heroPlane.setStatus(PlaneStatus.STATUS_FLY);
                 heroPlane.resetInjureAnim();
             }
         } else if (heroPlane.isExploreEnd()) {
-            gameView.onHeroDie();
+            gameView.onGameOver();
         }
 
         //检查炸弹补给

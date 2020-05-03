@@ -9,7 +9,11 @@ import com.jqorz.planewar.base.BaseEntityImp;
 public class CollisionCheck {
     private static float DEFAULT_OVERLAP_AREA = 0.2f;
 
-    public static boolean isCollision(BaseEntityImp entity1, BaseEntityImp entity2) {//判断两个矩形是否碰撞
+    public static boolean isCollision(BaseEntityImp entity1, BaseEntityImp entityImp2) {
+        return isCollision(entity1, entityImp2, DEFAULT_OVERLAP_AREA);
+    }
+
+    public static boolean isCollision(BaseEntityImp entity1, BaseEntityImp entity2, float area) {//判断两个矩形是否碰撞
         int xd;//大的x
         int yd;//大的y
         int xx;//小的x
@@ -51,7 +55,7 @@ public class CollisionCheck {
             double Dwidth = width - xd + xx;   //重叠区域宽度
             double Dheight = height - yd + yx; //重叠区域高度
             //重叠面积超20%则判定为碰撞
-            return Dwidth * Dheight / (entity2.getHeight() * entity2.getWidth()) >= DEFAULT_OVERLAP_AREA;
+            return Dwidth * Dheight / (entity2.getHeight() * entity2.getWidth()) >= area;
         }
         return false;
     }
