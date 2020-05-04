@@ -28,4 +28,8 @@ public class DeviceTools {
         }
         return screenHeight;
     }
+
+    public static Application getApp() {
+        return sApplication;
+    }
 }

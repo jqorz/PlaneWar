@@ -1,15 +1,14 @@
 package com.jqorz.planewar.frame;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.jqorz.planewar.R;
+import com.jqorz.planewar.tools.UserDataManager;
 
 public class GameSetting extends Activity implements CompoundButton.OnCheckedChangeListener {
-    SharedPreferences sp;
     private Switch swt_Sound, swt_Music;
 
     @Override
@@ -23,11 +22,8 @@ public class GameSetting extends Activity implements CompoundButton.OnCheckedCha
 
 
     private void setSwitch() {
-        sp = getSharedPreferences("Data", MODE_PRIVATE);
-        Boolean b1 = sp.getBoolean("swt_Music", true);
-        swt_Music.setChecked(b1);
-        Boolean b2 = sp.getBoolean("swt_Sound", true);
-        swt_Sound.setChecked(b2);
+        swt_Music.setChecked(UserDataManager.isOpenMusic());
+        swt_Sound.setChecked(UserDataManager.isOpenSound());
     }
 
     private void initView() {
@@ -43,16 +39,14 @@ public class GameSetting extends Activity implements CompoundButton.OnCheckedCha
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        SharedPreferences.Editor editor = sp.edit();
         switch (compoundButton.getId()) {
             case R.id.swt_Sound:
-                editor.putBoolean("swt_Sound", b);
+                UserDataManager.setOpenSound(b);
                 break;
             case R.id.swt_Music:
-                editor.putBoolean("swt_Music", b);
+                UserDataManager.setOpenMusic(b);
                 break;
         }
-        editor.apply();
     }
 
 }

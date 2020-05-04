@@ -3,7 +3,6 @@ package com.jqorz.planewar.frame;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -22,18 +21,15 @@ import com.jqorz.planewar.eenum.PlaneType;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.listener.GameListener;
 import com.jqorz.planewar.tools.TimeTools;
+import com.jqorz.planewar.tools.UserDataManager;
 import com.jqorz.planewar.utils.ConstantUtil;
 
 import java.util.HashMap;
 
 public class GamePlaying extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, GameListener {
-    GameView gameView;//GameView的引用
-    SharedPreferences sp;
-
-    Boolean isPause = false;//是否暂停
+    private boolean isPause = false;//是否暂停
     private int score = 0;//玩家本局分数
     private int bombNum = 0;//玩家炸弹数量
-    private boolean isSound = true;//是否播放声音
 
     private SoundPool soundPool;//声音
     private HashMap<Integer, Integer> soundPoolMap;
@@ -42,22 +38,19 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     private Switch swt_Sound, swt_Music;
     private ImageView imgBtn_Pause;
     private LinearLayout lv_Bomb;
+    private GameView gameView;
+    private LinearLayout lv_switchers;
 
     private MediaPlayer mMediaPlayer;
-
-
-    private LinearLayout lv_switchers;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_playing);
-        sp = getSharedPreferences("Data", MODE_PRIVATE);
         initView();
         initEvent();
         initMusic();
         initSounds();
         setTypeface();
-        getSetting();
         setSwitch();
         checkMusic();
         checkCheat();
@@ -74,21 +67,10 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
         mMediaPlayer.setLooping(true);
     }
 
-    public boolean getIsSound() {
-        getSetting();
-        return isSound;
-    }
-
-
-    private void getSetting() {
-        isSound = sp.getBoolean("swt_Sound", true);
-    }
 
     private void setSwitch() {
-        boolean b1 = sp.getBoolean("swt_Music", false);
-        swt_Music.setChecked(b1);
-        boolean b2 = sp.getBoolean("swt_Sound", true);
-        swt_Sound.setChecked(b2);
+        swt_Music.setChecked(UserDataManager.isOpenMusic());
+        swt_Sound.setChecked(UserDataManager.isOpenSound());
     }
 
     private void setTypeface() {
@@ -139,12 +121,14 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     public void playSound(int sound, int loop) {
-        if (getIsSound()) {
+        if (UserDataManager.isOpenSound()) {
             AudioManager mgr = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
             float streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
             float streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             float volume = streamVolumeCurrent / streamVolumeMax;
-            soundPool.play(soundPoolMap.get(sound), volume, volume, 1, loop, 1f);
+            if (soundPoolMap.get(sound) != null) {
+                soundPool.play(soundPoolMap.get(sound), volume, volume, 1, loop, 1f);
+            }
         }
     }
 
@@ -198,21 +182,19 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        SharedPreferences.Editor editor = sp.edit();
         switch (compoundButton.getId()) {
             case R.id.swt_Sound:
-                editor.putBoolean("swt_Sound", b);
+                UserDataManager.setOpenSound(b);
                 break;
             case R.id.swt_Music:
-                editor.putBoolean("swt_Music", b);
+                UserDataManager.setOpenMusic(b);
+                checkMusic();
                 break;
         }
-        editor.apply();
-        checkMusic();
     }
 
     private void checkMusic() {
-        boolean b = sp.getBoolean("swt_Music", true);
+        boolean b = UserDataManager.isOpenMusic();
         if (b && !isPause) {
             if (!mMediaPlayer.isPlaying()) {
                 mMediaPlayer.start();
@@ -286,7 +268,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
 
     @Override
     public void onGameOver() {
-        initFailView();//切换到FailVie
+        initFailView();
     }
 
     @Override
