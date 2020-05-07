@@ -4,7 +4,21 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.dd.plist.NSDictionary;
+import com.dd.plist.NSObject;
+import com.dd.plist.PropertyListFormatException;
+import com.dd.plist.PropertyListParser;
 import com.jqorz.planewar.R;
+
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * @author j1997
@@ -101,6 +115,67 @@ public class BitmapLoader {
         }
         //按照背景图的宽高比，将背景图的宽度缩放至屏幕宽度，高度等比缩放
         background = Bitmap.createScaledBitmap(bmp, toWidth, toHeight, true);
+        init2();
+    }
+
+    public static void init2() {
+//        String content = AssetsLoader.getFileFromAssets(DeviceTools.getApp(), "GameArts.plist");
+//        SAXParserFactory factory = SAXParserFactory.newInstance();
+//        try {
+//            SAXParser parser = factory.newSAXParser();
+//            XMLReader xmlReader = parser.getXMLReader();
+//            xmlReader.setContentHandler(new PlistHandler());
+//            xmlReader.parse(new InputSource(new StringReader(content)));
+//        } catch (ParserConfigurationException | SAXException | IOException e) {
+//            e.printStackTrace();
+//        }
+        try {
+            NSDictionary dic = (NSDictionary) PropertyListParser.parse(DeviceTools.getApp().getAssets().open("GameArts.plist"));
+            NSDictionary object0 = (NSDictionary) dic.getHashMap().get("frames");
+            if (object0 == null) return;
+            List<BitmapInfo> mData = new ArrayList<>();
+            for (Map.Entry<String, NSObject> key0 : object0.getHashMap().entrySet()) {
+                BitmapInfo info = new BitmapInfo();
+                info.name = key0.getKey();
+                NSDictionary object = ((NSDictionary) key0.getValue());
+                for (Map.Entry<String, NSObject> key1 : object.getHashMap().entrySet()) {
+                    switch (key1.getKey()) {
+                        case "spriteSize":
+                            info.size = (String) key1.getValue().toJavaObject();
+                            break;
+                        case "textureRect":
+                            info.location = (String) key1.getValue().toJavaObject();
+                            break;
+                    }
+                }
+                mData.add(info);
+            }
+
+        } catch (IOException | PropertyListFormatException | ParseException | ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
+        }
 
     }
+
+    private static void initBitmap(Context context) {
+        Bitmap bmp = AssetsLoader.getBitmapFromAssets(context, "GameArts.png");
+
+    }
+
+    public static class BitmapInfo {
+        public String name;
+        public String location;
+        public String size;
+    }
+
+    public static class PListInfo {
+        public String spriteColorRect;
+        public String spriteOffset;
+        public String spriteSize;
+        public String spriteSourceSize;
+        public double spriteTrimmed;
+        public String textureRect;
+        public double textureRotated;
+    }
+
 }

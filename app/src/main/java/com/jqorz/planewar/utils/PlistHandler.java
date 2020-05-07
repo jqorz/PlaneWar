@@ -16,7 +16,7 @@ import java.util.Stack;
  */
 public class PlistHandler extends DefaultHandler {
 
-    Stack<Object> stack = new Stack<Object>();
+    Stack<Object> stack = new Stack<>();
     private boolean isRootElement = false;
     private boolean keyElementBegin = false;
     private String key;
@@ -79,12 +79,12 @@ public class PlistHandler extends DefaultHandler {
         }
         if ("array".equals(qName)) {
             if (isRootElement) {
-                ArrayList<Object> obj = new ArrayList<Object>();
+                ArrayList<Object> obj = new ArrayList<>();
                 stack.push(obj);
                 isRootElement = !isRootElement;
             } else {
                 HashMap<String, Object> parent = (HashMap<String, Object>) stack.peek();
-                ArrayList<Object> obj = new ArrayList<Object>();
+                ArrayList<Object> obj = new ArrayList<>();
                 stack.push(obj);
                 parent.put(key, obj);
             }
