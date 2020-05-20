@@ -14,8 +14,6 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -115,25 +113,14 @@ public class BitmapLoader {
         }
         //按照背景图的宽高比，将背景图的宽度缩放至屏幕宽度，高度等比缩放
         background = Bitmap.createScaledBitmap(bmp, toWidth, toHeight, true);
-        init2();
     }
 
-    public static void init2() {
-//        String content = AssetsLoader.getFileFromAssets(DeviceTools.getApp(), "GameArts.plist");
-//        SAXParserFactory factory = SAXParserFactory.newInstance();
-//        try {
-//            SAXParser parser = factory.newSAXParser();
-//            XMLReader xmlReader = parser.getXMLReader();
-//            xmlReader.setContentHandler(new PlistHandler());
-//            xmlReader.parse(new InputSource(new StringReader(content)));
-//        } catch (ParserConfigurationException | SAXException | IOException e) {
-//            e.printStackTrace();
-//        }
+    public static void init2(Context context) {
         try {
             NSDictionary dic = (NSDictionary) PropertyListParser.parse(DeviceTools.getApp().getAssets().open("GameArts.plist"));
             NSDictionary object0 = (NSDictionary) dic.getHashMap().get("frames");
             if (object0 == null) return;
-            List<BitmapInfo> mData = new ArrayList<>();
+            Bitmap big = AssetsLoader.getBitmapFromAssets(context, "GameArts.png");
             for (Map.Entry<String, NSObject> key0 : object0.getHashMap().entrySet()) {
                 BitmapInfo info = new BitmapInfo();
                 info.name = key0.getKey();
@@ -142,23 +129,111 @@ public class BitmapLoader {
                     switch (key1.getKey()) {
                         case "spriteSize":
                             info.size = (String) key1.getValue().toJavaObject();
-                            break;
+                            continue;
                         case "textureRect":
                             info.location = (String) key1.getValue().toJavaObject();
-                            break;
+                            continue;
                     }
                 }
-                mData.add(info);
+                createBitmap(big, info);
             }
 
         } catch (IOException | PropertyListFormatException | ParseException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
 
+
+    }
+
+    private static void createBitmap(Bitmap big, BitmapInfo info) {
+        String[] data = info.location.replace("{", "").replace("}", "").split(",");
+        int[] location = new int[]{Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]), Integer.parseInt(data[3])};
+
+        switch (info.name) {
+            case "background_2":
+                background = Bitmap.createBitmap(big, location[0], location[1], location[2], location[3]);
+                break;
+            case "bomb":
+                break;
+            case "bullet1":
+                break;
+            case "bullet2":
+                break;
+            case "enemy1_blowup_1":
+                break;
+            case "enemy1_blowup_2":
+                break;
+            case "enemy1_blowup_3":
+                break;
+            case "enemy1_blowup_4":
+                break;
+            case "enemy1_fly_1":
+                break;
+            case "enemy2_blowup_1":
+                break;
+            case "enemy2_blowup_2":
+                break;
+            case "enemy2_blowup_3":
+                break;
+            case "enemy2_blowup_4":
+                break;
+            case "enemy2_blowup_5":
+                break;
+            case "enemy2_blowup_6":
+                break;
+            case "enemy2_blowup_7":
+                break;
+            case "enemy2_fly_1":
+                break;
+            case "enemy2_fly_2":
+                break;
+            case "enemy2_hit_1":
+                break;
+            case "enemy3_blowup_1":
+                break;
+            case "enemy3_blowup_2":
+                break;
+            case "enemy3_blowup_3":
+                break;
+            case "enemy3_blowup_4":
+                break;
+            case "enemy3_fly_1":
+                break;
+            case "enemy4_fly_1":
+                break;
+            case "enemy5_fly_1":
+                break;
+            case "enemy_bullet":
+                break;
+            case "game_pause":
+                break;
+            case "game_pause_hl":
+                break;
+            case "hero_blowup_1":
+                break;
+            case "hero_blowup_2":
+                break;
+            case "hero_blowup_3":
+                break;
+            case "hero_blowup_4":
+                break;
+            case "hero_fly_1":
+                break;
+            case "hero_fly_2":
+                break;
+            case "loading0":
+                break;
+            case "loading1":
+                break;
+            case "loading2":
+                break;
+            case "loading3":
+                break;
+
+        }
     }
 
     private static void initBitmap(Context context) {
-        Bitmap bmp = AssetsLoader.getBitmapFromAssets(context, "GameArts.png");
 
     }
 
@@ -168,14 +243,5 @@ public class BitmapLoader {
         public String size;
     }
 
-    public static class PListInfo {
-        public String spriteColorRect;
-        public String spriteOffset;
-        public String spriteSize;
-        public String spriteSourceSize;
-        public double spriteTrimmed;
-        public String textureRect;
-        public double textureRotated;
-    }
 
 }

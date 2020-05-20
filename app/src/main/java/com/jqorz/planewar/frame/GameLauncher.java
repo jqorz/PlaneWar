@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ImageView;
 
 import com.jqorz.planewar.R;
+import com.jqorz.planewar.tools.BitmapLoader;
 
 public class GameLauncher extends Activity implements View.OnClickListener, View.OnLongClickListener {
     private ImageView imgBtn_startGame, imgBtn_exitGame, imgBtn_about, imgBtn_setting;
@@ -42,8 +42,9 @@ public class GameLauncher extends Activity implements View.OnClickListener, View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgBtn_startGame:
-                this.startActivity(new Intent(this, GamePlaying.class));
-                this.finish();
+//                this.startActivity(new Intent(this, GamePlaying.class));
+//                this.finish();
+                BitmapLoader.init2(this);
                 break;
             case R.id.imgBtn_about:
                 this.startActivity(new Intent(this, GameAbout.class));

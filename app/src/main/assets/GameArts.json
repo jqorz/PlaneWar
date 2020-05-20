@@ -1,0 +1,413 @@
+{
+  "frames": {
+    "background_2": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 0}, {640, 1136}}",
+      "spriteOffset": "{0, -0}",
+      "spriteSize": "{640, 1136}",
+      "spriteSourceSize": "{640, 1136}",
+      "spriteTrimmed": true,
+      "textureRect": "{{0, 0}, {640, 1136}}",
+      "textureRotated": false
+    },
+    "bomb": {
+      "aliases": [],
+      "spriteColorRect": "{{1, 3}, {82, 70}}",
+      "spriteOffset": "{0, -0}",
+      "spriteSize": "{82, 70}",
+      "spriteSourceSize": "{84, 76}",
+      "spriteTrimmed": true,
+      "textureRect": "{{951, 1727}, {70, 82}}",
+      "textureRotated": true
+    },
+    "bullet1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 0}, {12, 28}}",
+      "spriteOffset": "{0, -0}",
+      "spriteSize": "{12, 28}",
+      "spriteSourceSize": "{12, 28}",
+      "spriteTrimmed": true,
+      "textureRect": "{{1009, 0}, {12, 28}}",
+      "textureRotated": false
+    },
+    "bullet2": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 0}, {96, 28}}",
+      "spriteOffset": "{0, -0}",
+      "spriteSize": "{96, 28}",
+      "spriteSourceSize": "{96, 28}",
+      "spriteTrimmed": true,
+      "textureRect": "{{981, 0}, {28, 96}}",
+      "textureRotated": true
+    },
+    "enemy1_blowup_1": {
+      "aliases": [],
+      "spriteColorRect": "{{4, 12}, {68, 50}}",
+      "spriteOffset": "{0, -3}",
+      "spriteSize": "{68, 50}",
+      "spriteSourceSize": "{76, 68}",
+      "spriteTrimmed": true,
+      "textureRect": "{{102, 1622}, {68, 50}}",
+      "textureRotated": false
+    },
+    "enemy1_blowup_2": {
+      "aliases": [],
+      "spriteColorRect": "{{4, 6}, {68, 62}}",
+      "spriteOffset": "{0, -3}",
+      "spriteSize": "{68, 62}",
+      "spriteSourceSize": "{76, 68}",
+      "spriteTrimmed": true,
+      "textureRect": "{{218, 1546}, {68, 62}}",
+      "textureRotated": false
+    },
+    "enemy1_blowup_3": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 0}, {76, 68}}",
+      "spriteOffset": "{0, -0}",
+      "spriteSize": "{76, 68}",
+      "spriteSourceSize": "{76, 68}",
+      "spriteTrimmed": true,
+      "textureRect": "{{951, 1809}, {68, 76}}",
+      "textureRotated": true
+    },
+    "enemy1_blowup_4": {
+      "aliases": [],
+      "spriteColorRect": "{{9, 0}, {60, 64}}",
+      "spriteOffset": "{1, 2}",
+      "spriteSize": "{60, 64}",
+      "spriteSourceSize": "{76, 68}",
+      "spriteTrimmed": true,
+      "textureRect": "{{286, 1596}, {64, 60}}",
+      "textureRotated": true
+    },
+    "enemy1_fly_1": {
+      "aliases": [],
+      "spriteColorRect": "{{4, 5}, {68, 50}}",
+      "spriteOffset": "{0, -2}",
+      "spriteSize": "{68, 50}",
+      "spriteSourceSize": "{76, 56}",
+      "spriteTrimmed": true,
+      "textureRect": "{{218, 1608}, {68, 50}}",
+      "textureRotated": false
+    },
+    "enemy2_blowup_1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 2}, {220, 341}}",
+      "spriteOffset": "{0, 1}",
+      "spriteSize": "{220, 341}",
+      "spriteSourceSize": "{220, 347}",
+      "spriteTrimmed": true,
+      "textureRect": "{{640, 221}, {341, 220}}",
+      "textureRotated": true
+    },
+    "enemy2_blowup_2": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 2}, {220, 341}}",
+      "spriteOffset": "{0, 1}",
+      "spriteSize": "{220, 341}",
+      "spriteSourceSize": "{220, 347}",
+      "spriteTrimmed": true,
+      "textureRect": "{{640, 881}, {341, 220}}",
+      "textureRotated": true
+    },
+    "enemy2_blowup_3": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 2}, {220, 341}}",
+      "spriteOffset": "{0, 1}",
+      "spriteSize": "{220, 341}",
+      "spriteSourceSize": "{220, 347}",
+      "spriteTrimmed": true,
+      "textureRect": "{{640, 661}, {341, 220}}",
+      "textureRotated": true
+    },
+    "enemy2_blowup_4": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 2}, {220, 341}}",
+      "spriteOffset": "{0, 1}",
+      "spriteSize": "{220, 341}",
+      "spriteSourceSize": "{220, 347}",
+      "spriteTrimmed": true,
+      "textureRect": "{{640, 441}, {341, 220}}",
+      "textureRotated": true
+    },
+    "enemy2_blowup_5": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 2}, {221, 341}}",
+      "spriteOffset": "{0, 1}",
+      "spriteSize": "{221, 341}",
+      "spriteSourceSize": "{221, 347}",
+      "spriteTrimmed": true,
+      "textureRect": "{{640, 0}, {341, 221}}",
+      "textureRotated": true
+    },
+    "enemy2_blowup_6": {
+      "aliases": [],
+      "spriteColorRect": "{{5, 17}, {191, 269}}",
+      "spriteOffset": "{-10, 22}",
+      "spriteSize": "{191, 269}",
+      "spriteSourceSize": "{221, 347}",
+      "spriteTrimmed": true,
+      "textureRect": "{{0, 1355}, {269, 191}}",
+      "textureRotated": true
+    },
+    "enemy2_blowup_7": {
+      "aliases": [],
+      "spriteColorRect": "{{5, 15}, {191, 269}}",
+      "spriteOffset": "{-10, 24}",
+      "spriteSize": "{191, 269}",
+      "spriteSourceSize": "{221, 347}",
+      "spriteTrimmed": true,
+      "textureRect": "{{599, 1320}, {269, 191}}",
+      "textureRotated": true
+    },
+    "enemy2_fly_1": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 3}, {219, 328}}",
+      "spriteOffset": "{0, 5}",
+      "spriteSize": "{219, 328}",
+      "spriteSourceSize": "{225, 344}",
+      "spriteTrimmed": true,
+      "textureRect": "{{332, 1136}, {219, 328}}",
+      "textureRotated": false
+    },
+    "enemy2_fly_2": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 3}, {219, 332}}",
+      "spriteOffset": "{0, 3}",
+      "spriteSize": "{219, 332}",
+      "spriteSourceSize": "{225, 344}",
+      "spriteTrimmed": true,
+      "textureRect": "{{0, 1136}, {332, 219}}",
+      "textureRotated": true
+    },
+    "enemy2_hit_1": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 3}, {219, 340}}",
+      "spriteOffset": "{0, -1}",
+      "spriteSize": "{219, 340}",
+      "spriteSourceSize": "{225, 344}",
+      "spriteTrimmed": true,
+      "textureRect": "{{640, 1101}, {340, 219}}",
+      "textureRotated": true
+    },
+    "enemy3_blowup_1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 4}, {92, 120}}",
+      "spriteOffset": "{0, -2}",
+      "spriteSize": "{92, 120}",
+      "spriteSourceSize": "{92, 124}",
+      "spriteTrimmed": true,
+      "textureRect": "{{737, 1603}, {120, 92}}",
+      "textureRotated": true
+    },
+    "enemy3_blowup_2": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 4}, {92, 120}}",
+      "spriteOffset": "{0, -2}",
+      "spriteSize": "{92, 120}",
+      "spriteSourceSize": "{92, 124}",
+      "spriteTrimmed": true,
+      "textureRect": "{{737, 1511}, {120, 92}}",
+      "textureRotated": true
+    },
+    "enemy3_blowup_3": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 2}, {92, 122}}",
+      "spriteOffset": "{0, -1}",
+      "spriteSize": "{92, 122}",
+      "spriteSourceSize": "{92, 124}",
+      "spriteTrimmed": true,
+      "textureRect": "{{481, 1588}, {92, 122}}",
+      "textureRotated": false
+    },
+    "enemy3_blowup_4": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 20}, {92, 102}}",
+      "spriteOffset": "{0, -9}",
+      "spriteSize": "{92, 102}",
+      "spriteSourceSize": "{92, 124}",
+      "spriteTrimmed": true,
+      "textureRect": "{{849, 1727}, {102, 92}}",
+      "textureRotated": true
+    },
+    "enemy3_fly_1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 5}, {92, 116}}",
+      "spriteOffset": "{0, 3}",
+      "spriteSize": "{92, 116}",
+      "spriteSourceSize": "{92, 132}",
+      "spriteTrimmed": true,
+      "textureRect": "{{733, 1695}, {116, 92}}",
+      "textureRotated": true
+    },
+    "enemy3_hit_1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 5}, {92, 124}}",
+      "spriteOffset": "{0, -1}",
+      "spriteSize": "{92, 124}",
+      "spriteSourceSize": "{92, 132}",
+      "spriteTrimmed": true,
+      "textureRect": "{{481, 1464}, {92, 124}}",
+      "textureRotated": false
+    },
+    "enemy4_fly_1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 2}, {79, 137}}",
+      "spriteOffset": "{0, -0}",
+      "spriteSize": "{79, 137}",
+      "spriteSourceSize": "{79, 141}",
+      "spriteTrimmed": true,
+      "textureRect": "{{857, 1648}, {137, 79}}",
+      "textureRotated": true
+    },
+    "enemy5_fly_1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 0}, {76, 116}}",
+      "spriteOffset": "{0, -0}",
+      "spriteSize": "{76, 116}",
+      "spriteSourceSize": "{76, 116}",
+      "spriteTrimmed": true,
+      "textureRect": "{{102, 1546}, {116, 76}}",
+      "textureRotated": true
+    },
+    "enemy_bullet": {
+      "spriteSize": "{20,20}",
+      "spriteSourceSize": "{20,20}",
+      "textureRect": "{{0,1872},{20,20}}"
+    },
+    "game_pause": {
+      "aliases": [],
+      "spriteColorRect": "{{12, 2}, {56, 58}}",
+      "spriteOffset": "{0, -1}",
+      "spriteSize": "{56, 58}",
+      "spriteSourceSize": "{80, 60}",
+      "spriteTrimmed": true,
+      "textureRect": "{{0, 1634}, {58, 56}}",
+      "textureRotated": true
+    },
+    "game_pause_hl": {
+      "aliases": [],
+      "spriteColorRect": "{{12, 2}, {56, 58}}",
+      "spriteOffset": "{0, -1}",
+      "spriteSize": "{56, 58}",
+      "spriteSourceSize": "{80, 60}",
+      "spriteTrimmed": true,
+      "textureRect": "{{350, 1596}, {58, 56}}",
+      "textureRotated": true
+    },
+    "hero_blowup_1": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 4}, {132, 164}}",
+      "spriteOffset": "{1, -2}",
+      "spriteSize": "{132, 164}",
+      "spriteSourceSize": "{136, 168}",
+      "spriteTrimmed": true,
+      "textureRect": "{{317, 1464}, {164, 132}}",
+      "textureRotated": true
+    },
+    "hero_blowup_2": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 4}, {132, 164}}",
+      "spriteOffset": "{1, -2}",
+      "spriteSize": "{132, 164}",
+      "spriteSourceSize": "{136, 168}",
+      "spriteTrimmed": true,
+      "textureRect": "{{573, 1511}, {164, 132}}",
+      "textureRotated": true
+    },
+    "hero_blowup_3": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 4}, {132, 164}}",
+      "spriteOffset": "{1, -2}",
+      "spriteSize": "{132, 164}",
+      "spriteSourceSize": "{136, 168}",
+      "spriteTrimmed": true,
+      "textureRect": "{{868, 1320}, {132, 164}}",
+      "textureRotated": false
+    },
+    "hero_blowup_4": {
+      "aliases": [],
+      "spriteColorRect": "{{25, 27}, {88, 102}}",
+      "spriteOffset": "{1, 6}",
+      "spriteSize": "{88, 102}",
+      "spriteSourceSize": "{136, 168}",
+      "spriteTrimmed": true,
+      "textureRect": "{{0, 1546}, {102, 88}}",
+      "textureRotated": true
+    },
+    "hero_fly_1": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 3}, {132, 164}}",
+      "spriteOffset": "{1, -1}",
+      "spriteSize": "{132, 164}",
+      "spriteSourceSize": "{136, 168}",
+      "spriteTrimmed": true,
+      "textureRect": "{{868, 1484}, {132, 164}}",
+      "textureRotated": false
+    },
+    "hero_fly_2": {
+      "aliases": [],
+      "spriteColorRect": "{{3, 3}, {132, 160}}",
+      "spriteOffset": "{1, 1}",
+      "spriteSize": "{132, 160}",
+      "spriteSourceSize": "{136, 168}",
+      "spriteTrimmed": true,
+      "textureRect": "{{573, 1643}, {160, 132}}",
+      "textureRotated": true
+    },
+    "loading0": {
+      "aliases": [],
+      "spriteColorRect": "{{15, 29}, {2, 2}}",
+      "spriteOffset": "{-108, -5}",
+      "spriteSize": "{2, 2}",
+      "spriteSourceSize": "{248, 50}",
+      "spriteTrimmed": true,
+      "textureRect": "{{1021, 0}, {2, 2}}",
+      "textureRotated": false
+    },
+    "loading1": {
+      "aliases": [],
+      "spriteColorRect": "{{0, 0}, {62, 48}}",
+      "spriteOffset": "{-93, 1}",
+      "spriteSize": "{62, 48}",
+      "spriteSourceSize": "{248, 50}",
+      "spriteTrimmed": true,
+      "textureRect": "{{551, 1368}, {48, 62}}",
+      "textureRotated": true
+    },
+    "loading2": {
+      "aliases": [],
+      "spriteColorRect": "{{7, 0}, {142, 48}}",
+      "spriteOffset": "{-46, 1}",
+      "spriteSize": "{142, 48}",
+      "spriteSourceSize": "{248, 50}",
+      "spriteTrimmed": true,
+      "textureRect": "{{269, 1355}, {48, 142}}",
+      "textureRotated": true
+    },
+    "loading3": {
+      "aliases": [],
+      "spriteColorRect": "{{14, 0}, {232, 48}}",
+      "spriteOffset": "{6, 1}",
+      "spriteSize": "{232, 48}",
+      "spriteSourceSize": "{248, 50}",
+      "spriteTrimmed": true,
+      "textureRect": "{{551, 1136}, {48, 232}}",
+      "textureRotated": true
+    }
+  },
+  "metadata": {
+    "format": 3,
+    "name": "gameArts",
+    "size": "{1024, 2048}",
+    "target": {
+      "coordinatesFileExtension": ".plist",
+      "coordinatesFileName": "gameArts-hd",
+      "name": "default",
+      "premultipliedAlpha": false,
+      "textureFileExtension": "",
+      "textureFileName": "gameArts-hd"
+    },
+    "version": "1.6.0"
+  }
+}
