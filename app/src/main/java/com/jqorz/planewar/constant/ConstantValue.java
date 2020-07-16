@@ -18,7 +18,7 @@ public class ConstantValue {
     /**
      * 子弹的参数
      */
-    public final static int BULLET_TIME = 400;//子弹发射时间间隔
+    public final static int BULLET_TIME = 500;//子弹发射时间间隔
     public final static int BULLET_SPAN = 60;//子弹2的三角形坐标偏移量
     /**
      * 敌军飞机参数
