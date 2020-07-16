@@ -3,7 +3,7 @@ package com.jqorz.planewar.manager;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.tools.MapCreator;
 import com.jqorz.planewar.tools.TimeTools;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 /**
  * @author j1997
@@ -45,7 +45,7 @@ public class TimeManager {
         long now = TimeTools.getCurrentTime();
 
         //检查是否应该显示敌人
-        if (now - mTime >= ConstantUtil.FIRST_ENEMY_TIME && !mStatusManager.showEnemy) {
+        if (now - mTime >= ConstantValue.FIRST_ENEMY_TIME && !mStatusManager.showEnemy) {
             mOnEntityChangeListener.onFirstShowEnemy();
         }
 
@@ -54,26 +54,26 @@ public class TimeManager {
         }
 
         //检查是否应该显示新敌人
-        if (mStatusManager.showEnemy && now - mEnemyTime >= ConstantUtil.ENEMY_TIME) {
+        if (mStatusManager.showEnemy && now - mEnemyTime >= ConstantValue.ENEMY_TIME) {
             MapCreator.PlaneInfo info = MapCreator.getNewEnemyPlaneInfo();
             mOnEntityChangeListener.onNewEnemy(info);
             mEnemyTime = now;
         }
 
         //计算炸弹补给时间
-        if (now - mBombTime >= ConstantUtil.SUPPLY_BOMB_INTERVAL_TIME) {
+        if (now - mBombTime >= ConstantValue.SUPPLY_BOMB_INTERVAL_TIME) {
             mOnEntityChangeListener.onShowBombSupply();
             mBombTime = now;
         }
 
         //计算子弹补给时间
-        if (now - mChangeBulletTime >= ConstantUtil.SUPPLY_BULLET_INTERVAL_TIME) {
+        if (now - mChangeBulletTime >= ConstantValue.SUPPLY_BULLET_INTERVAL_TIME) {
             mOnEntityChangeListener.onShowBulletSupply();
             mChangeBulletTime = now;
         }
 
         //计算上次发送子弹的时间
-        if ((gameView.heroPlane.isFly() || gameView.heroPlane.isInjure()) && now - mSendTime >= ConstantUtil.BULLET_TIME) {
+        if ((gameView.heroPlane.isFly() || gameView.heroPlane.isInjure()) && now - mSendTime >= ConstantValue.BULLET_TIME) {
             for (MapCreator.BulletInfo info : MapCreator.getNewBulletPos(gameView.heroPlane)) {
                 mOnEntityChangeListener.onNewBullet(info);
             }
@@ -81,24 +81,24 @@ public class TimeManager {
         }
 
         //检查子弹补给的持续时间
-        if (now - lastGetBulletSupplyTime > ConstantUtil.SUPPLY_BULLET_LONG_TIME) {
+        if (now - lastGetBulletSupplyTime > ConstantValue.SUPPLY_BULLET_LONG_TIME) {
             mOnEntityChangeListener.onBulletSupplyEnd();
         }
     }
 
 
     private void addDifficulty(long now) {
-        if (now - mDifficultyTime > ConstantUtil.ENEMY_VELOCITY_AND_TIME) {//每隔一段时间
-            if (ConstantUtil.ENEMY_TIME > ConstantUtil.ENEMY_TIME_MIN) {//如果时间仍然大于最小时间
-                ConstantUtil.ENEMY_TIME = ConstantUtil.ENEMY_TIME - ConstantUtil.ENEMY_TIME_MUL;//当前时间递减
+        if (now - mDifficultyTime > ConstantValue.ENEMY_VELOCITY_AND_TIME) {//每隔一段时间
+            if (ConstantValue.ENEMY_TIME > ConstantValue.ENEMY_TIME_MIN) {//如果时间仍然大于最小时间
+                ConstantValue.ENEMY_TIME = ConstantValue.ENEMY_TIME - ConstantValue.ENEMY_TIME_MUL;//当前时间递减
             } else {
-                ConstantUtil.ENEMY_TIME = ConstantUtil.ENEMY_TIME_MIN;//否则就为最小时间
+                ConstantValue.ENEMY_TIME = ConstantValue.ENEMY_TIME_MIN;//否则就为最小时间
             }
-            if (ConstantUtil.ENEMY_VELOCITY < ConstantUtil.ENEMY_VELOCITY_ADD_MAX) {//如果速度仍然小于最大速度
-                ConstantUtil.ENEMY_VELOCITY = ConstantUtil.ENEMY_VELOCITY + ConstantUtil.
+            if (ConstantValue.ENEMY_VELOCITY < ConstantValue.ENEMY_VELOCITY_ADD_MAX) {//如果速度仍然小于最大速度
+                ConstantValue.ENEMY_VELOCITY = ConstantValue.ENEMY_VELOCITY + ConstantValue.
                         ENEMY_VELOCITY_ADD;//当前速度递增
             } else {
-                ConstantUtil.ENEMY_VELOCITY = ConstantUtil.ENEMY_VELOCITY_ADD_MAX;//否则就为最大速度
+                ConstantValue.ENEMY_VELOCITY = ConstantValue.ENEMY_VELOCITY_ADD_MAX;//否则就为最大速度
             }
             mDifficultyTime = now;
         }

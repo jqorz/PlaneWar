@@ -2,7 +2,7 @@ package com.jqorz.planewar.base;
 
 import android.graphics.Bitmap;
 
-import com.jqorz.planewar.eenum.PlaneStatus;
+import com.jqorz.planewar.constant.PlaneStatus;
 import com.jqorz.planewar.tools.AnimationImpl;
 
 /**

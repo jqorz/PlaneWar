@@ -1,8 +1,6 @@
-package com.jqorz.planewar.utils;
+package com.jqorz.planewar.constant;
 
-import com.jqorz.planewar.eenum.PlaneType;
-
-public class ConstantUtil {
+public class ConstantValue {
 
     /**
      * 飞机生命值
@@ -64,11 +62,11 @@ public class ConstantUtil {
     public static int getEnemyScore(@PlaneType int type) {
         switch (type) {
             case PlaneType.ENEMY_TYPE1:
-                return ConstantUtil.ENEMY_TYPE1_SCORE;
+                return ConstantValue.ENEMY_TYPE1_SCORE;
             case PlaneType.ENEMY_TYPE2:
-                return ConstantUtil.ENEMY_TYPE2_SCORE;
+                return ConstantValue.ENEMY_TYPE2_SCORE;
             case PlaneType.ENEMY_TYPE3:
-                return ConstantUtil.ENEMY_TYPE3_SCORE;
+                return ConstantValue.ENEMY_TYPE3_SCORE;
 
         }
         return 0;

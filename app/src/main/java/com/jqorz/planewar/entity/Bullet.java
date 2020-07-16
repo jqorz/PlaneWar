@@ -4,10 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.jqorz.planewar.base.BaseEntityImp;
-import com.jqorz.planewar.eenum.BulletType;
+import com.jqorz.planewar.constant.BulletType;
 import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 /**
  * 该类为子弹的封装类
@@ -41,7 +41,7 @@ public class Bullet extends BaseEntityImp {
     }
 
     public void move() {
-        this.y = this.y - ConstantUtil.BULLET_VELOCITY;
+        this.y = this.y - ConstantValue.BULLET_VELOCITY;
     }
 
 }

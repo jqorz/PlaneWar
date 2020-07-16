@@ -1,11 +1,10 @@
 package com.jqorz.planewar.tools;
 
 import com.jqorz.planewar.base.BaseSupply;
-import com.jqorz.planewar.eenum.BulletType;
-import com.jqorz.planewar.eenum.PlaneType;
-import com.jqorz.planewar.entity.GameView;
+import com.jqorz.planewar.constant.BulletType;
+import com.jqorz.planewar.constant.PlaneType;
 import com.jqorz.planewar.entity.HeroPlane;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +33,11 @@ public class MapCreator {
         }
 
         if (type == PlaneType.ENEMY_TYPE1) {//如果类型为1，在当前速度与最大速度取一个值
-            velocity = ra1.nextInt(ConstantUtil.ENEMY_VELOCITY_MAX1 - ConstantUtil.ENEMY_VELOCITY) + ConstantUtil.ENEMY_VELOCITY;
+            velocity = ra1.nextInt(ConstantValue.ENEMY_VELOCITY_MAX1 - ConstantValue.ENEMY_VELOCITY) + ConstantValue.ENEMY_VELOCITY;
         } else if (type == PlaneType.ENEMY_TYPE2) {//如果类型为2，在当前速度与最大速度取一个值
-            velocity = ra1.nextInt(ConstantUtil.ENEMY_VELOCITY_MAX2 - ConstantUtil.ENEMY_VELOCITY) + ConstantUtil.ENEMY_VELOCITY;
+            velocity = ra1.nextInt(ConstantValue.ENEMY_VELOCITY_MAX2 - ConstantValue.ENEMY_VELOCITY) + ConstantValue.ENEMY_VELOCITY;
         } else {//如果类型为3，取当前速度
-            velocity = ConstantUtil.ENEMY_VELOCITY;
+            velocity = ConstantValue.ENEMY_VELOCITY;
         }
 
         if (type == PlaneType.ENEMY_TYPE1) {
@@ -55,7 +54,7 @@ public class MapCreator {
 
         List<BulletInfo> infoList = new ArrayList<>();
         int x = heroPlane.getX() + (int) ((heroPlane.getWidth() - BitmapLoader.bmp_bullet1.getWidth()) / 2.0);
-        int y = heroPlane.getY() - ConstantUtil.BULLET_SPAN / 2;
+        int y = heroPlane.getY() - ConstantValue.BULLET_SPAN / 2;
 
 
         if (heroPlane.getBulletType() == BulletType.BULLET_RED) {
@@ -63,13 +62,13 @@ public class MapCreator {
             infoList.add(b1);
 
         } else if (heroPlane.getBulletType() == BulletType.BULLET_BLUE) {
-            BulletInfo b1 = new BulletInfo(x, y - ConstantUtil.BULLET_SPAN, BulletType.BULLET_BLUE);
+            BulletInfo b1 = new BulletInfo(x, y - ConstantValue.BULLET_SPAN, BulletType.BULLET_BLUE);
             infoList.add(b1);
 
-            BulletInfo b2 = new BulletInfo(x - ConstantUtil.BULLET_SPAN, y, BulletType.BULLET_BLUE);
+            BulletInfo b2 = new BulletInfo(x - ConstantValue.BULLET_SPAN, y, BulletType.BULLET_BLUE);
             infoList.add(b2);
 
-            BulletInfo b3 = new BulletInfo(x + ConstantUtil.BULLET_SPAN, y, BulletType.BULLET_BLUE);
+            BulletInfo b3 = new BulletInfo(x + ConstantValue.BULLET_SPAN, y, BulletType.BULLET_BLUE);
             infoList.add(b3);
         }
         return infoList;

@@ -4,12 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.jqorz.planewar.base.BasePlane;
-import com.jqorz.planewar.eenum.BulletType;
-import com.jqorz.planewar.eenum.PlaneStatus;
+import com.jqorz.planewar.constant.BulletType;
+import com.jqorz.planewar.constant.PlaneStatus;
 import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.tools.DeviceTools;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 /**
  * 英雄飞机实体类
@@ -97,7 +97,7 @@ public class HeroPlane extends BasePlane {
 
     @Override
     protected void initLife() {
-        this.life = ConstantUtil.Hero_life;
+        this.life = ConstantValue.Hero_life;
     }
 
     @Override

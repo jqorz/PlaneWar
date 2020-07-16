@@ -1,7 +1,7 @@
 package com.jqorz.planewar.manager;
 
-import com.jqorz.planewar.eenum.BulletType;
-import com.jqorz.planewar.eenum.PlaneStatus;
+import com.jqorz.planewar.constant.BulletType;
+import com.jqorz.planewar.constant.PlaneStatus;
 import com.jqorz.planewar.entity.BgEntity;
 import com.jqorz.planewar.entity.BombSupply;
 import com.jqorz.planewar.entity.Bullet;

@@ -17,12 +17,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.jqorz.planewar.R;
-import com.jqorz.planewar.eenum.PlaneType;
+import com.jqorz.planewar.constant.PlaneType;
 import com.jqorz.planewar.entity.GameView;
 import com.jqorz.planewar.listener.GameListener;
 import com.jqorz.planewar.tools.TimeTools;
 import com.jqorz.planewar.tools.UserDataManager;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 import java.util.HashMap;
 
@@ -207,29 +207,29 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
     }
 
     private void checkCheat() {
-        switch (ConstantUtil.CHEAT_CURRENT_STATE) {
+        switch (ConstantValue.CHEAT_CURRENT_STATE) {
             case 0://正常状态,还原所有的改动
                 bombNum = 0;
                 String showText1 = "X" + bombNum;
                 tv_BombNum.setText(showText1);
-                ConstantUtil.SUPPLY_BULLET_INTERVAL_TIME = 25000;
-                ConstantUtil.ENEMY_TYPE1_SCORE = 100;
-                ConstantUtil.ENEMY_TYPE2_SCORE = 300;
-                ConstantUtil.ENEMY_TYPE3_SCORE = 600;
+                ConstantValue.SUPPLY_BULLET_INTERVAL_TIME = 25000;
+                ConstantValue.ENEMY_TYPE1_SCORE = 100;
+                ConstantValue.ENEMY_TYPE2_SCORE = 300;
+                ConstantValue.ENEMY_TYPE3_SCORE = 600;
                 break;
-            case ConstantUtil.CHEAT_STATE_1://初始炸弹数为10
+            case ConstantValue.CHEAT_STATE_1://初始炸弹数为10
                 bombNum = 10;
                 String showText2 = "X" + bombNum;
                 tv_BombNum.setText(showText2);
                 break;
-            case ConstantUtil.CHEAT_STATE_2:
-                ConstantUtil.SUPPLY_BULLET_INTERVAL_TIME = 17000;//子弹补给间隔时间缩短
+            case ConstantValue.CHEAT_STATE_2:
+                ConstantValue.SUPPLY_BULLET_INTERVAL_TIME = 17000;//子弹补给间隔时间缩短
                 break;
-            case ConstantUtil.CHEAT_STATE_3://子弹补给间隔时间缩短，敌机分数增加100
-                ConstantUtil.SUPPLY_BULLET_INTERVAL_TIME = 20000;
-                ConstantUtil.ENEMY_TYPE1_SCORE = 200;
-                ConstantUtil.ENEMY_TYPE2_SCORE = 400;
-                ConstantUtil.ENEMY_TYPE3_SCORE = 700;
+            case ConstantValue.CHEAT_STATE_3://子弹补给间隔时间缩短，敌机分数增加100
+                ConstantValue.SUPPLY_BULLET_INTERVAL_TIME = 20000;
+                ConstantValue.ENEMY_TYPE1_SCORE = 200;
+                ConstantValue.ENEMY_TYPE2_SCORE = 400;
+                ConstantValue.ENEMY_TYPE3_SCORE = 700;
                 break;
         }
     }
@@ -283,7 +283,7 @@ public class GamePlaying extends Activity implements View.OnClickListener, Compo
 
     @Override
     public void onEnemyDie(@PlaneType int type) {
-        this.score += ConstantUtil.getEnemyScore(type);
+        this.score += ConstantValue.getEnemyScore(type);
         runOnUiThread(() -> {
             tv_Score.setText(String.valueOf(this.score));
         });

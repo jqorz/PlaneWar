@@ -12,6 +12,8 @@ import com.jqorz.planewar.R;
 
 import org.xml.sax.SAXException;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
@@ -25,7 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class BitmapLoader {
     public static Bitmap[] bmps_enemyPlane1_explode = new Bitmap[4];//敌机1爆炸的数组
     public static Bitmap[] bmps_enemyPlane2_explode = new Bitmap[4];//敌机2爆炸的数组
-    public static Bitmap[] bmps_enemyPlane3_explode = new Bitmap[6];//敌机3爆炸的数组
+    public static Bitmap[] bmps_enemyPlane3_explode = new Bitmap[7];//敌机3爆炸的数组
     public static Bitmap[] bmps_hero_explode = new Bitmap[4];//英雄飞机爆炸的数组
 
     public static Bitmap bmp_enemyPlane2_injured;//敌机2受伤的图片
@@ -146,80 +148,112 @@ public class BitmapLoader {
     }
 
     private static void createBitmap(Bitmap big, BitmapInfo info) {
-        String[] data = info.location.replace("{", "").replace("}", "").split(",");
-        int[] location = new int[]{Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]), Integer.parseInt(data[3])};
-
+        String[] data = info.location.trim().replace("{", "").replace("}", "").split(",");
+        int[] location = new int[]{Integer.parseInt(data[0].trim()), Integer.parseInt(data[1].trim()), Integer.parseInt(data[2].trim()), Integer.parseInt(data[3].trim())};
+        File file = new File("/sdcard/" + info.name);
+        info.name = info.name.substring(0, info.name.lastIndexOf("."));
+        saveBitmap(getBitmap(big, location), file);
         switch (info.name) {
             case "background_2":
-                background = Bitmap.createBitmap(big, location[0], location[1], location[2], location[3]);
+                background = getBitmap(big, location);
                 break;
             case "bomb":
+                bmp_bombSupply = getBitmap(big, location);
                 break;
             case "bullet1":
+                bmp_bullet1 = getBitmap(big, location);
                 break;
             case "bullet2":
+                bmp_bullet2 = getBitmap(big, location);
                 break;
             case "enemy1_blowup_1":
+                bmps_enemyPlane1_explode[0] = getBitmap(big, location);
                 break;
             case "enemy1_blowup_2":
+                bmps_enemyPlane1_explode[1] = getBitmap(big, location);
                 break;
             case "enemy1_blowup_3":
+                bmps_enemyPlane1_explode[2] = getBitmap(big, location);
                 break;
             case "enemy1_blowup_4":
+                bmps_enemyPlane1_explode[3] = getBitmap(big, location);
                 break;
             case "enemy1_fly_1":
+                bmps_enemyPlane1[0] = getBitmap(big, location);
                 break;
             case "enemy2_blowup_1":
+                bmps_enemyPlane3_explode[0] = getBitmap(big, location);
                 break;
             case "enemy2_blowup_2":
+                bmps_enemyPlane3_explode[1] = getBitmap(big, location);
                 break;
             case "enemy2_blowup_3":
+                bmps_enemyPlane3_explode[2] = getBitmap(big, location);
                 break;
             case "enemy2_blowup_4":
+                bmps_enemyPlane3_explode[3] = getBitmap(big, location);
                 break;
             case "enemy2_blowup_5":
+                bmps_enemyPlane3_explode[4] = getBitmap(big, location);
                 break;
             case "enemy2_blowup_6":
+                bmps_enemyPlane3_explode[5] = getBitmap(big, location);
                 break;
             case "enemy2_blowup_7":
+                bmps_enemyPlane3_explode[6] = getBitmap(big, location);
                 break;
             case "enemy2_fly_1":
+                bmps_enemyPlane3[0] = getBitmap(big, location);
                 break;
             case "enemy2_fly_2":
+                bmps_enemyPlane3[1] = getBitmap(big, location);
                 break;
             case "enemy2_hit_1":
+                bmp_enemyPlane3_injured = getBitmap(big, location);
                 break;
             case "enemy3_blowup_1":
+                bmps_enemyPlane2_explode[0] = getBitmap(big, location);
                 break;
             case "enemy3_blowup_2":
+                bmps_enemyPlane2_explode[1] = getBitmap(big, location);
                 break;
             case "enemy3_blowup_3":
+                bmps_enemyPlane2_explode[2] = getBitmap(big, location);
                 break;
             case "enemy3_blowup_4":
+                bmps_enemyPlane2_explode[3] = getBitmap(big, location);
                 break;
             case "enemy3_fly_1":
+                bmps_enemyPlane2[0] = getBitmap(big, location);
                 break;
             case "enemy4_fly_1":
                 break;
             case "enemy5_fly_1":
                 break;
             case "enemy_bullet":
+                bmp_bullet1 = getBitmap(big, location);
                 break;
             case "game_pause":
                 break;
             case "game_pause_hl":
                 break;
             case "hero_blowup_1":
+                bmps_hero_explode[0] = getBitmap(big, location);
                 break;
             case "hero_blowup_2":
+                bmps_hero_explode[1] = getBitmap(big, location);
                 break;
             case "hero_blowup_3":
+                bmps_hero_explode[2] = getBitmap(big, location);
                 break;
             case "hero_blowup_4":
+                bmps_hero_explode[3] = getBitmap(big, location);
                 break;
             case "hero_fly_1":
+                bmps_heroPlane[0] = getBitmap(big, location);
                 break;
             case "hero_fly_2":
+                bmps_heroPlane[1] = getBitmap(big, location);
                 break;
             case "loading0":
                 break;
@@ -233,6 +267,10 @@ public class BitmapLoader {
         }
     }
 
+    private static Bitmap getBitmap(Bitmap big, int[] location) {
+        return Bitmap.createBitmap(big, location[0], location[1], location[2], location[3]);
+    }
+
     private static void initBitmap(Context context) {
 
     }
@@ -243,5 +281,27 @@ public class BitmapLoader {
         public String size;
     }
 
+    public static boolean saveBitmap(Bitmap bitmap, File file) {
+        if (bitmap == null)
+            return false;
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
 
 }

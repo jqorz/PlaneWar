@@ -4,12 +4,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.jqorz.planewar.base.BasePlane;
-import com.jqorz.planewar.eenum.PlaneStatus;
-import com.jqorz.planewar.eenum.PlaneType;
+import com.jqorz.planewar.constant.PlaneStatus;
+import com.jqorz.planewar.constant.PlaneType;
 import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
-import com.jqorz.planewar.utils.ConstantUtil;
-import com.jqorz.planewar.utils.Logg;
+import com.jqorz.planewar.constant.ConstantValue;
 
 /**
  * 该类为敌机类
@@ -81,13 +80,13 @@ public class EnemyPlane extends BasePlane {
     protected void initLife() {
         switch (type) {
             case PlaneType.ENEMY_TYPE1:
-                this.life = ConstantUtil.Enemy1_life;
+                this.life = ConstantValue.Enemy1_life;
                 break;
             case PlaneType.ENEMY_TYPE2:
-                this.life = ConstantUtil.Enemy2_life;
+                this.life = ConstantValue.Enemy2_life;
                 break;
             case PlaneType.ENEMY_TYPE3:
-                this.life = ConstantUtil.Enemy3_life;
+                this.life = ConstantValue.Enemy3_life;
                 break;
         }
     }

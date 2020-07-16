@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jqorz.planewar.R;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 import com.jqorz.planewar.utils.UserDataUtil;
 
 public class GameOver extends Activity implements View.OnClickListener {
@@ -27,13 +27,13 @@ public class GameOver extends Activity implements View.OnClickListener {
         initEvent();
         setTypeface();
         getBundle();
-        ConstantUtil.CHEAT_CURRENT_STATE = 0;//还原作弊状态
+        ConstantValue.CHEAT_CURRENT_STATE = 0;//还原作弊状态
     }
 
     private void getBundle() {
         Intent intent = getIntent();
         int thisScore = intent.getIntExtra("Score", 0);
-        boolean isCheated = ConstantUtil.CHEAT_CURRENT_STATE != 0;
+        boolean isCheated = ConstantValue.CHEAT_CURRENT_STATE != 0;
 
         int maxScore = UserDataUtil.loadUserIntegerData(this, MAX_SCORE);
 

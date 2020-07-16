@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import com.jqorz.planewar.base.BaseEntityImp;
 import com.jqorz.planewar.tools.AnimationImpl;
 import com.jqorz.planewar.tools.BitmapLoader;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 /**
  * @author j1997
@@ -30,7 +30,7 @@ public class BgEntity extends BaseEntityImp {
     }
 
     public void move() {
-        y += ConstantUtil.Bg_Velocity;
+        y += ConstantValue.Bg_Velocity;
     }
 
 }

@@ -3,7 +3,7 @@ package com.jqorz.planewar.entity;
 import com.jqorz.planewar.base.BaseSupply;
 import com.jqorz.planewar.tools.BitmapLoader;
 import com.jqorz.planewar.tools.MapCreator;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 /**
  * 该类为炸弹补给类
@@ -24,7 +24,7 @@ public class BombSupply extends BaseSupply {
 
     @Override
     public void move() {
-        y += ConstantUtil.Bomb_Velocity;
+        y += ConstantValue.Bomb_Velocity;
     }
 
 }

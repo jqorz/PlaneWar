@@ -3,7 +3,7 @@ package com.jqorz.planewar.entity;
 import com.jqorz.planewar.base.BaseSupply;
 import com.jqorz.planewar.tools.MapCreator;
 import com.jqorz.planewar.tools.BitmapLoader;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 /**
  * 该类为子弹补给类
@@ -22,6 +22,6 @@ public class BulletSupply extends BaseSupply {
 
 
     public void move() {
-        y += ConstantUtil.ChangeBullet_Velocity;
+        y += ConstantValue.ChangeBullet_Velocity;
     }
 }

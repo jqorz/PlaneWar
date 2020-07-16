@@ -1,4 +1,4 @@
-package com.jqorz.planewar.eenum;
+package com.jqorz.planewar.constant;
 
 import android.support.annotation.IntDef;
 

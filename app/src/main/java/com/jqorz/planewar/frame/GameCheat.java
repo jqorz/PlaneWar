@@ -7,7 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jqorz.planewar.R;
-import com.jqorz.planewar.utils.ConstantUtil;
+import com.jqorz.planewar.constant.ConstantValue;
 
 public class GameCheat extends Activity {
     private EditText edtTxt_cheat;
@@ -28,18 +28,18 @@ public class GameCheat extends Activity {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             String s = "jqorz_";
             String ed = edtTxt_cheat.getText().toString();
-            if (ed.equals(s + ConstantUtil.CHEAT_STATE_1)) {//初始炸弹数为10
-                ConstantUtil.CHEAT_CURRENT_STATE = ConstantUtil.CHEAT_STATE_1;
+            if (ed.equals(s + ConstantValue.CHEAT_STATE_1)) {//初始炸弹数为10
+                ConstantValue.CHEAT_CURRENT_STATE = ConstantValue.CHEAT_STATE_1;
                 Toast.makeText(this,"Success_炸弹狂魔",Toast.LENGTH_SHORT).show();
                 this.finish();
             }
-            else if (ed.equals(s + ConstantUtil.CHEAT_STATE_2)) {//子弹补给时间缩短10s
-                ConstantUtil.CHEAT_CURRENT_STATE = ConstantUtil.CHEAT_STATE_2;
+            else if (ed.equals(s + ConstantValue.CHEAT_STATE_2)) {//子弹补给时间缩短10s
+                ConstantValue.CHEAT_CURRENT_STATE = ConstantValue.CHEAT_STATE_2;
                 Toast.makeText(this,"Success_蓝色风暴",Toast.LENGTH_SHORT).show();
                 this.finish();
             }
-            else if (ed.equals(s + ConstantUtil.CHEAT_STATE_3)) {//敌机分数每个加100
-                ConstantUtil.CHEAT_CURRENT_STATE = ConstantUtil.CHEAT_STATE_3;
+            else if (ed.equals(s + ConstantValue.CHEAT_STATE_3)) {//敌机分数每个加100
+                ConstantValue.CHEAT_CURRENT_STATE = ConstantValue.CHEAT_STATE_3;
                 Toast.makeText(this,"Success_得分高手",Toast.LENGTH_SHORT).show();
                 this.finish();
             }
