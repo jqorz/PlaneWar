@@ -1,5 +1,6 @@
 package com.jqorz.planewar.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -7,15 +8,11 @@ import android.widget.Toast;
  * Toast工具类
  */
 public class ToastUtil {
-    /**
-     * Toast方法
-     *
-     * @param text 需要展示的文本
-     * @param context  所需上下文
-     */
+
 
     private static Toast mToast = null;
 
+    @SuppressLint("ShowToast")
     public static void showToast(Context context, String text) {
         if (mToast == null) {
             mToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);

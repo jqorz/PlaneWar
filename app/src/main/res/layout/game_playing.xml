@@ -5,7 +5,7 @@
 
 
     <com.jqorz.planewar.entity.GameView
-        android:id="@+id/mSurfaceView"
+        android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -26,7 +26,7 @@
             android:textSize="@dimen/tv_size" />
 
         <ImageView
-            android:id="@+id/iv_Pause"
+            android:id="@+id/imgBtn_Pause"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
