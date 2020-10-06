@@ -1,21 +1,15 @@
 package com.jqorz.planewar.tools
 
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 
-class AnimationImpl(frameBitmap: Array<Bitmap>, isLoop: Boolean) {
+class AnimationImpl(val mFrameBitmap: Array<Bitmap>, val isLoop: Boolean) {
     var isEnd = false
     var isPause = false
     private var mPlayID = 0
-    private val mFrameCount: Int
-    private val mFrameBitmap: Array<Bitmap>
-    private val mIsLoop: Boolean
+    private val mFrameCount: Int = mFrameBitmap.size
     private var animIndex = 0
-
-    constructor(frameBitmap: Bitmap, isLoop: Boolean) : this(arrayOf<Bitmap>(frameBitmap), isLoop) {}
 
     //重置动画
     fun reset() {
@@ -54,7 +48,7 @@ class AnimationImpl(frameBitmap: Array<Bitmap>, isLoop: Boolean) {
             if (mPlayID >= mFrameCount) {
                 //标志动画播放结束
                 isEnd = true
-                if (mIsLoop) {
+                if (isLoop) {
                     //设置循环播放
                     isEnd = false
                     mPlayID = 0
@@ -63,21 +57,5 @@ class AnimationImpl(frameBitmap: Array<Bitmap>, isLoop: Boolean) {
         }
     }
 
-    /**
-     * 读取图片资源
-     */
-    fun readBitmap(context: Context, resId: Int): Bitmap {
-        val opt = BitmapFactory.Options()
-        opt.inPreferredConfig = Bitmap.Config.RGB_565
-        // 获取资源图片
-        val `is` = context.resources.openRawResource(resId)
-        return BitmapFactory.decodeStream(`is`, null, opt)
-    }
 
-    init {
-        mFrameCount = frameBitmap.size
-        mFrameBitmap = frameBitmap
-        mIsLoop = isLoop
-        reset()
-    }
 }

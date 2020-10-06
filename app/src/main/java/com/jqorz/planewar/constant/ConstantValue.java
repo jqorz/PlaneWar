@@ -59,13 +59,13 @@ public class ConstantValue {
      */
     public static int CHEAT_CURRENT_STATE = 0;
 
-    public static int getEnemyScore(@PlaneType int type) {
+    public static int getEnemyScore(PlaneType type) {
         switch (type) {
-            case PlaneType.ENEMY_TYPE1:
+            case ENEMY_TYPE1:
                 return ConstantValue.ENEMY_TYPE1_SCORE;
-            case PlaneType.ENEMY_TYPE2:
+            case ENEMY_TYPE2:
                 return ConstantValue.ENEMY_TYPE2_SCORE;
-            case PlaneType.ENEMY_TYPE3:
+            case ENEMY_TYPE3:
                 return ConstantValue.ENEMY_TYPE3_SCORE;
 
         }

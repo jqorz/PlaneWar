@@ -2,15 +2,13 @@ package com.jqorz.planewar.frame
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.View
 import android.widget.CompoundButton
-import android.widget.Switch
 import com.jqorz.planewar.R
 import com.jqorz.planewar.tools.UserDataManager
+import kotlinx.android.synthetic.main.game_setting.*
 
 class GameSetting : Activity(), CompoundButton.OnCheckedChangeListener {
-    private var swt_Sound: Switch? = null
-    private var swt_Music: Switch? = null
+
     override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_setting)
@@ -25,8 +23,6 @@ class GameSetting : Activity(), CompoundButton.OnCheckedChangeListener {
     }
 
     private fun initView() {
-        swt_Sound = findViewById<View>(R.id.swt_Sound) as Switch
-        swt_Music = findViewById<View>(R.id.swt_Music) as Switch
     }
 
     private fun initEvent() {

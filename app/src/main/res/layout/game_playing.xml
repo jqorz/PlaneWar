@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
 
-    <com.jqorz.planewar.entity.GameView
+    <com.jqorz.planewar.GameView
         android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

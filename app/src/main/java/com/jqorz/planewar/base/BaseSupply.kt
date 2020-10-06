@@ -9,16 +9,17 @@ import com.jqorz.planewar.tools.AnimationImpl
  * @author j1997
  * @since 2020/4/7
  */
-abstract class BaseSupply(defaultBitmap: Bitmap) : BaseEntityImp(defaultBitmap) {
-    var isShown = false //补给的状态
-    protected var mAnimation: AnimationImpl? = null
-    override fun init(type: Int) {
+abstract class BaseSupply(defaultBitmap: Array<Bitmap>) : BaseEntityImp(defaultBitmap) {
+    override var isHide = true
+    protected lateinit var mAnimation: AnimationImpl
+
+    override fun init() {
         mAnimation = AnimationImpl(bitmaps, true)
         reset()
     }
 
-    override fun draw(canvas: Canvas , paint: Paint ) {
-        mAnimation!!.drawAnimation(canvas, paint, x, y)
+    override fun draw(canvas: Canvas, paint: Paint) {
+        mAnimation.drawAnimation(canvas, paint, x, y)
     }
 
     abstract fun reset()

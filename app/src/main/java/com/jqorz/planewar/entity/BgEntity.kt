@@ -11,14 +11,15 @@ import com.jqorz.planewar.tools.BitmapLoader
  * @author j1997
  * @since 2020/4/19
  */
-class BgEntity : BaseEntityImp(BitmapLoader.background) {
-    protected var mAnimation: AnimationImpl? = null
-    override fun init(type: Int) {
+class BgEntity : BaseEntityImp(arrayOf(BitmapLoader.background)) {
+    private lateinit var mAnimation: AnimationImpl
+
+    override fun init() {
         mAnimation = AnimationImpl(bitmaps, true)
     }
 
     override fun draw(canvas: Canvas, paint: Paint) {
-        mAnimation!!.drawAnimation(canvas, paint, x, y)
+        mAnimation.drawAnimation(canvas, paint, x, y)
     }
 
     fun move() {

@@ -8,28 +8,22 @@ import com.jqorz.planewar.tools.AnimationImpl
  * @author j1997
  * @since 2020/4/7
  */
-abstract class BasePlane : BaseEntityImp {
-    open var status = PlaneStatus.STATUS_HIDE
-    var life //生命
-            = 0
-    protected var mFlyAnimation: AnimationImpl? = null
-    protected var mExploreAnimation: AnimationImpl? = null
-    protected var mInjureAnimation: AnimationImpl? = null
-
-    constructor(bitmaps: Array<Bitmap>) : super(bitmaps) {}
-    constructor(bitmaps: Array<Bitmap>, type: Int) : super(bitmaps, type) {}
+abstract class BasePlane(bitmaps: Array<Bitmap>) : BaseEntityImp(bitmaps) {
+    var currentStatus = PlaneStatus.STATUS_HIDE
+    var life = 0//生命
+    protected lateinit var mFlyAnimation: AnimationImpl
+    protected lateinit var mExploreAnimation: AnimationImpl
+    protected lateinit var mInjureAnimation: AnimationImpl
 
     protected abstract fun initLife()
-    val isFly: Boolean
-        get() = status == PlaneStatus.STATUS_FLY
-    val isHide: Boolean
-        get() = status == PlaneStatus.STATUS_HIDE
-    val isExplore: Boolean
-        get() = status == PlaneStatus.STATUS_EXPLORE
-    val isInjure: Boolean
-        get() = status == PlaneStatus.STATUS_INJURE
 
-    protected fun getStatusAnim(status: Int): AnimationImpl? {
+    fun isFly() = currentStatus == PlaneStatus.STATUS_FLY
+    fun isExplore() = currentStatus == PlaneStatus.STATUS_EXPLORE
+    fun isInjure() = currentStatus == PlaneStatus.STATUS_INJURE
+
+    override var isHide = currentStatus == PlaneStatus.STATUS_HIDE
+
+    protected fun getStatusAnim(status: PlaneStatus): AnimationImpl {
         return when (status) {
             PlaneStatus.STATUS_EXPLORE -> mExploreAnimation
             PlaneStatus.STATUS_INJURE -> mInjureAnimation
@@ -37,8 +31,7 @@ abstract class BasePlane : BaseEntityImp {
         }
     }
 
-    open val isExploreEnd: Boolean
-        get() = isExplore && getStatusAnim(PlaneStatus.STATUS_EXPLORE)!!.isEnd
+    open fun isExploreEnd() = isExplore() && getStatusAnim(PlaneStatus.STATUS_EXPLORE).isEnd
 
     abstract fun move()
 }

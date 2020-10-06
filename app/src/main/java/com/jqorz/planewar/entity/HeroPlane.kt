@@ -14,22 +14,22 @@ import com.jqorz.planewar.tools.DeviceTools
  * 英雄飞机实体类
  */
 class HeroPlane : BasePlane(BitmapLoader.bmps_heroPlane) {
-    var bulletType = 0
-    override fun init(type: Int) {
+    lateinit var bulletType: BulletType
+    override fun init() {
         initLife()
         initAnimation()
         reset()
     }
 
     private fun reset() {
-        setX((DeviceTools.getScreenWidth() - width) / 2)
-        setY(DeviceTools.getScreenHeight() / 3 * 2 - height / 2)
+        x = ((DeviceTools.getScreenWidth() - width) / 2)
+        y = (DeviceTools.getScreenHeight() / 3 * 2 - height / 2)
         bulletType = BulletType.BULLET_RED
         setStatus(PlaneStatus.STATUS_FLY)
     }
 
     override fun draw(canvas: Canvas, paint: Paint) {
-        getStatusAnim(status).drawAnimation(canvas, paint, x, y)
+        getStatusAnim(currentStatus).drawAnimation(canvas, paint, x, y)
     }
 
     private fun initAnimation() {
@@ -38,17 +38,18 @@ class HeroPlane : BasePlane(BitmapLoader.bmps_heroPlane) {
         mInjureAnimation = AnimationImpl(bitmaps, false)
     }
 
-    override fun setX(x: Int) {
-        this.x = Math.min(Math.max(0, x), DeviceTools.getScreenWidth() - width)
-    }
+    override var x: Int = 0
+        get() = super.x
+        set(value) {
+            field = Math.min(Math.max(0, value), DeviceTools.getScreenWidth() - width)
+        }
 
-    override fun getY(): Int {
-        return y
-    }
+    override var y: Int = 0
+        get() = super.y
+        set(value) {
+            field = Math.min(Math.max(0, value), DeviceTools.getScreenHeight() - height)
+        }
 
-    override fun setY(y: Int) {
-        this.y = Math.min(Math.max(0, y), DeviceTools.getScreenHeight() - height)
-    }
 
     fun resetInjureAnim() {
         getStatusAnim(PlaneStatus.STATUS_INJURE).reset()
@@ -64,9 +65,10 @@ class HeroPlane : BasePlane(BitmapLoader.bmps_heroPlane) {
             }
         }
     */
-    override fun setStatus(status: Int) {
-        val lastStatus = getStatus()
-        super.setStatus(status)
+
+    fun setStatus(status: PlaneStatus) {
+        val lastStatus = currentStatus
+        super.currentStatus = status
         if (status != lastStatus) {
             getStatusAnim(lastStatus).pause()
             getStatusAnim(status).resume()
@@ -78,7 +80,5 @@ class HeroPlane : BasePlane(BitmapLoader.bmps_heroPlane) {
     }
 
     override fun move() {}
-    override fun isExploreEnd(): Boolean {
-        return isExplore && getStatusAnim(PlaneStatus.STATUS_EXPLORE).isEnd
-    }
+
 }

@@ -8,11 +8,12 @@ import com.jqorz.planewar.tools.MapCreator
 /**
  * 该类为炸弹补给类
  */
-class BombSupply internal constructor() : BaseSupply(BitmapLoader.bmp_bombSupply) {
+class BombSupply : BaseSupply(BitmapLoader.bmp_bombSupply) {
+
     override fun reset() {
-        setX(MapCreator.getNewSupplyPos(this))
-        setY(-height)
-        setShown(true)
+        x = (MapCreator.getNewSupplyPos(this))
+        y = (-height)
+        isHide = false
     }
 
     override fun move() {

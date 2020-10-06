@@ -1,4 +1,4 @@
-package com.jqorz.planewar.entity
+package com.jqorz.planewar
 
 import android.content.Context
 import android.graphics.Canvas
@@ -7,6 +7,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import com.jqorz.planewar.constant.PlaneType
+import com.jqorz.planewar.entity.*
 import com.jqorz.planewar.listener.GameListener
 import com.jqorz.planewar.manager.DrawManager
 import com.jqorz.planewar.manager.MoveManager
@@ -17,12 +19,13 @@ import com.jqorz.planewar.tools.BitmapLoader
 import com.jqorz.planewar.tools.DeviceTools
 import com.jqorz.planewar.utils.Logg
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * 主游戏界面控制类
  */
 class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), SurfaceHolder.Callback, OnThreadRunListener {
-    var mBulletSupply: BulletSupply? = null//子弹补给
+    lateinit var mBulletSupply: BulletSupply //子弹补给
     lateinit var mBombSupply: BombSupply  //炸弹补给
     lateinit var mBgEntityArray: Array<BgEntity>
     lateinit var heroPlane: HeroPlane
@@ -55,18 +58,17 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
     }
 
     private fun initBgArray() {
-        val bgSize = Math.ceil(DeviceTools.getScreenHeight() / (BitmapLoader.background.height * 1.0f).toDouble()).toInt() + 1
+        val bgSize = ceil(DeviceTools.getScreenHeight() / (BitmapLoader.background.height * 1.0f).toDouble()).toInt() + 1
         Logg.i("屏幕高度=" + DeviceTools.getScreenHeight() + " 背景高度=" + BitmapLoader.background.height + " 背景图数量=" + bgSize)
-        mBgEntityArray = Array(bgSize) { BgEntity() }
-        for (i in mBgEntityArray.indices) {
+        mBgEntityArray = Array(bgSize) {
             val bgEntity = BgEntity()
-            if (i == 0) {
+            if (it == 0) {
                 bgEntity.y = DeviceTools.getScreenHeight() - bgEntity.height
             } else {
-                val lastBg = mBgEntityArray[i - 1]
+                val lastBg = mBgEntityArray[it - 1]
                 bgEntity.y = lastBg.y - bgEntity.height
             }
-            mBgEntityArray[i] = bgEntity
+            bgEntity
         }
     }
 
@@ -134,7 +136,7 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
         mMainRunThread.flag = (false)
     }
 
-    fun onEnemyAttacked(type: Int) {
+    fun onEnemyAttacked(type: PlaneType) {
         mGameListener?.onEnemyAttacked(type)
     }
 
@@ -143,7 +145,7 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
 
     }
 
-    fun onEnemyDie(type: Int) {
+    fun onEnemyDie(type: PlaneType) {
         mGameListener?.onEnemyDie(type)
 
     }
@@ -163,7 +165,7 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
     init {
         this.keepScreenOn = true //保持屏幕常亮
         this.isFocusableInTouchMode = false //设置不允许按键
-        BitmapLoader.init(context)
+        BitmapLoader.init()
         initGameView()
     }
 }

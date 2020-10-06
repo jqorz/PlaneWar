@@ -13,7 +13,7 @@ object CollisionCheck {
         return isCollision(entity1, entityImp2, DEFAULT_OVERLAP_AREA)
     }
 
-    fun isCollision(entity1: BaseEntityImp, entity2: BaseEntityImp, area: Float): Boolean { //判断两个矩形是否碰撞
+    private fun isCollision(entity1: BaseEntityImp, entity2: BaseEntityImp, area: Float): Boolean { //判断两个矩形是否碰撞
         val xd: Int //大的x
         val yd: Int //大的y
         val xx: Int //小的x

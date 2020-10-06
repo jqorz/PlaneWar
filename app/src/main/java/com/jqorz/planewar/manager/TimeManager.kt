@@ -1,7 +1,7 @@
 package com.jqorz.planewar.manager
 
+import com.jqorz.planewar.GameView
 import com.jqorz.planewar.constant.ConstantValue
-import com.jqorz.planewar.entity.GameView
 import com.jqorz.planewar.tools.MapCreator
 import com.jqorz.planewar.tools.MapCreator.BulletInfo
 import com.jqorz.planewar.tools.MapCreator.PlaneInfo
@@ -67,7 +67,7 @@ class TimeManager     //构造器
         }
 
         //计算上次发送子弹的时间
-        if ((gameView.heroPlane.isFly || gameView.heroPlane.isInjure) && now - mSendTime >= ConstantValue.BULLET_TIME) {
+        if ((gameView.heroPlane.isFly() || gameView.heroPlane.isInjure()) && now - mSendTime >= ConstantValue.BULLET_TIME) {
             for (info in MapCreator.getNewBulletPos(gameView.heroPlane)) {
                 mOnEntityChangeListener!!.onNewBullet(info)
             }

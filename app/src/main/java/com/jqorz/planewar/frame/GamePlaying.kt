@@ -233,7 +233,7 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
         playSound(4, 0)
     }
 
-    override fun onEnemyDie(@PlaneType type: Int) {
+    override fun onEnemyDie(type: PlaneType) {
         score += ConstantValue.getEnemyScore(type)
         runOnUiThread { tv_Score!!.text = score.toString() }
         when (type) {
@@ -243,7 +243,7 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
         }
     }
 
-    override fun onEnemyAttacked(type: Int) {
+    override fun onEnemyAttacked(type: PlaneType) {
         if (type != PlaneType.ENEMY_TYPE1) {
             playSound(2, 0)
         }

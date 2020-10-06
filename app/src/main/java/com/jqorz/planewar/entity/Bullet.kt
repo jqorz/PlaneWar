@@ -13,18 +13,20 @@ import com.jqorz.planewar.tools.BitmapLoader
  * 记录了子弹自身的相关参数
  * 外界通过调用move方法移动子弹
  */
-class Bullet(@BulletType type: Int) : BaseEntityImp(if (type == BulletType.BULLET_RED) BitmapLoader.bmp_bullet1 else BitmapLoader.bmp_bullet2, type) {
-    protected var mAnimation: AnimationImpl? = null
-    var isShown = false //补给的状态
-    override fun init(type: Int) {
+class Bullet(type: BulletType) : BaseEntityImp(if (type == BulletType.BULLET_RED) BitmapLoader.bmp_bullet1 else BitmapLoader.bmp_bullet2) {
+    lateinit var mAnimation: AnimationImpl
+
+    override var isHide = true
+
+    override fun init() {
         mAnimation = AnimationImpl(bitmaps, true)
     }
 
     override fun draw(canvas: Canvas, paint: Paint) {
-        mAnimation!!.drawAnimation(canvas, paint, x, y)
+        mAnimation.drawAnimation(canvas, paint, x, y)
     }
 
     fun move() {
-        y = y - ConstantValue.BULLET_VELOCITY
+        y -= ConstantValue.BULLET_VELOCITY
     }
 }
