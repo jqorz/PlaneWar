@@ -9,6 +9,7 @@ import com.jqorz.planewar.tools.MapCreator
  * 该类为子弹补给类
  */
 class BulletSupply : BaseSupply(BitmapLoader.bmp_bulletSupply) {
+
     override fun reset() {
         x = (MapCreator.getNewSupplyPos(this))
         y = (-height)

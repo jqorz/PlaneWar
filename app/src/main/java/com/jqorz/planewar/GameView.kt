@@ -19,6 +19,7 @@ import com.jqorz.planewar.tools.BitmapLoader
 import com.jqorz.planewar.tools.DeviceTools
 import com.jqorz.planewar.utils.Logg
 import java.util.*
+import kotlin.math.abs
 import kotlin.math.ceil
 
 /**
@@ -45,7 +46,16 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
     private var downX = 0f
     private var downY = 0f
     private var mGameListener: GameListener? = null
-    fun initGameView() {
+
+    init {
+        this.keepScreenOn = true //保持屏幕常亮
+        this.isFocusableInTouchMode = false //设置不允许按键
+        BitmapLoader.init()
+        initGameView()
+        initBgArray()
+    }
+
+    private fun initGameView() {
         holder.addCallback(this) //注册接口
         mMainRunThread = MainRunThread(this, holder) //初始化刷帧线程
         heroPlane = HeroPlane() //初始化我方飞机
@@ -54,20 +64,21 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
         mStatusManager = StatusManager(this)
         mMoveManager = MoveManager(this)
         mDrawManager = DrawManager(this)
-        initBgArray()
     }
 
     private fun initBgArray() {
         val bgSize = ceil(DeviceTools.getScreenHeight() / (BitmapLoader.background.height * 1.0f).toDouble()).toInt() + 1
         Logg.i("屏幕高度=" + DeviceTools.getScreenHeight() + " 背景高度=" + BitmapLoader.background.height + " 背景图数量=" + bgSize)
+
+        var lastBg: BgEntity? = null
         mBgEntityArray = Array(bgSize) {
             val bgEntity = BgEntity()
             if (it == 0) {
                 bgEntity.y = DeviceTools.getScreenHeight() - bgEntity.height
             } else {
-                val lastBg = mBgEntityArray[it - 1]
-                bgEntity.y = lastBg.y - bgEntity.height
+                bgEntity.y = lastBg!!.y - bgEntity.height
             }
+            lastBg = bgEntity
             bgEntity
         }
     }
@@ -85,10 +96,11 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
                 dX = heroPlane.x - event.rawX
                 dY = heroPlane.y - event.rawY
             }
-            MotionEvent.ACTION_MOVE -> if (Math.abs(X - downX) >= clickLimitValue || Math.abs(Y - downY) >= clickLimitValue) {
-                heroPlane.x = (event.rawX + dX).toInt()
-                heroPlane.y = (event.rawY + dY).toInt()
-            }
+            MotionEvent.ACTION_MOVE ->
+                if (abs(X - downX) >= clickLimitValue || abs(Y - downY) >= clickLimitValue) {
+                    heroPlane.x = (event.rawX + dX).toInt()
+                    heroPlane.y = (event.rawY + dY).toInt()
+                }
             else -> return false
         }
         return true
@@ -162,10 +174,4 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
         private const val clickLimitValue = 5
     }
 
-    init {
-        this.keepScreenOn = true //保持屏幕常亮
-        this.isFocusableInTouchMode = false //设置不允许按键
-        BitmapLoader.init()
-        initGameView()
-    }
 }

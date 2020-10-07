@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.game_setting.*
 
 class GameSetting : Activity(), CompoundButton.OnCheckedChangeListener {
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_setting)
         initView()

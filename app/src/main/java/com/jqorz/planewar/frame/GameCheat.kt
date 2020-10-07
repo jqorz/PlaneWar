@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.game_cheat.*
 
 class GameCheat : Activity() {
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_cheat)
     }

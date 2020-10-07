@@ -19,7 +19,7 @@ class GameOver : Activity(), View.OnClickListener {
     private var imgBtn_restartGame: ImageView? = null
     private var imgBtn_backHome: ImageView? = null
     private var imgBtn_exitGame: ImageView? = null
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_over)
         initView()

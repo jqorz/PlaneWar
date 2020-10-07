@@ -35,7 +35,7 @@ class StatusManager(private val gameView: GameView) : OnEntityChangeListener {
         }
         for (enemyPlane in gameView.mEnemyPlanes) {
             if (enemyPlane.isOutOfBound()) {
-                enemyPlane.currentStatus = (PlaneStatus.STATUS_HIDE)
+                enemyPlane.setStatus(PlaneStatus.STATUS_HIDE)
             }
         }
         val bombSupply = gameView.mBombSupply
@@ -55,21 +55,21 @@ class StatusManager(private val gameView: GameView) : OnEntityChangeListener {
             }
             if (useBomb) {
                 if (enemyPlane.isFly() || enemyPlane.isInjure()) {
-                    enemyPlane.currentStatus = (PlaneStatus.STATUS_INJURE)
+                    enemyPlane.setStatus(PlaneStatus.STATUS_INJURE)
                     enemyPlane.life = 0
                 }
             }
             if (enemyPlane.isFly()) {
                 for (bullet in gameView.mBullets) {
                     if (CollisionCheck.isCollision(enemyPlane, bullet)) { //打中敌机
-                        enemyPlane.currentStatus = (PlaneStatus.STATUS_INJURE)
+                        enemyPlane.setStatus(PlaneStatus.STATUS_INJURE)
                         enemyPlane.life = enemyPlane.life - 1 //生命减1
                         bullet.isHide = true
                         gameView.onEnemyAttacked(enemyPlane.type)
                     }
                 }
                 if (CollisionCheck.isCollision(heroPlane, enemyPlane)) {
-                    enemyPlane.currentStatus = (PlaneStatus.STATUS_INJURE)
+                    enemyPlane.setStatus(PlaneStatus.STATUS_INJURE)
                     enemyPlane.life = 0 //生命减1
                     heroPlane.setStatus(PlaneStatus.STATUS_INJURE)
                     heroPlane.life = 0
@@ -78,14 +78,14 @@ class StatusManager(private val gameView: GameView) : OnEntityChangeListener {
             } else if (enemyPlane.isInjure()) {
                 if (enemyPlane.life <= 0) { //当生命小于0时，向主线程发送得分信息
                     gameView.onEnemyDie(enemyPlane.type)
-                    enemyPlane.currentStatus = (PlaneStatus.STATUS_EXPLORE)
+                    enemyPlane.setStatus(PlaneStatus.STATUS_EXPLORE)
                     gameView.onEnemyDie(enemyPlane.type)
                 } else {
-                    enemyPlane.currentStatus = (PlaneStatus.STATUS_FLY)
+                    enemyPlane.setStatus(PlaneStatus.STATUS_FLY)
                     enemyPlane.resetInjureAnim()
                 }
             } else if (enemyPlane.isExploreEnd()) {
-                enemyPlane.currentStatus = (PlaneStatus.STATUS_HIDE)
+                enemyPlane.setStatus(PlaneStatus.STATUS_HIDE)
             }
         }
         useBomb = false
@@ -149,7 +149,7 @@ class StatusManager(private val gameView: GameView) : OnEntityChangeListener {
     override fun onNewEnemy(planeInfo: PlaneInfo) {
         val enemyPlane = EnemyPlane(planeInfo.type)
         enemyPlane.setVelocity(planeInfo.velocity)
-        enemyPlane.currentStatus = (PlaneStatus.STATUS_FLY)
+        enemyPlane.setStatus(PlaneStatus.STATUS_FLY)
         enemyPlane.x = planeInfo.x
         gameView.mEnemyPlanes.add(enemyPlane)
     }

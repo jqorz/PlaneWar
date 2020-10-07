@@ -16,8 +16,6 @@ abstract class BaseEntityImp constructor(override var bitmaps: Array<Bitmap>) : 
     override var y = 0
 
 
-    abstract fun init()
-
     abstract fun draw(canvas: Canvas, paint: Paint)
 
     private val defaultBitmap: Bitmap

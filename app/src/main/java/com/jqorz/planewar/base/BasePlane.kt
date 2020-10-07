@@ -21,7 +21,8 @@ abstract class BasePlane(bitmaps: Array<Bitmap>) : BaseEntityImp(bitmaps) {
     fun isExplore() = currentStatus == PlaneStatus.STATUS_EXPLORE
     fun isInjure() = currentStatus == PlaneStatus.STATUS_INJURE
 
-    override var isHide = currentStatus == PlaneStatus.STATUS_HIDE
+    override var isHide = false
+        get() = currentStatus == PlaneStatus.STATUS_HIDE
 
     protected fun getStatusAnim(status: PlaneStatus): AnimationImpl {
         return when (status) {

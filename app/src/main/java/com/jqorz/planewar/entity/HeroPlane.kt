@@ -14,11 +14,22 @@ import com.jqorz.planewar.tools.DeviceTools
  * 英雄飞机实体类
  */
 class HeroPlane : BasePlane(BitmapLoader.bmps_heroPlane) {
-    lateinit var bulletType: BulletType
-    override fun init() {
+    var bulletType = BulletType.BULLET_RED
+
+    init {
         initLife()
         initAnimation()
         reset()
+    }
+
+    override fun initLife() {
+        life = ConstantValue.Hero_life
+    }
+
+    private fun initAnimation() {
+        mFlyAnimation = AnimationImpl(bitmaps, true)
+        mExploreAnimation = AnimationImpl(BitmapLoader.bmps_hero_explode, false)
+        mInjureAnimation = AnimationImpl(bitmaps, false)
     }
 
     private fun reset() {
@@ -32,22 +43,15 @@ class HeroPlane : BasePlane(BitmapLoader.bmps_heroPlane) {
         getStatusAnim(currentStatus).drawAnimation(canvas, paint, x, y)
     }
 
-    private fun initAnimation() {
-        mFlyAnimation = AnimationImpl(bitmaps, true)
-        mExploreAnimation = AnimationImpl(BitmapLoader.bmps_hero_explode, false)
-        mInjureAnimation = AnimationImpl(bitmaps, false)
-    }
 
     override var x: Int = 0
-        get() = super.x
         set(value) {
-            field = Math.min(Math.max(0, value), DeviceTools.getScreenWidth() - width)
+            field = 0.coerceAtLeast(value).coerceAtMost(DeviceTools.getScreenWidth() - width)
         }
 
     override var y: Int = 0
-        get() = super.y
         set(value) {
-            field = Math.min(Math.max(0, value), DeviceTools.getScreenHeight() - height)
+            field = 0.coerceAtLeast(value).coerceAtMost(DeviceTools.getScreenHeight() - height)
         }
 
 
@@ -75,9 +79,6 @@ class HeroPlane : BasePlane(BitmapLoader.bmps_heroPlane) {
         }
     }
 
-    override fun initLife() {
-        life = ConstantValue.Hero_life
-    }
 
     override fun move() {}
 

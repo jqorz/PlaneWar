@@ -14,13 +14,9 @@ import com.jqorz.planewar.tools.BitmapLoader
  * 外界通过调用move方法移动子弹
  */
 class Bullet(type: BulletType) : BaseEntityImp(if (type == BulletType.BULLET_RED) BitmapLoader.bmp_bullet1 else BitmapLoader.bmp_bullet2) {
-    lateinit var mAnimation: AnimationImpl
+    var mAnimation = AnimationImpl(bitmaps, true)
 
     override var isHide = true
-
-    override fun init() {
-        mAnimation = AnimationImpl(bitmaps, true)
-    }
 
     override fun draw(canvas: Canvas, paint: Paint) {
         mAnimation.drawAnimation(canvas, paint, x, y)

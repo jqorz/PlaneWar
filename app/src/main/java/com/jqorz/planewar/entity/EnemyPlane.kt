@@ -15,7 +15,7 @@ import com.jqorz.planewar.tools.BitmapLoader
 class EnemyPlane(val type: PlaneType) : BasePlane(if (type == PlaneType.ENEMY_TYPE1) BitmapLoader.bmps_enemyPlane1 else if (type == PlaneType.ENEMY_TYPE2) BitmapLoader.bmps_enemyPlane2 else BitmapLoader.bmps_enemyPlane3) {
     private var velocity = 0//飞机的速度
 
-    override fun init() {
+    init {
         initLife()
         initAnimation()
         reset()
@@ -47,14 +47,14 @@ class EnemyPlane(val type: PlaneType) : BasePlane(if (type == PlaneType.ENEMY_TY
         }
     }
 
-    override fun draw(canvas: Canvas, paint: Paint) {
-        getStatusAnim(currentStatus).drawAnimation(canvas, paint, x, y)
-    }
-
     fun reset() {
         x = (0)
         y = (-height)
         currentStatus = PlaneStatus.STATUS_FLY
+    }
+
+    override fun draw(canvas: Canvas, paint: Paint) {
+        getStatusAnim(currentStatus).drawAnimation(canvas, paint, x, y)
     }
 
     fun resetInjureAnim() {

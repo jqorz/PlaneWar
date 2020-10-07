@@ -28,7 +28,7 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
     private lateinit var soundPoolMap: HashMap<Int, Int>
     private lateinit var mMediaPlayer: MediaPlayer
 
-    public override fun onCreate(savedInstanceState: Bundle) {
+    public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_playing)
         initEvent()
