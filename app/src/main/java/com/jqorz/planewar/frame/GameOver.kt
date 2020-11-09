@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,7 +12,7 @@ import com.jqorz.planewar.R
 import com.jqorz.planewar.constant.ConstantValue
 import com.jqorz.planewar.utils.UserDataUtil
 
-class GameOver : Activity(), View.OnClickListener {
+class GameOver : FragmentActivity(), View.OnClickListener {
     private val MAX_SCORE = "MAX_SCORE"
     private val HAS_CHEATED = "HAS_CHEATED"
     private var tv_MaxScore: TextView? = null

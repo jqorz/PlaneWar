@@ -1,8 +1,9 @@
 package com.jqorz.planewar.utils;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.widget.Toast;
+
+import com.jqorz.planewar.tools.DeviceTools;
 
 /**
  * Toast工具类
@@ -13,9 +14,9 @@ public class ToastUtil {
     private static Toast mToast = null;
 
     @SuppressLint("ShowToast")
-    public static void showToast(Context context, String text) {
+    public static void showToast(String text) {
         if (mToast == null) {
-            mToast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(DeviceTools.getApp(), text, Toast.LENGTH_SHORT);
         } else {
             mToast.setText(text);
             mToast.setDuration(Toast.LENGTH_SHORT);
@@ -23,8 +24,5 @@ public class ToastUtil {
         mToast.show();
     }
 
-    public static void showToast(Context context) {
-        String text = "点击";
-        showToast(context, text);
-    }
+
 }

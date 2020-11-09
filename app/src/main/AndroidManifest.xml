@@ -19,12 +19,6 @@
         <activity android:name=".frame.GamePlaying" />
         <activity android:name=".frame.GameOver" />
         <activity android:name=".frame.GameAbout" />
-        <activity
-            android:name=".frame.GameSetting"
-            android:theme="@style/dialog" />
-        <activity
-            android:name=".frame.GameCheat"
-            android:theme="@style/dialog" />
     </application>
 
 </manifest>

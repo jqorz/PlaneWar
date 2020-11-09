@@ -1,14 +1,14 @@
-package com.jqorz.planewar.frame
+ package com.jqorz.planewar.frame
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.view.View.OnLongClickListener
 import com.jqorz.planewar.R
 import kotlinx.android.synthetic.main.game_launcher.*
 
-class GameLauncher : Activity(), View.OnClickListener, OnLongClickListener {
+class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_launcher)
@@ -31,7 +31,7 @@ class GameLauncher : Activity(), View.OnClickListener, OnLongClickListener {
                 finish()
             }
             R.id.imgBtn_about -> this.startActivity(Intent(this, GameAbout::class.java))
-            R.id.imgBtn_setting -> this.startActivity(Intent(this, GameSetting::class.java))
+            R.id.imgBtn_setting -> GamePauseDialog(this).show()
             R.id.imgBtn_exitGame -> finish()
         }
     }

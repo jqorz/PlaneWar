@@ -1,6 +1,5 @@
 package com.jqorz.planewar.frame
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -9,6 +8,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.os.Bundle
+import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.widget.CompoundButton
 import com.jqorz.planewar.R
@@ -20,14 +20,14 @@ import com.jqorz.planewar.tools.UserDataManager
 import kotlinx.android.synthetic.main.game_playing.*
 import java.util.*
 
-class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener, GameListener {
+class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnCheckedChangeListener, GameListener {
     private var isPause = false //是否暂停
     private var score = 0 //玩家本局分数
     private var bombNum = 0 //玩家炸弹数量
     private lateinit var soundPool: SoundPool //声音
     private lateinit var soundPoolMap: HashMap<Int, Int>
     private lateinit var mMediaPlayer: MediaPlayer
-
+    private var pauseDialog: GamePauseDialog? = null
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_playing)
@@ -35,7 +35,6 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
         initMusic()
         initSounds()
         setTypeface()
-        setSwitch()
         checkMusic()
         checkCheat()
     }
@@ -50,10 +49,6 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
         mMediaPlayer.isLooping = true
     }
 
-    private fun setSwitch() {
-        swt_Music!!.isChecked = UserDataManager.isOpenMusic()
-        swt_Sound!!.isChecked = UserDataManager.isOpenSound()
-    }
 
     private fun setTypeface() {
         val tf = Typeface.createFromAsset(assets, "fonts/font.ttf")
@@ -64,10 +59,6 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
 
     private fun initEvent() {
         gameView!!.setGameListener(this)
-        imgBtn_Pause!!.setOnClickListener(this)
-        swt_Sound!!.setOnCheckedChangeListener(this)
-        swt_Music!!.setOnCheckedChangeListener(this)
-        lv_Bomb!!.setOnClickListener(this)
     }
 
     private fun toGameOverActivity() { //跳转游戏失败界面
@@ -118,11 +109,10 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
                 setPause()
             } else {
                 isPause = false
-                imgBtn_Pause!!.background = resources.getDrawable(R.drawable.game_pause_nor)
                 TimeTools.setResumeTime()
                 checkMusic()
-                lv_switchers!!.visibility = View.GONE
                 resumeThread()
+                pauseDialog?.dismiss()
             }
         } else if (view.id == R.id.lv_Bomb) {
             if (bombNum > 0 && !isPause) {
@@ -136,13 +126,14 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
 
     private fun setPause() {
         isPause = true
-        imgBtn_Pause!!.background = resources.getDrawable(R.drawable.game_resume_nor)
         TimeTools.setPauseTime()
         if (mMediaPlayer.isPlaying) {
             mMediaPlayer.pause()
         }
-        lv_switchers!!.visibility = View.VISIBLE
         pauseThread()
+        pauseDialog?.dismiss()
+        pauseDialog = GamePauseDialog(this)
+        pauseDialog?.show()
     }
 
     override fun onCheckedChanged(compoundButton: CompoundButton, b: Boolean) {
@@ -199,11 +190,10 @@ class GamePlaying : Activity(), View.OnClickListener, CompoundButton.OnCheckedCh
             setPause()
         } else {
             isPause = false
-            imgBtn_Pause!!.background = resources.getDrawable(R.drawable.game_pause_nor)
             TimeTools.setResumeTime()
             checkMusic()
-            lv_switchers!!.visibility = View.GONE
             resumeThread()
+            pauseDialog?.dismiss()
         }
     }
 
