@@ -12,9 +12,9 @@
         android:background="@drawable/setting_bg"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingHorizontal="60dp"
         android:paddingTop="30dp"
-        android:paddingBottom="30dp"
-        android:paddingHorizontal="60dp">
+        android:paddingBottom="30dp">
 
         <LinearLayout
             android:layout_width="wrap_content"

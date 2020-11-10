@@ -2,6 +2,7 @@ package com.jqorz.planewar.frame
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import com.jqorz.planewar.R
@@ -39,5 +40,13 @@ class GameCheat(context: Context) : Dialog(context) {
             }
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    companion object{
+        @JvmStatic
+        fun start(context: Context) {
+            val starter = Intent(context, GameCheat::class.java)
+            context.startActivity(starter)
+        }
     }
 }

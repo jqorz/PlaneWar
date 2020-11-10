@@ -27,7 +27,8 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
     private lateinit var soundPool: SoundPool //声音
     private lateinit var soundPoolMap: HashMap<Int, Int>
     private lateinit var mMediaPlayer: MediaPlayer
-    private var pauseDialog: GamePauseDialog? = null
+    private lateinit var pauseDialog: GamePauseDialog
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_playing)
@@ -112,7 +113,7 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
                 TimeTools.setResumeTime()
                 checkMusic()
                 resumeThread()
-                pauseDialog?.dismiss()
+                pauseDialog.dismiss()
             }
         } else if (view.id == R.id.lv_Bomb) {
             if (bombNum > 0 && !isPause) {
@@ -131,19 +132,60 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
             mMediaPlayer.pause()
         }
         pauseThread()
-        pauseDialog?.dismiss()
+        showSettingDialog()
+    }
+
+    private fun setResume() {
+        TimeTools.setResumeTime()
+        checkMusic()
+        resumeThread()
+    }
+
+    fun showSettingDialog() {
         pauseDialog = GamePauseDialog(this)
-        pauseDialog?.show()
+        pauseDialog.onlyShowSetting(false)
+        pauseDialog.setSwitch(UserDataManager.isOpenMusic(), UserDataManager.isOpenSound())
+        pauseDialog.callback = object : GamePauseDialog.DialogCallback {
+            override fun onSwitchSound(open: Boolean) {
+                switchSoundState(open)
+            }
+
+            override fun onSwitchMusic(open: Boolean) {
+                switchMusicState(open)
+            }
+
+            override fun onPauseOrResume() {
+                isPause = false
+                setResume()
+                pauseDialog.dismiss()
+            }
+
+            override fun onExitGame() {
+                isPause = true
+                finish()
+            }
+
+        }
     }
 
     override fun onCheckedChanged(compoundButton: CompoundButton, b: Boolean) {
         when (compoundButton.id) {
-            R.id.swt_Sound -> UserDataManager.setOpenSound(b)
+            R.id.swt_Sound -> {
+                switchSoundState(b)
+            }
             R.id.swt_Music -> {
-                UserDataManager.setOpenMusic(b)
-                checkMusic()
+                switchMusicState(b)
             }
         }
+    }
+
+    private fun switchSoundState(open: Boolean) {
+        UserDataManager.setOpenSound(open)
+    }
+
+    private fun switchMusicState(open: Boolean) {
+        UserDataManager.setOpenMusic(open)
+        checkMusic()
     }
 
     private fun checkMusic() {
@@ -190,10 +232,8 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
             setPause()
         } else {
             isPause = false
-            TimeTools.setResumeTime()
-            checkMusic()
-            resumeThread()
-            pauseDialog?.dismiss()
+            setResume()
+            pauseDialog.dismiss()
         }
     }
 

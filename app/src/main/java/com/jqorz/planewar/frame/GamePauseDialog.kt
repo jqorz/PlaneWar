@@ -31,9 +31,6 @@ class GamePauseDialog(context: Context) : Dialog(context), CompoundButton.OnChec
         swt_Sound!!.isChecked = openSound
     }
 
-    fun setPauseImg(isPause: Boolean) {
-        imgBtn_Pause.setImageResource(if (isPause) R.drawable.playing_pause_selector else R.drawable.playing_resume_selector)
-    }
 
     private fun initView() {
         swt_Sound!!.setOnCheckedChangeListener(this)

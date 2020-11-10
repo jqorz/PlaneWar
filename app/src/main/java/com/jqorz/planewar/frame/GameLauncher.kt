@@ -1,4 +1,4 @@
- package com.jqorz.planewar.frame
+package com.jqorz.planewar.frame
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,9 +6,13 @@ import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.view.View.OnLongClickListener
 import com.jqorz.planewar.R
+import com.jqorz.planewar.frame.GamePauseDialog.DialogCallback
+import com.jqorz.planewar.tools.UserDataManager
 import kotlinx.android.synthetic.main.game_launcher.*
 
 class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListener {
+    private lateinit var mSettingDialog: GamePauseDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.game_launcher)
@@ -31,16 +35,39 @@ class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListen
                 finish()
             }
             R.id.imgBtn_about -> this.startActivity(Intent(this, GameAbout::class.java))
-            R.id.imgBtn_setting -> GamePauseDialog(this).show()
+            R.id.imgBtn_setting -> {
+                showSettingDialog()
+            }
             R.id.imgBtn_exitGame -> finish()
+        }
+    }
+
+    fun showSettingDialog() {
+        mSettingDialog = GamePauseDialog(this)
+        mSettingDialog.onlyShowSetting(true)
+        mSettingDialog.setSwitch(UserDataManager.isOpenMusic(), UserDataManager.isOpenSound())
+        mSettingDialog.callback = object : DialogCallback {
+            override fun onSwitchSound(open: Boolean) {
+                UserDataManager.setOpenSound(open)
+            }
+
+            override fun onSwitchMusic(open: Boolean) {
+                UserDataManager.setOpenMusic(open)
+            }
+
+            override fun onPauseOrResume() {
+            }
+
+            override fun onExitGame() {
+            }
+
         }
     }
 
     override fun onLongClick(view: View): Boolean {
         if (view.id == R.id.iv_icon) {
-            val intent = Intent(this, GameCheat::class.java)
-            this.startActivity(intent)
+            GameCheat.start(this)
         }
-        return false
+        return true
     }
 }
