@@ -6,12 +6,11 @@ import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.view.View.OnLongClickListener
 import com.jqorz.planewar.R
-import com.jqorz.planewar.frame.GamePauseDialog.DialogCallback
 import com.jqorz.planewar.tools.UserDataManager
 import kotlinx.android.synthetic.main.game_launcher.*
 
 class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListener {
-    private lateinit var mSettingDialog: GamePauseDialog
+    private lateinit var mSettingDialog: GameSettingDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +42,10 @@ class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListen
     }
 
     fun showSettingDialog() {
-        mSettingDialog = GamePauseDialog(this)
-        mSettingDialog.onlyShowSetting(true)
+        mSettingDialog = GameSettingDialog(this)
+        mSettingDialog.show()
         mSettingDialog.setSwitch(UserDataManager.isOpenMusic(), UserDataManager.isOpenSound())
-        mSettingDialog.callback = object : DialogCallback {
+        mSettingDialog.callback = object : GameSettingDialog.DialogCallback {
             override fun onSwitchSound(open: Boolean) {
                 UserDataManager.setOpenSound(open)
             }
@@ -54,13 +53,6 @@ class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListen
             override fun onSwitchMusic(open: Boolean) {
                 UserDataManager.setOpenMusic(open)
             }
-
-            override fun onPauseOrResume() {
-            }
-
-            override fun onExitGame() {
-            }
-
         }
     }
 

@@ -38,6 +38,7 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
         setTypeface()
         checkMusic()
         checkCheat()
+        setSwitch()
     }
 
     override fun onDestroy() {
@@ -60,6 +61,16 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
 
     private fun initEvent() {
         gameView!!.setGameListener(this)
+        imgBtn_Pause.setOnClickListener(this)
+        lv_Bomb.setOnClickListener(this)
+        swt_Sound!!.setOnCheckedChangeListener(this)
+        swt_Music!!.setOnCheckedChangeListener(this)
+
+    }
+
+    private fun setSwitch() {
+        swt_Music!!.isChecked = UserDataManager.isOpenMusic()
+        swt_Sound!!.isChecked = UserDataManager.isOpenSound()
     }
 
     private fun toGameOverActivity() { //跳转游戏失败界面
@@ -110,6 +121,7 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
                 setPause()
             } else {
                 isPause = false
+                imgBtn_Pause!!.background = resources.getDrawable(R.drawable.game_pause_nor)
                 TimeTools.setResumeTime()
                 checkMusic()
                 resumeThread()
@@ -143,17 +155,8 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
 
     fun showSettingDialog() {
         pauseDialog = GamePauseDialog(this)
-        pauseDialog.onlyShowSetting(false)
-        pauseDialog.setSwitch(UserDataManager.isOpenMusic(), UserDataManager.isOpenSound())
+        pauseDialog.show()
         pauseDialog.callback = object : GamePauseDialog.DialogCallback {
-            override fun onSwitchSound(open: Boolean) {
-                switchSoundState(open)
-            }
-
-            override fun onSwitchMusic(open: Boolean) {
-                switchMusicState(open)
-            }
-
             override fun onPauseOrResume() {
                 isPause = false
                 setResume()
@@ -161,6 +164,11 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
             }
 
             override fun onExitGame() {
+                isPause = true
+                finish()
+            }
+
+            override fun onBackHome() {
                 isPause = true
                 finish()
             }
