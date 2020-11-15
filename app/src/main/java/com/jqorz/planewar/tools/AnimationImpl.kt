@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 
-class AnimationImpl(val mFrameBitmap: Array<Bitmap>, val isLoop: Boolean) {
+class AnimationImpl(private val mFrameBitmap: Array<Bitmap>, val isLoop: Boolean) {
     var isEnd = false
     var isPause = false
     private var mPlayID = 0

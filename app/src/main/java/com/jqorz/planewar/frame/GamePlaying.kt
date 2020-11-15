@@ -94,19 +94,19 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
         soundPoolMap[4] = soundPool.load(this, R.raw.boom_big, 1)
     }
 
-    fun playSound(sound: Int, loop: Int) {
+    private fun playSound(sound: Int) {
         if (UserDataManager.isOpenSound()) {
             val mgr = this.getSystemService(Context.AUDIO_SERVICE) as AudioManager
             val streamVolumeCurrent = mgr.getStreamVolume(AudioManager.STREAM_MUSIC).toFloat()
             val streamVolumeMax = mgr.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
             val volume = streamVolumeCurrent / streamVolumeMax
             if (soundPoolMap[sound] != null) {
-                soundPool.play(soundPoolMap[sound]!!, volume, volume, 1, loop, 1f)
+                soundPool.play(soundPoolMap[sound]!!, volume, volume, 1, 0, 1f)
             }
         }
     }
 
-    fun pauseThread() {
+    private fun pauseThread() {
         gameView!!.mMainRunThread.isPlaying = false
 
     }
@@ -144,7 +144,7 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
             mMediaPlayer.pause()
         }
         pauseThread()
-        showSettingDialog()
+        showPauseDialog()
     }
 
     private fun setResume() {
@@ -153,7 +153,7 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
         resumeThread()
     }
 
-    fun showSettingDialog() {
+    private fun showPauseDialog() {
         pauseDialog = GamePauseDialog(this)
         pauseDialog.show()
         pauseDialog.callback = object : GamePauseDialog.DialogCallback {
@@ -164,13 +164,13 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
             }
 
             override fun onExitGame() {
-                isPause = true
+                pauseDialog.dismiss()
                 finish()
             }
 
             override fun onBackHome() {
-                isPause = true
-                finish()
+                pauseDialog.dismiss()
+                GameLauncher.start(this@GamePlaying)
             }
 
         }
@@ -264,26 +264,26 @@ class GamePlaying : FragmentActivity(), View.OnClickListener, CompoundButton.OnC
     }
 
     override fun onHeroAttacked() {
-        playSound(2, 0)
+        playSound(2)
     }
 
     override fun onHeroDie() {
-        playSound(4, 0)
+        playSound(4)
     }
 
     override fun onEnemyDie(type: PlaneType) {
         score += ConstantValue.getEnemyScore(type)
         runOnUiThread { tv_Score!!.text = score.toString() }
         when (type) {
-            PlaneType.ENEMY_TYPE1 -> playSound(2, 0)
-            PlaneType.ENEMY_TYPE2 -> playSound(3, 0)
-            PlaneType.ENEMY_TYPE3 -> playSound(4, 0)
+            PlaneType.ENEMY_TYPE1 -> playSound(2)
+            PlaneType.ENEMY_TYPE2 -> playSound(3)
+            PlaneType.ENEMY_TYPE3 -> playSound(4)
         }
     }
 
     override fun onEnemyAttacked(type: PlaneType) {
         if (type != PlaneType.ENEMY_TYPE1) {
-            playSound(2, 0)
+            playSound(2)
         }
     }
 }

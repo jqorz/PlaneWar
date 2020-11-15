@@ -7,7 +7,7 @@ import com.jqorz.planewar.utils.Logg
 /**
  * 刷帧线程
  */
-class MainRunThread(val mListener: OnThreadRunListener?, val mSurfaceHolder: SurfaceHolder) : Thread() {
+class MainRunThread(private val mListener: OnThreadRunListener?, private val mSurfaceHolder: SurfaceHolder) : Thread() {
     var isPlaying = true
     var flag = false//设置循环标记位
 
@@ -19,7 +19,6 @@ class MainRunThread(val mListener: OnThreadRunListener?, val mSurfaceHolder: Sur
             try {
                 if (isPlaying) {
                     mListener?.onThreadTime()
-
                     // 锁定整个画布，在内存要求比较高的情况下，建议参数不要为null
                     c = mSurfaceHolder.lockCanvas(null)
                     synchronized(mSurfaceHolder) { mListener?.onDrawTime(c) }

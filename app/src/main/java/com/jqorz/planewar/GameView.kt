@@ -145,7 +145,7 @@ class GameView(context: Context, attrs: AttributeSet) : SurfaceView(context, att
     fun onGameOver() {
         mGameListener?.onGameOver()
 
-        mMainRunThread.flag = (false)
+        mMainRunThread.flag = false
     }
 
     fun onEnemyAttacked(type: PlaneType) {

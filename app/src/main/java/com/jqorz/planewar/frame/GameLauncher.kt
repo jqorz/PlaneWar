@@ -1,5 +1,6 @@
 package com.jqorz.planewar.frame
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
@@ -25,7 +26,9 @@ class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListen
         imgBtn_about!!.setOnClickListener(this)
         imgBtn_setting!!.setOnClickListener(this)
         iv_icon!!.setOnLongClickListener(this)
+
     }
+
 
     override fun onClick(view: View) {
         when (view.id) {
@@ -61,5 +64,13 @@ class GameLauncher : FragmentActivity(), View.OnClickListener, OnLongClickListen
             GameCheat.start(this)
         }
         return true
+    }
+
+    companion object {
+        @JvmStatic
+        fun start(context: Context) {
+            val starter = Intent(context, GameLauncher::class.java)
+            context.startActivity(starter)
+        }
     }
 }

@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.jqorz.planewar.R
-import kotlinx.android.synthetic.main.dialog_setting.*
+import kotlinx.android.synthetic.main.dialog_pause.*
 
 class GamePauseDialog(context: Context) : AlertDialog(context), View.OnClickListener {
     var callback: DialogCallback? = null
@@ -36,6 +36,9 @@ class GamePauseDialog(context: Context) : AlertDialog(context), View.OnClickList
             }
             R.id.tv_exit_game -> {
                 callback?.onExitGame()
+            }
+            R.id.tv_back_home -> {
+                callback?.onBackHome()
             }
         }
     }
