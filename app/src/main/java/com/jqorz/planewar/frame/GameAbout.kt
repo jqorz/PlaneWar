@@ -1,8 +1,8 @@
 package com.jqorz.planewar.frame
 
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.view.View
+import androidx.fragment.app.FragmentActivity
 import com.jqorz.planewar.R
 
 class GameAbout : FragmentActivity() {

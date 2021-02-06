@@ -8,9 +8,9 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.widget.CompoundButton
+import androidx.fragment.app.FragmentActivity
 import com.jqorz.planewar.R
 import com.jqorz.planewar.constant.ConstantValue
 import com.jqorz.planewar.constant.PlaneType

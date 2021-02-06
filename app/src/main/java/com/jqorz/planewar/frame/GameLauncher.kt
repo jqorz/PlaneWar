@@ -3,9 +3,9 @@ package com.jqorz.planewar.frame
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
 import android.view.View
 import android.view.View.OnLongClickListener
+import androidx.fragment.app.FragmentActivity
 import com.jqorz.planewar.R
 import com.jqorz.planewar.tools.UserDataManager
 import kotlinx.android.synthetic.main.game_launcher.*
